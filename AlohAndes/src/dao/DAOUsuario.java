@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Operador;
+import vos.Usuario;
 
-public class DAOOperador {
+public class DAOUsuario {
 
 	
 	public final static String USUARIO = "ISIS2304A481810";
@@ -23,50 +23,49 @@ public class DAOOperador {
 	 */
 	private Connection conn;
 	
-	public DAOOperador() {
+	public DAOUsuario() {
 		recursos = new ArrayList<Object>();
 	}
 	
-	public ArrayList<Operador> getOperadores() throws SQLException, Exception {
-		ArrayList<Operador> operadores = new ArrayList<Operador>();
+	public ArrayList<Usuario> getUsuarios() throws SQLException, Exception {
+		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
-		String sql = String.format("SELECT * FROM %1$s.OPERADORES", USUARIO);
+		String sql = String.format("SELECT * FROM %1$s.USUARIOS", USUARIO);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			operadores.add(convertResultSetToOperador(rs));
+			usuarios.add(convertResultSetToUsuario(rs));
 		}
 		
-		return operadores;
+		return usuarios;
 	}
 	
-	public Operador findOperadorrById(Long id) throws SQLException, Exception 
+	public Usuario findUsuariorById(Long id) throws SQLException, Exception 
 	{
-		Operador operador = null;
+		Usuario usuario = null;
 
-		String sql = String.format("SELECT * FROM %1$s.OPERADORES WHERE ID = %2$d", USUARIO, id); 
+		String sql = String.format("SELECT * FROM %1$s.USUARIOS WHERE ID = %2$d", USUARIO, id); 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			operador = convertResultSetToOperador(rs);
+			usuario = convertResultSetToUsuario(rs);
 		}
 
-		return operador;
+		return usuario;
 	}
 	
-	public void addOperador(Operador operador) throws SQLException, Exception {
+	public void addUsuario(Usuario usuario) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.OPERADORES (ID, CAPACIDAD, NOMBRE, TELEFONO, TIPO) VALUES (%2$s, '%3$s', '%4$s', '%5$s','%6$s' )", 
+		String sql = String.format("INSERT INTO %1$s.USUARIOS (ID, LOGIN, CONTRASENIA, TIPO) VALUES (%2$s ,%3$s, '%4$s', '%5$s')", 
 									USUARIO, 
-									operador.getId(), 
-									operador.getCapacidad(),
-									operador.getNombre(), 
-									operador.getTelefono(), operador.getTipo());
+									usuario.getLogin(), 
+									usuario.getContrasenia(),
+									usuario.getTipo());
 		System.out.println(sql);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -75,11 +74,14 @@ public class DAOOperador {
 
 	}
 
-	public void updateOperador(Operador operador) throws SQLException, Exception {
+	public void updateUsuario(Usuario usuario) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.OPERADORES SET ", USUARIO));
-		sql.append(String.format("CAPACIDAD = '%1$s' AND NOMBRE = '%2$s' AND TELEFONO = '%3$s' ", operador.getCapacidad(), operador.getNombre(), operador.getTelefono(), operador.getTipo()));
+		sql.append(String.format("UPDATE %s.USUARIOS SET ", USUARIO));
+		sql.append(String.format("ID = '%1$s' AND LOGIN = '%2$s' AND CONTRASENIA = '%2$s' AND TIPO = '%3$s' ", 
+				usuario.getId(),
+				usuario.getLogin(), 
+				usuario.getContrasenia(), usuario.getTipo()));
 		
 		System.out.println(sql);
 		
@@ -89,9 +91,9 @@ public class DAOOperador {
 	}
 
 	
-	public void deleteOperador(Operador operador) throws SQLException, Exception {
+	public void deleteUsuario(Usuario usuario) throws SQLException, Exception {
 
-		String sql = String.format("DELETE FROM %1$s.OPERADORES WHERE ID = %2$d", USUARIO, operador.getId());
+		String sql = String.format("DELETE FROM %1$s.USUARIOS WHERE ID = %2$d", USUARIO, usuario.getId());
 
 		System.out.println(sql);
 		
@@ -129,17 +131,16 @@ public class DAOOperador {
 		}
 	}
 	
-	public Operador convertResultSetToOperador(ResultSet resultSet) throws SQLException {
+	public Usuario convertResultSetToUsuario(ResultSet resultSet) throws SQLException {
 	
 		Long id = resultSet.getLong("ID");
-		Integer capacidad = resultSet.getInt("CAPACIDAD");
-		String nombre = resultSet.getString("NOMBRE");
-		Integer telefono = resultSet.getInt("TELEFONO");
+		String login = resultSet.getString("LOGIN");
+		String contrasenia = resultSet.getString("CONTRASENIA");
 		String tipo = resultSet.getString("TIPO");
 
-		Operador op = new Operador(id, capacidad, nombre, telefono, tipo);
+		Usuario usu = new Usuario(id, login, contrasenia, tipo);
 
-		return op;
+		return usu;
 	}
 
 }

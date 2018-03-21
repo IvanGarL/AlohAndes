@@ -27,9 +27,10 @@ public class Hotel extends Operador{
 			@JsonProperty(value="id") Long id,
 			@JsonProperty(value="capacidad") Integer capacidad, 
 			@JsonProperty(value="nombre") String nombre, 
-			@JsonProperty(value="telefono") Integer telefono){
+			@JsonProperty(value="telefono") Integer telefono,
+			@JsonProperty(value="tipo") String tipo){
 
-		super(id, capacidad, nombre, telefono);
+		super(id, capacidad, nombre, telefono, tipo);
 		this.direccion = direccion;
 		this.habDisponibles = habDisponibles;
 		this.habOcupadas = habOcupadas;

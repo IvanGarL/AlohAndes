@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Operador;
+import vos.Alojamiento;
 
-public class DAOOperador {
+public class DAOAlojamiento {
 
 	
 	public final static String USUARIO = "ISIS2304A481810";
@@ -23,50 +23,50 @@ public class DAOOperador {
 	 */
 	private Connection conn;
 	
-	public DAOOperador() {
+	public DAOAlojamiento() {
 		recursos = new ArrayList<Object>();
 	}
 	
-	public ArrayList<Operador> getOperadores() throws SQLException, Exception {
-		ArrayList<Operador> operadores = new ArrayList<Operador>();
+	public ArrayList<Alojamiento> getAlojamientos() throws SQLException, Exception {
+		ArrayList<Alojamiento> Alojamientos = new ArrayList<Alojamiento>();
 
-		String sql = String.format("SELECT * FROM %1$s.OPERADORES", USUARIO);
+		String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS", USUARIO);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			operadores.add(convertResultSetToOperador(rs));
+			Alojamientos.add(convertResultSetToAlojamiento(rs));
 		}
 		
-		return operadores;
+		return Alojamientos;
 	}
 	
-	public Operador findOperadorrById(Long id) throws SQLException, Exception 
+	public Alojamiento findAlojamientoById(Long id) throws SQLException, Exception 
 	{
-		Operador operador = null;
+		Alojamiento alojamiento = null;
 
-		String sql = String.format("SELECT * FROM %1$s.OPERADORES WHERE ID = %2$d", USUARIO, id); 
+		String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, id); 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			operador = convertResultSetToOperador(rs);
+			alojamiento = convertResultSetToAlojamiento(rs);
 		}
 
-		return operador;
+		return alojamiento;
 	}
 	
-	public void addOperador(Operador operador) throws SQLException, Exception {
+	public void addAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.OPERADORES (ID, CAPACIDAD, NOMBRE, TELEFONO, TIPO) VALUES (%2$s, '%3$s', '%4$s', '%5$s','%6$s' )", 
-									USUARIO, 
-									operador.getId(), 
-									operador.getCapacidad(),
-									operador.getNombre(), 
-									operador.getTelefono(), operador.getTipo());
+		String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, TAMANHO, CAPACIDAD, TIPO) VALUES (%2$s, '%3$s', '%4$s', '%5$s')", 
+									USUARIO,
+									alojamiento.getId(),
+									alojamiento.getTamanho(), 
+									alojamiento.getCapacidad(),
+									alojamiento.getTipo());
 		System.out.println(sql);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -75,11 +75,15 @@ public class DAOOperador {
 
 	}
 
-	public void updateOperador(Operador operador) throws SQLException, Exception {
+	public void updateAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.OPERADORES SET ", USUARIO));
-		sql.append(String.format("CAPACIDAD = '%1$s' AND NOMBRE = '%2$s' AND TELEFONO = '%3$s' ", operador.getCapacidad(), operador.getNombre(), operador.getTelefono(), operador.getTipo()));
+		sql.append(String.format("UPDATE %s.ALOJAMIENTOS SET ", USUARIO));
+		sql.append(String.format( "ID = '%1$s' AND TAMANHO = '%2$s' AND CAPACIDAD = '%3$s' AND TIPO = '%4$s' ", 
+				alojamiento.getId(),
+				alojamiento.getTamanho(), 
+				alojamiento.getCapacidad(),
+				alojamiento.getTipo()));
 		
 		System.out.println(sql);
 		
@@ -89,9 +93,9 @@ public class DAOOperador {
 	}
 
 	
-	public void deleteOperador(Operador operador) throws SQLException, Exception {
+	public void deleteAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
 
-		String sql = String.format("DELETE FROM %1$s.OPERADORES WHERE ID = %2$d", USUARIO, operador.getId());
+		String sql = String.format("DELETE FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, alojamiento.getId());
 
 		System.out.println(sql);
 		
@@ -129,17 +133,16 @@ public class DAOOperador {
 		}
 	}
 	
-	public Operador convertResultSetToOperador(ResultSet resultSet) throws SQLException {
+	public Alojamiento convertResultSetToAlojamiento(ResultSet resultSet) throws SQLException {
 	
 		Long id = resultSet.getLong("ID");
-		Integer capacidad = resultSet.getInt("CAPACIDAD");
-		String nombre = resultSet.getString("NOMBRE");
-		Integer telefono = resultSet.getInt("TELEFONO");
+		Integer login = resultSet.getInt("TAMANHO");
+		Integer contrasenia = resultSet.getInt("CAPACIDAD");
 		String tipo = resultSet.getString("TIPO");
 
-		Operador op = new Operador(id, capacidad, nombre, telefono, tipo);
+		Alojamiento alo = new Alojamiento(id, login, contrasenia, tipo);
 
-		return op;
+		return alo;
 	}
 
 }

@@ -10,8 +10,7 @@ public class PersonaComunidad extends Operador{
 
 	@JsonProperty(value="edad")
 	private Integer edad;
-
-
+	
 	public PersonaComunidad(@JsonProperty(value="nombre")String nombre,
 			@JsonProperty(value="edad") Integer edad, 
 			@JsonProperty(value = "cedula") Long cedula, 
@@ -19,9 +18,10 @@ public class PersonaComunidad extends Operador{
 			@JsonProperty(value="contrasenia")String contrasenia,
 			@JsonProperty(value="id") Long id,
 			@JsonProperty(value="capacidad") Integer capacidad, 
-			@JsonProperty(value="telefono") Integer telefono){
+			@JsonProperty(value="telefono") Integer telefono,
+			@JsonProperty(value="tipo") String tipo){
 
-		super(id, capacidad, nombre, telefono);
+		super(id, capacidad, nombre, telefono, tipo);
 		this.edad = edad;
 		this.cedula = cedula;
 	}

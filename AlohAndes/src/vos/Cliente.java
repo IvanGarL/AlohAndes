@@ -20,8 +20,14 @@ public class Cliente extends Usuario{
 	private Integer telefono;
 	
 	
-	public Cliente(@JsonProperty(value="nombre")String nombre,@JsonProperty(value="edad") Integer edad, @JsonProperty(value = "telefono")Integer telefono, @JsonProperty(value = "cedula") Long cedula, @JsonProperty(value="login")String login, @JsonProperty(value="contrasenia")String contrasenia ){
-		super(login,contrasenia);
+	public Cliente(@JsonProperty(value="id") Long id,
+			@JsonProperty(value="nombre")String nombre,
+			@JsonProperty(value="edad") Integer edad,
+			@JsonProperty(value = "telefono")Integer telefono,
+			@JsonProperty(value = "cedula") Long cedula,
+			@JsonProperty(value="login")String login,
+			@JsonProperty(value="contrasenia")String contrasenia ){
+		super(id, login,contrasenia, Usuario.CLIENTE);
 		this.nombre = nombre;
 		this.edad = edad;
 		this.cedula = cedula;
