@@ -313,7 +313,7 @@ alter table alojamientos
 add CONSTRAINT PK_alojamientos PRIMARY KEY (id);
 
 alter table alojamientos
-add constraint CHK_tipoalvalido check (tipo in ('habhot','aparta','vivuni','vivcom','habita'));
+add constraint CHK_tipoalvalido check (tipo in ('habhot','aparta','habuni','vivcom','habita'));
 
 //----------------------------------
 // ofertas
@@ -530,6 +530,9 @@ hotel varchar(60)
 );
 
 alter table habshotel
+modify categoria not null;
+
+alter table habshotel
 modify ubicacion not null;
 
 alter table habshotel
@@ -546,6 +549,9 @@ add FOREIGN KEY (id) references alojamientos(id);
 
 alter table habshotel
 add FOREIGN KEY (hotel) references hoteles(id);
+
+alter table habshotel
+add constraint CHK_catehotel check (categoria in ('suite','semisuite','estandar'));
 
 
 //----------------------------------
@@ -614,5 +620,6 @@ add FOREIGN KEY (hostal) references hostales(id);
 
 alter table habitaciones
 add FOREIGN KEY (personanat) references personasnats(id);
+
 
 
