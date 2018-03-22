@@ -11,8 +11,13 @@ public class Habitacion extends Alojamiento{
 	private Integer numero;
 	
 	
-	public Habitacion(@JsonProperty(value="compartida") Boolean compartida, @JsonProperty(value="numero") Integer numero, @JsonProperty(value="categoria") String categoria, @JsonProperty(value="tamanho") Integer tamanho, @JsonProperty(value="capacidad") Integer capacidad){
-		super(tamanho, capacidad);
+	public Habitacion(@JsonProperty(value="id")Long id,
+			@JsonProperty(value="compartida") Boolean compartida,
+			@JsonProperty(value="numero") Integer numero,
+			@JsonProperty(value="categoria") String categoria, 
+			@JsonProperty(value="tamanho") Integer tamanho, 
+			@JsonProperty(value="capacidad") Integer capacidad){
+		super(id, tamanho, capacidad, Alojamiento.HABITACION);
 		this.compartida = compartida;
 		this.numero = numero;
 	}

@@ -31,10 +31,9 @@ public class Hostal extends Operador{
 			@JsonProperty(value="id") Long id,
 			@JsonProperty(value="capacidad") Integer capacidad, 
 			@JsonProperty(value="nombre") String nombre, 
-			@JsonProperty(value="telefono") Integer telefono,
-			@JsonProperty(value="tipo") String tipo) {
+			@JsonProperty(value="telefono") Integer telefono) {
 		
-		super(id, capacidad, nombre, telefono, tipo);
+		super(id, capacidad, nombre, telefono, Operador.HOSTAL);
 		this.direccion = direccion;
 		this.habDisponibles = habDisponibles;
 		this.habOcupadas = habOcupadas;

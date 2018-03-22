@@ -26,6 +26,9 @@ public class Responsable extends Usuario{
 	@JsonProperty(value="telefono")
 	private Integer telefono;
 	
+	@JsonProperty(value="idOperador")
+	private Integer idOperador;
+	
 	
 	public Responsable(@JsonProperty(value="id") Long id,
 			@JsonProperty(value="nombre")String nombre,
@@ -33,13 +36,15 @@ public class Responsable extends Usuario{
 			@JsonProperty(value = "telefono")Integer telefono,
 			@JsonProperty(value = "cedula") Long cedula,
 			@JsonProperty(value="login")String login,
-			@JsonProperty(value="contrasenia")String contrasenia) {
+			@JsonProperty(value="contrasenia")String contrasenia,
+			@JsonProperty(value="idOperador") Integer idOperador) {
 		
 		super(id, login, contrasenia, Usuario.RESPONSABLE);
 		this.edad = edad;
 		this.telefono = telefono;
 		this.nombre = nombre;
 		this.cedula = cedula;
+		this.idOperador = idOperador;
 	}
 
 
@@ -80,6 +85,16 @@ public class Responsable extends Usuario{
 
 	public void setTelefono(Integer telefono) {
 		this.telefono = telefono;
+	}
+
+
+	public Integer getIdOperador() {
+		return idOperador;
+	}
+
+
+	public void setIdOperador(Integer idOperador) {
+		this.idOperador = idOperador;
 	}
 	
 	

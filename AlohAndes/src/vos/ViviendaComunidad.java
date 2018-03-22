@@ -16,9 +16,15 @@ public class ViviendaComunidad extends Alojamiento{
 	@JsonProperty(value="direccion")
 	private String direccion;
 
-	public ViviendaComunidad(@JsonProperty(value="menaje") Boolean menaje, @JsonProperty(value="diasUso") Integer diasUso, @JsonProperty(value="numHabitaciones") Integer numHabitaciones, @JsonProperty(value="direccion")String direccion, @JsonProperty(value="capacidad") Integer capacidad, @JsonProperty(value="tamanho") Integer tamanho) {
+	public ViviendaComunidad(@JsonProperty(value="id")Long id,
+			@JsonProperty(value="menaje") Boolean menaje,
+			@JsonProperty(value="diasUso") Integer diasUso,
+			@JsonProperty(value="numHabitaciones") Integer numHabitaciones, 
+			@JsonProperty(value="direccion")String direccion, 
+			@JsonProperty(value="capacidad") Integer capacidad,
+			@JsonProperty(value="tamanho") Integer tamanho) {
 
-		super(tamanho, capacidad);
+		super(id, tamanho, capacidad, Alojamiento.VIVIENDA_COMUNITARIA);
 		this.menaje = menaje;
 		this.diasUso = diasUso;
 		this.direccion = direccion;

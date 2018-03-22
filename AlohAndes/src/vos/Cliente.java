@@ -6,7 +6,7 @@ public class Cliente extends Usuario{
 	
 	
 	@JsonProperty(value="cedula")
-	private Long cedula;
+	private Integer cedula;
 	
 	
 	@JsonProperty(value="nombre")
@@ -24,7 +24,7 @@ public class Cliente extends Usuario{
 			@JsonProperty(value="nombre")String nombre,
 			@JsonProperty(value="edad") Integer edad,
 			@JsonProperty(value = "telefono")Integer telefono,
-			@JsonProperty(value = "cedula") Long cedula,
+			@JsonProperty(value = "cedula") Integer cedula,
 			@JsonProperty(value="login")String login,
 			@JsonProperty(value="contrasenia")String contrasenia ){
 		super(id, login,contrasenia, Usuario.CLIENTE);
@@ -35,12 +35,12 @@ public class Cliente extends Usuario{
 	}
 
 
-	public Long getCedula() {
+	public Integer getCedula() {
 		return cedula;
 	}
 
 
-	public void setCedula(Long cedula) {
+	public void setCedula(Integer cedula) {
 		this.cedula = cedula;
 	}
 

@@ -14,9 +14,14 @@ public class Apartamento extends Alojamiento{
 	@JsonProperty(value="numHabitaciones")
 	private Integer numHabitaciones;
 	
-	public Apartamento(@JsonProperty(value="menaje") Boolean menaje, @JsonProperty(value="numHabitaciones") Integer numHabitaciones, @JsonProperty(value="direccion")String direccion, @JsonProperty(value="capacidad") Integer capacidad, @JsonProperty(value="tamanho") Integer tamanho) {
+	public Apartamento(@JsonProperty(value="id")Long id,
+			@JsonProperty(value="menaje") Boolean menaje, 
+			@JsonProperty(value="numHabitaciones") Integer numHabitaciones, 
+			@JsonProperty(value="direccion")String direccion,
+			@JsonProperty(value="capacidad") Integer capacidad,
+			@JsonProperty(value="tamanho") Integer tamanho) {
 
-		super(tamanho, capacidad);
+		super(id, tamanho, capacidad, Alojamiento.APARTAMENTO);
 		this.menaje = menaje;
 		this.direccion = direccion;
 		this.numHabitaciones = numHabitaciones;

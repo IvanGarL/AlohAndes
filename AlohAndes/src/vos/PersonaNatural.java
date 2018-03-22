@@ -19,9 +19,8 @@ public class PersonaNatural extends Operador{
 			@JsonProperty(value="contrasenia")String contrasenia,
 			@JsonProperty(value="id") Long id,
 			@JsonProperty(value="capacidad") Integer capacidad, 
-			@JsonProperty(value="telefono") Integer telefono,
-			@JsonProperty(value="tipo") String tipo){
-		super(id, capacidad, nombre, telefono, tipo);
+			@JsonProperty(value="telefono") Integer telefono){
+		super(id, capacidad, nombre, telefono, Operador.PERSONA_NATURAL);
 		this.edad = edad;
 		this.cedula = cedula;
 	}

@@ -14,8 +14,13 @@ public class HabitacionUniversitaria extends Alojamiento{
 	@JsonProperty(value="menaje")
 	private Boolean menaje;
 	
-	public HabitacionUniversitaria(@JsonProperty(value="numero") Integer numero, @JsonProperty(value="menaje") Boolean menaje, @JsonProperty(value="ubicacion") String ubicacion, @JsonProperty(value="tamanho") Integer tamanho, @JsonProperty(value="capacidad") Integer capacidad){
-		super(tamanho, capacidad);
+	public HabitacionUniversitaria(@JsonProperty(value="id")Long id,
+			@JsonProperty(value="numero") Integer numero,
+			@JsonProperty(value="menaje") Boolean menaje,
+			@JsonProperty(value="ubicacion") String ubicacion, 
+			@JsonProperty(value="tamanho") Integer tamanho, 
+			@JsonProperty(value="capacidad") Integer capacidad){
+		super(id, tamanho, capacidad, Alojamiento.HABITACION_UNIVERSITARIA);
 		this.ubicacion = ubicacion;
 		this.numero = numero;
 		this.menaje = menaje;

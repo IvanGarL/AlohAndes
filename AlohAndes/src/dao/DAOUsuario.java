@@ -78,7 +78,7 @@ public class DAOUsuario {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.USUARIOS SET ", USUARIO));
-		sql.append(String.format("ID = '%1$s' AND LOGIN = '%2$s' AND CONTRASENIA = '%2$s' AND TIPO = '%3$s' ", 
+		sql.append(String.format("ID = '%1$s' AND LOGIN = '%2$s' AND CONTRASENIA = '%3$s' AND TIPO = '%3$s' ", 
 				usuario.getId(),
 				usuario.getLogin(), 
 				usuario.getContrasenia(), usuario.getTipo()));
