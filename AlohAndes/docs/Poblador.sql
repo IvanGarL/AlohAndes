@@ -150,6 +150,56 @@ insert into operadores (id, capacidad, tipo, nombre, telefono) values (48, 0, 'p
 insert into operadores (id, capacidad, tipo, nombre, telefono) values (49, 0, 'percom', 'Barry Jadczak', '5602221923509809');
 insert into operadores (id, capacidad, tipo, nombre, telefono) values (50, 0, 'percom', 'Chucho Row', '4695260483011054');
 
+insert into clientes (id, cedula, edad, nombre, telefono) values (51, '3533226081084650', 49, 'Crawford Rudloff', '5020909957370932');
+insert into clientes (id, cedula, edad, nombre, telefono) values (52, '4017956681111338', 22, 'Jeanelle Yockney', '50189744407802553');
+insert into clientes (id, cedula, edad, nombre, telefono) values (53, '4041598137651', 32, 'Val Mahaffey', '5602225220320430');
+insert into clientes (id, cedula, edad, nombre, telefono) values (54, '374622772519962', 36, 'Raye Dickson', '3576222710665579');
+insert into clientes (id, cedula, edad, nombre, telefono) values (55, '3547387211568824', 20, 'Cullie Robecon', '3574072245929442');
+insert into clientes (id, cedula, edad, nombre, telefono) values (56, '63049819719710398', 47, 'Sylas Truin', '67628011266232410');
+insert into clientes (id, cedula, edad, nombre, telefono) values (57, '201516397569023', 64, 'Britte Grinishin', '3565846411995654');
+insert into clientes (id, cedula, edad, nombre, telefono) values (58, '675924357838926562', 65, 'Jenica Ballin', '3569039219744377');
+insert into clientes (id, cedula, edad, nombre, telefono) values (59, '3531567122056302', 32, 'Hashim Attwoull', '3549829725762748');
+insert into clientes (id, cedula, edad, nombre, telefono) values (60, '67714378640140303', 34, 'Ralf Fancutt', '5602257217914164');
+insert into clientes (id, cedula, edad, nombre, telefono) values (61, '3550594104249917', 47, 'Merle Pyser', '3580606319868341');
+insert into clientes (id, cedula, edad, nombre, telefono) values (62, '67626969806466065', 67, 'Anson Seamarke', '3540481423791121');
+insert into clientes (id, cedula, edad, nombre, telefono) values (63, '201663616788495', 54, 'West Twoohy', '6333580486249804');
+insert into clientes (id, cedula, edad, nombre, telefono) values (64, '30294887782509', 70, 'Sara Redd', '3549967856288040');
+insert into clientes (id, cedula, edad, nombre, telefono) values (65, '3574446986623515', 65, 'Meredeth Lodwig', '56022323882044920');
+insert into clientes (id, cedula, edad, nombre, telefono) values (66, '3579426444086856', 52, 'Caresse Cruddas', '30214347739261');
+insert into clientes (id, cedula, edad, nombre, telefono) values (67, '560223950648086585', 43, 'Curcio Foyster', '5541364884952081');
+insert into clientes (id, cedula, edad, nombre, telefono) values (68, '3551322591293027', 19, 'Ginelle Beals', '30479363656430');
+insert into clientes (id, cedula, edad, nombre, telefono) values (69, '30536648420997', 34, 'Ric Nason', '3528631096895536');
+insert into clientes (id, cedula, edad, nombre, telefono) values (70, '3553552109693700', 35, 'Creight Guerriero', '6391821589791873');
+insert into clientes (id, cedula, edad, nombre, telefono) values (71, '3533554651751253', 70, 'Tammi Burrus', '3549697510574242');
+insert into clientes (id, cedula, edad, nombre, telefono) values (72, '630442354511245756', 44, 'Terencio Pott', '4917429784138989');
+insert into clientes (id, cedula, edad, nombre, telefono) values (73, '5602249747149387', 18, 'Meghann Sustin', '3581974143636162');
+insert into clientes (id, cedula, edad, nombre, telefono) values (74, '4911263767613864099', 20, 'Fifi Rawet', '5602221067181977');
+insert into clientes (id, cedula, edad, nombre, telefono) values (75, '4844804224473592', 66, 'Harriette Marusyak', '676105931691572371');
+insert into clientes (id, cedula, edad, nombre, telefono) values (76, '3577506152137504', 32, 'Ariadne Tillett', '676141003731025707');
+insert into clientes (id, cedula, edad, nombre, telefono) values (77, '5542396035763909', 36, 'Dal Labone', '5565517775576365');
+insert into clientes (id, cedula, edad, nombre, telefono) values (78, '3562470006631583', 24, 'Hogan Sheilds', '3579875196745913');
+insert into clientes (id, cedula, edad, nombre, telefono) values (79, '4913944067230117', 70, 'Annnora Castelot', '3555527508495418');
+insert into clientes (id, cedula, edad, nombre, telefono) values (80, '5100132785402222', 28, 'Sharyl Bloxham', '4913151068001634');
+insert into clientes (id, cedula, edad, nombre, telefono) values (81, '3563816548501305', 61, 'Barbabas Issard', '337941110464962');
+insert into clientes (id, cedula, edad, nombre, telefono) values (82, '3549315299463673', 55, 'Asher Stranieri', '3555970569186585');
+insert into clientes (id, cedula, edad, nombre, telefono) values (83, '6374605174569690', 43, 'Anatollo Lindro', '3575813330721817');
+insert into clientes (id, cedula, edad, nombre, telefono) values (84, '676206253512020581', 29, 'Briney Choake', '5010128239296904');
+insert into clientes (id, cedula, edad, nombre, telefono) values (85, '3532797319128726', 59, 'Garrott Telezhkin', '3542375957041283');
+insert into clientes (id, cedula, edad, nombre, telefono) values (86, '201594615012944', 18, 'Gill Rolls', '3562333708925267');
+insert into clientes (id, cedula, edad, nombre, telefono) values (87, '4405836372124552', 28, 'Tallulah Guyton', '5444879022964365');
+insert into clientes (id, cedula, edad, nombre, telefono) values (88, '5602246954802385', 50, 'Franni Stoakley', '201816364927042');
+insert into clientes (id, cedula, edad, nombre, telefono) values (89, '3556296792391563', 33, 'Frederick Locker', '491196976741878132');
+insert into clientes (id, cedula, edad, nombre, telefono) values (90, '3533261898682727', 68, 'Margo Simonelli', '3531622323699606');
+insert into clientes (id, cedula, edad, nombre, telefono) values (91, '4913475498171943', 28, 'Meredeth Mangin', '201654760675901');
+insert into clientes (id, cedula, edad, nombre, telefono) values (92, '4026105314022426', 43, 'Fredelia Lavis', '3540010238497481');
+insert into clientes (id, cedula, edad, nombre, telefono) values (93, '3542205005721232', 62, 'Arabella Rydeard', '5602217249439093');
+insert into clientes (id, cedula, edad, nombre, telefono) values (94, '3573865302502288', 48, 'Lea Giddens', '337941588292911');
+insert into clientes (id, cedula, edad, nombre, telefono) values (95, '3578617441140016', 55, 'Ignacius Ruddom', '3584968181513793');
+insert into clientes (id, cedula, edad, nombre, telefono) values (96, '3531019413669161', 28, 'Cybill Beloe', '3569975282522663');
+insert into clientes (id, cedula, edad, nombre, telefono) values (97, '3537660395503136', 18, 'Winn Ingerson', '341343817459995');
+insert into clientes (id, cedula, edad, nombre, telefono) values (98, '5100149980226750', 58, 'Tessa Scorer', '3533831627362757');
+insert into clientes (id, cedula, edad, nombre, telefono) values (99, '374622328168645', 41, 'Tamiko Privost', '3577200562095805');
+insert into clientes (id, cedula, edad, nombre, telefono) values (100, '5489231896387198', 24, 'Effie Stephens', '3533139475189615');
 
 insert into responsables (id, cedula, edad, nombre, telefono, operador) values (1, '3559428238893632', 53, 'Coreen Trengrove', '372301394601878', 1);
 insert into responsables (id, cedula, edad, nombre, telefono, operador) values (2, '4911158329402181785', 62, 'Arlee MacHarg', '5602231001343641442', 2);
@@ -616,6 +666,7 @@ insert into habsuniv (id, ubicacion, numero, menaje, viviendauniv) values (173, 
 insert into habsuniv (id, ubicacion, numero, menaje, viviendauniv) values (174, '63 Dwight Avenue', 842, 1, 23);
 insert into habsuniv (id, ubicacion, numero, menaje, viviendauniv) values (175, '286 Artisan Crossing', 798, 0, 23);
 
+
 insert into habitaciones (id, compartida, numero, hostal, personanat) values (101, 1, 7, 12, null);
 insert into habitaciones (id, compartida, numero, hostal, personanat) values (102, 1, 7, 17, null);
 insert into habitaciones (id, compartida, numero, hostal, personanat) values (103, 1, 9, 12, null);
@@ -667,4 +718,3 @@ insert into habitaciones (id, compartida, numero, hostal, personanat) values (14
 insert into habitaciones (id, compartida, numero, hostal, personanat) values (148, 0, null, null, 36);
 insert into habitaciones (id, compartida, numero, hostal, personanat) values (149, 0, null, null, 38);
 insert into habitaciones (id, compartida, numero, hostal, personanat) values (150, 0, null, null, 34);
-
