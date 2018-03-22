@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.Oferta;
+import vos.Reserva;
 
 
 public class DAOOferta {
@@ -40,6 +41,25 @@ public class DAOOferta {
 			reservas.add(convertResultSetToOferta(rs));
 		}
 
+		return reservas;
+	}
+	
+	public ArrayList<Oferta> getOfertasPopulares() throws SQLException, Exception {
+		ArrayList<Oferta> reservas = new ArrayList<Oferta>();
+
+		String sql = String.format("select * from(select oferta ,count(oferta) as populares "
+				+ "from %1$s.reservas group by oferta"
+				+ "order by populares desc)"
+				+ "WHERE ROWNUM <= 20", USUARIO);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			reservas.add(convertResultSetToOferta(rs));
+		}
+		
 		return reservas;
 	}
 

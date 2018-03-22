@@ -43,6 +43,28 @@ public class DAOOperador {
 		return operadores;
 	}
 	
+	public double gananciasOperador(String id) throws SQLException, Exception {
+		double respuesta = 0;
+
+		String sql = String.format("Select Sum(cobro) as ganancias"
+				+ "from (select cobro "
+				+ "from %1$s.reservas "
+				+ "where operador = '%2$s' and FECHAFIN > '1/1/2018')filtro", USUARIO,id);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			
+			if(rs.getString("ganancias") != null){
+				respuesta = rs.getDouble("ganancias");
+			}
+		}
+		
+		return respuesta;
+	}
+	
 	public Operador findOperadorrById(Long id) throws SQLException, Exception 
 	{
 		Operador operador = null;
