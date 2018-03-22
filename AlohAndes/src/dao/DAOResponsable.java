@@ -36,7 +36,7 @@ public class DAOResponsable extends DAOUsuario{
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			responsables.add(convertResultSetToCliente(rs));
+			responsables.add(convertResultSetToResponsable(rs));
 		}
 		
 		return responsables;
@@ -52,7 +52,7 @@ public class DAOResponsable extends DAOUsuario{
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			responsable = convertResultSetToCliente(rs);
+			responsable = convertResultSetToResponsable(rs);
 		}
 
 		return responsable;
@@ -142,7 +142,7 @@ public class DAOResponsable extends DAOUsuario{
 		}
 	}
 	
-	public Responsable convertResultSetToCliente(ResultSet resultSet) throws SQLException {
+	public Responsable convertResultSetToResponsable(ResultSet resultSet) throws SQLException {
 	
 		Long id = resultSet.getLong("ID");
 		Long cedula = resultSet.getLong("CEDULA");
