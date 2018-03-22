@@ -120,7 +120,7 @@ alter table responsables
 add CONSTRAINT PK_Responsable PRIMARY KEY (id);
 
 alter table responsables
-add FOREIGN KEY (id) references usuarios(id);
+add FOREIGN KEY (id) references usuarios(id) ON DELETE CASCADE;
 
 alter table responsables
 add FOREIGN KEY (operador) references operadores(id);
@@ -160,7 +160,7 @@ alter table hoteles
 add CONSTRAINT PK_Hotel PRIMARY KEY (id);
 
 alter table hoteles
-add FOREIGN KEY (id) references operadores(id);
+add FOREIGN KEY (id) references operadores(id) ON DELETE CASCADE;
 
 
 //----------------------------------
@@ -205,7 +205,7 @@ alter table hostales
 add CONSTRAINT PK_Hostal PRIMARY KEY (id);
 
 alter table hostales
-add FOREIGN KEY (id) references operadores(id);
+add FOREIGN KEY (id) references operadores(id) ON DELETE CASCADE;
 
 //----------------------------------
 // personasnats
@@ -229,7 +229,7 @@ alter table personasnats
 add CONSTRAINT PK_Personasnats PRIMARY KEY (id);
 
 alter table personasnats
-add FOREIGN KEY (id) references operadores(id);
+add FOREIGN KEY (id) references operadores(id) ON DELETE CASCADE;
 
 //----------------------------------
 // personascom
@@ -252,7 +252,7 @@ alter table personascom
 add CONSTRAINT PK_personascom PRIMARY KEY (id);
 
 alter table personascom
-add FOREIGN KEY (id) references operadores(id);
+add FOREIGN KEY (id) references operadores(id) ON DELETE CASCADE;
 
 //----------------------------------
 // viviendasunivs
@@ -286,7 +286,7 @@ alter table viviendasunivs
 add CONSTRAINT PK_ViviendaUnivs PRIMARY KEY (id);
 
 alter table viviendasunivs
-add FOREIGN KEY (id) references operadores(id);
+add FOREIGN KEY (id) references operadores(id) ON DELETE CASCADE;
 
 
 //----------------------------------
@@ -344,7 +344,7 @@ alter table ofertas
 add FOREIGN KEY (operador) references operadores(id);
 
 alter table ofertas
-add FOREIGN KEY (alojamiento) references alojamientos(id);
+add FOREIGN KEY (alojamiento) references alojamientos(id) ;
 
 //----------------------------------
 // reservas
@@ -404,7 +404,7 @@ add CONSTRAINT CHK_reservacoherente CHECK ( fechainicio < fechafin and fechareal
 create table servicios(
 id varchar(60),
 costo number (8,2),
-descrpicion varchar(60),
+descripcion varchar(60),
 nombre varchar(60),
 oferta varchar(60)
 );
@@ -466,7 +466,7 @@ alter table apartamentos
 add CONSTRAINT PK_apartamentos PRIMARY KEY (id);
 
 alter table apartamentos
-add FOREIGN KEY (id) references alojamientos(id);
+add FOREIGN KEY (id) references alojamientos(id) ON DELETE CASCADE;
 
 alter table apartamentos
 add FOREIGN KEY (personacom) references personascom(id);
@@ -512,10 +512,10 @@ alter table vdascomunidad
 add CONSTRAINT PK_vdascomunidad PRIMARY KEY (id);
 
 alter table vdascomunidad
-add FOREIGN KEY (id) references alojamientos(id);
+add FOREIGN KEY (id) references alojamientos(id) ON DELETE CASCADE;
 
 alter table vdascomunidad
-add FOREIGN KEY (personacom) references personascom(id);
+add FOREIGN KEY (personacom) references personascom(id) ;
 
 //----------------------------------
 // habshotel
@@ -545,7 +545,7 @@ alter table habshotel
 add CONSTRAINT PK_habshotel PRIMARY KEY (id);
 
 alter table habshotel
-add FOREIGN KEY (id) references alojamientos(id);
+add FOREIGN KEY (id) references alojamientos(id) ON DELETE CASCADE;
 
 alter table habshotel
 add FOREIGN KEY (hotel) references hoteles(id);
@@ -582,7 +582,7 @@ alter table habsuniv
 add CONSTRAINT PK_habsuniv PRIMARY KEY (id);
 
 alter table habsuniv
-add FOREIGN KEY (id) references alojamientos(id);
+add FOREIGN KEY (id) references alojamientos(id ) ON DELETE CASCADE;
 
 alter table habsuniv
 add FOREIGN KEY (viviendauniv) references viviendasunivs(id);
@@ -613,7 +613,7 @@ alter table habitaciones
 add CONSTRAINT PK_habitaciones PRIMARY KEY (id);
 
 alter table habitaciones
-add FOREIGN KEY (id) references alojamientos(id);
+add FOREIGN KEY (id) references alojamientos(id) ON DELETE CASCADE;
 
 alter table habitaciones
 add FOREIGN KEY (hostal) references hostales(id);
