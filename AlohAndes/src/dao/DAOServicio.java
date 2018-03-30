@@ -6,11 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Alojamiento;
+import vos.Servicio;
 
-public class DAOAlojamiento {
+public class DAOServicio {
 
-	
 	public final static String USUARIO = "ISIS2304A481810";
 	
 	/**
@@ -23,50 +22,50 @@ public class DAOAlojamiento {
 	 */
 	private Connection conn;
 	
-	public DAOAlojamiento() {
+	public DAOServicio() {
 		recursos = new ArrayList<Object>();
 	}
 	
-	public ArrayList<Alojamiento> getAlojamientos() throws SQLException, Exception {
-		ArrayList<Alojamiento> Alojamientos = new ArrayList<Alojamiento>();
+	public ArrayList<Servicio> getServicios() throws SQLException, Exception {
+		ArrayList<Servicio> Servicios = new ArrayList<Servicio>();
 
-		String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS", USUARIO);
+		String sql = String.format("SELECT * FROM %1$s.SERVICIOS", USUARIO);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Alojamientos.add(convertResultSetToAlojamiento(rs));
+			Servicios.add(convertResultSetToServicio(rs));
 		}
 		
-		return Alojamientos;
+		return Servicios;
 	}
 	
-	public Alojamiento findAlojamientoById(Long id) throws SQLException, Exception 
+	public Servicio findServicioById(Long id) throws SQLException, Exception 
 	{
-		Alojamiento alojamiento = null;
+		Servicio servicio = null;
 
-		String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, id); 
+		String sql = String.format("SELECT * FROM %1$s.SERVICIOS WHERE ID = %2$d", USUARIO, id); 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			alojamiento = convertResultSetToAlojamiento(rs);
+			servicio = convertResultSetToServicio(rs);
 		}
 
-		return alojamiento;
+		return servicio;
 	}
 	
-	public void addAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
+	public void addServicio(Servicio servicio) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, TAMANHO, CAPACIDAD, TIPO) VALUES (%2$s, '%3$s', '%4$s', '%5$s')", 
+		String sql = String.format("INSERT INTO %1$s.SERVICIOS (ID, COSTO, NOMBRE, DESCRIPCION) VALUES (%2$s, '%3$s', '%4$s', '%5$s')", 
 									USUARIO,
-									alojamiento.getId(),
-									alojamiento.getTamanho(), 
-									alojamiento.getCapacidad(),
-									alojamiento.getTipo());
+									servicio.getId(),
+									servicio.getCosto(), 
+									servicio.getNombre(),
+									servicio.getDescripcion());
 		System.out.println(sql);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -75,15 +74,15 @@ public class DAOAlojamiento {
 
 	}
 
-	public void updateAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
+	public void updateServicio(Servicio servicio) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.ALOJAMIENTOS SET ", USUARIO));
-		sql.append(String.format( "ID = '%1$s' AND TAMANHO = '%2$s' AND CAPACIDAD = '%3$s' AND TIPO = '%4$s' ", 
-				alojamiento.getId(),
-				alojamiento.getTamanho(), 
-				alojamiento.getCapacidad(),
-				alojamiento.getTipo()));
+		sql.append(String.format("UPDATE %s.SERVICIOS SET ", USUARIO));
+		sql.append(String.format( "ID = '%1$s' AND COSTO = '%2$s' AND NOMBRE = '%3$s' AND DESCRIPCION = '%4$s' ", 
+				servicio.getId(),
+				servicio.getCosto(), 
+				servicio.getNombre(),
+				servicio.getDescripcion()));
 		
 		System.out.println(sql);
 		
@@ -93,9 +92,9 @@ public class DAOAlojamiento {
 	}
 
 	
-	public void deleteAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
+	public void deleteServicio(Servicio servicio) throws SQLException, Exception {
 
-		String sql = String.format("DELETE FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, alojamiento.getId());
+		String sql = String.format("DELETE FROM %1$s.SERVICIOS WHERE ID = %2$d", USUARIO, servicio.getId());
 
 		System.out.println(sql);
 		
@@ -133,16 +132,15 @@ public class DAOAlojamiento {
 		}
 	}
 	
-	public Alojamiento convertResultSetToAlojamiento(ResultSet resultSet) throws SQLException {
+	public Servicio convertResultSetToServicio(ResultSet resultSet) throws SQLException {
 	
 		Long id = resultSet.getLong("ID");
-		Integer tamanho = resultSet.getInt("TAMANHO");
-		Integer capacidad = resultSet.getInt("CAPACIDAD");
-		String tipo = resultSet.getString("TIPO");
+		Double costo = resultSet.getDouble("COSTO");
+		String nombre = resultSet.getString("NOMBRE");
+		String tipo = resultSet.getString("DESCRIPCION");
 
-		Alojamiento alo = new Alojamiento(id, tamanho, capacidad, tipo);
+		Servicio serv = new Servicio(id, costo, nombre, tipo);
 
-		return alo;
+		return serv;
 	}
-
 }

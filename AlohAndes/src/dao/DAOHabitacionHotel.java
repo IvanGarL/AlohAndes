@@ -6,11 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Alojamiento;
+import vos.HabitacionHotel;
 
-public class DAOAlojamiento {
+public class DAOHabitacionHotel extends DAOAlojamiento{
 
-	
 	public final static String USUARIO = "ISIS2304A481810";
 	
 	/**
@@ -23,69 +22,83 @@ public class DAOAlojamiento {
 	 */
 	private Connection conn;
 	
-	public DAOAlojamiento() {
+	public DAOHabitacionHotel() {
 		recursos = new ArrayList<Object>();
 	}
 	
-	public ArrayList<Alojamiento> getAlojamientos() throws SQLException, Exception {
-		ArrayList<Alojamiento> Alojamientos = new ArrayList<Alojamiento>();
+	public ArrayList<HabitacionHotel> getHabitacionesHotel() throws SQLException, Exception {
+		ArrayList<HabitacionHotel> habsHotel = new ArrayList<HabitacionHotel>();
 
-		String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS", USUARIO);
+		String sql = String.format("SELECT * FROM %1$s.HABSHOTEL", USUARIO);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Alojamientos.add(convertResultSetToAlojamiento(rs));
+			habsHotel.add(convertResultSetToHabitacionHotel(rs));
 		}
 		
-		return Alojamientos;
+		return habsHotel;
 	}
 	
-	public Alojamiento findAlojamientoById(Long id) throws SQLException, Exception 
+	public HabitacionHotel findHabitacionHotelById(Long id) throws SQLException, Exception 
 	{
-		Alojamiento alojamiento = null;
+		HabitacionHotel habHotel = null;
 
-		String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, id); 
+		String sql = String.format("SELECT * FROM %1$s.HABSHOTEL WHERE ID = %2$d", USUARIO, id); 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			alojamiento = convertResultSetToAlojamiento(rs);
+			habHotel = convertResultSetToHabitacionHotel(rs);
 		}
 
-		return alojamiento;
+		return habHotel;
 	}
 	
-	public void addAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
+	public void addHabitacionHotel(HabitacionHotel habHotel) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, TAMANHO, CAPACIDAD, TIPO) VALUES (%2$s, '%3$s', '%4$s', '%5$s')", 
+		String sql = String.format("INSERT INTO %1$s.HABSHOTEL (ID, CATEGORIA, UBICACION, NUMERO, HOTEL) VALUES (%2$s, '%3$s', '%4$s', '%5$s', '%6$s' )", 
 									USUARIO,
-									alojamiento.getId(),
-									alojamiento.getTamanho(), 
-									alojamiento.getCapacidad(),
-									alojamiento.getTipo());
+									habHotel.getId(),
+									habHotel.getCategoria(),
+									habHotel.getUbicacion(),
+									habHotel.getNumero(),
+									habHotel.getHotel());
 		System.out.println(sql);
-
+		
+		//
+		//
+		addAlojamiento(habHotel);
+		//
+		//
+		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 
 	}
 
-	public void updateAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
+	public void updateHabitacionHotel(HabitacionHotel habHotel) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.ALOJAMIENTOS SET ", USUARIO));
-		sql.append(String.format( "ID = '%1$s' AND TAMANHO = '%2$s' AND CAPACIDAD = '%3$s' AND TIPO = '%4$s' ", 
-				alojamiento.getId(),
-				alojamiento.getTamanho(), 
-				alojamiento.getCapacidad(),
-				alojamiento.getTipo()));
+		sql.append(String.format("UPDATE %s.HABSHOTEL SET ", USUARIO));
+		sql.append(String.format( "ID = '%1$s' AND CATEGORIA = '%2$s' AND UBICACION = '%3$s' AND NUMERO = '%4$s' AND HOTEL = '%5$s' ", 
+				habHotel.getId(),
+				habHotel.getCategoria(),
+				habHotel.getUbicacion(),
+				habHotel.getNumero(),
+				habHotel.getHotel()));
 		
 		System.out.println(sql);
+		
+		//
+		//
+		updateAlojamiento(habHotel);
+		//
+		//
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);
@@ -93,11 +106,17 @@ public class DAOAlojamiento {
 	}
 
 	
-	public void deleteAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
+	public void deleteHabitacionHotel(HabitacionHotel habHotel) throws SQLException, Exception {
 
-		String sql = String.format("DELETE FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, alojamiento.getId());
+		String sql = String.format("DELETE FROM %1$s.HABSHOTEL WHERE ID = %2$d", USUARIO, habHotel.getId());
 
 		System.out.println(sql);
+		
+		//
+		//
+		deleteAlojamiento(habHotel);
+		//
+		//
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -133,16 +152,19 @@ public class DAOAlojamiento {
 		}
 	}
 	
-	public Alojamiento convertResultSetToAlojamiento(ResultSet resultSet) throws SQLException {
+	public HabitacionHotel convertResultSetToHabitacionHotel(ResultSet resultSet) throws SQLException {
 	
 		Long id = resultSet.getLong("ID");
+		Integer numero = resultSet.getInt("NUMERO");
+		String categoria = resultSet.getString("CATEGORIA");
+		String ubicacion = resultSet.getString("UBICACION");
 		Integer tamanho = resultSet.getInt("TAMANHO");
 		Integer capacidad = resultSet.getInt("CAPACIDAD");
-		String tipo = resultSet.getString("TIPO");
+		Long hotel = resultSet.getLong("HOTEL");
 
-		Alojamiento alo = new Alojamiento(id, tamanho, capacidad, tipo);
 
-		return alo;
+		HabitacionHotel habHot = new HabitacionHotel(id, numero, categoria, ubicacion, tamanho, capacidad, hotel);
+
+		return habHot;
 	}
-
 }
