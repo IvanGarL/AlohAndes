@@ -11,7 +11,7 @@ public class PersonaNatural extends Operador{
 	@JsonProperty(value="edad")
 	private Integer edad;
 	
-	
+	//ES IMPORTANTE REVISAR SI SE NECESITAN LOS ATRIBUTOS DE LOGIN Y CONTRASENIA
 	public PersonaNatural(@JsonProperty(value="nombre")String nombre,
 			@JsonProperty(value="edad") Integer edad, 
 			@JsonProperty(value = "cedula") Long cedula, 

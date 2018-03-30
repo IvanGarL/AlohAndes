@@ -6,12 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Hostal;
+import vos.Operador;
+import vos.ViviendaUniversitaria;
 
-public class DAOHostal extends DAOOperador{
-
+public class DAOViviendaUniversitaria extends DAOOperador{
 	public final static String USUARIO = "ISIS2304A481810";
-	
+
 	/**
 	 * Arraylists de recursos que se usan para la ejecucion de sentencias SQL
 	 */
@@ -21,93 +21,89 @@ public class DAOHostal extends DAOOperador{
 	 * Atributo que genera la conexion a la base de datos
 	 */
 	private Connection conn;
-	
-	public DAOHostal() {
+
+	public DAOViviendaUniversitaria() {
 		recursos = new ArrayList<Object>();
 	}
-	
-	public ArrayList<Hostal> getHostales() throws SQLException, Exception {
-		ArrayList<Hostal> hostales = new ArrayList<Hostal>();
 
-		String sql = String.format("SELECT * FROM ( %1$s.HOSTALES NATURAL INNER JOIN %1$s.OPERADORES)", USUARIO);
+	public ArrayList<ViviendaUniversitaria> getViviendasUniversitarias() throws SQLException, Exception {
+		ArrayList<ViviendaUniversitaria> viviendasUniversitarias = new ArrayList<ViviendaUniversitaria>();
+
+		String sql = String.format("SELECT * FROM ( %1$s.VIVIENDASUNIVS NATURAL INNER JOIN %1$s.OPERADORES)", USUARIO);
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			hostales.add(convertResultSetToHostal(rs));
+			viviendasUniversitarias.add(convertResultSetToViviendaUniversitaria(rs));
 		}
-		
-		return hostales;
+
+		return viviendasUniversitarias;
 	}
-	
-	public Hostal findHostalById(Long id) throws SQLException, Exception {
-		String sql = String.format("SELECT * FROM ( %1$s.HOSTALES NATURAL INNER JOIN %1$s.OPERADORES) WHERE ID = %2$d", USUARIO, id); 
+
+	public ViviendaUniversitaria findViviendaUniversitariaById(Long id) throws SQLException, Exception {
+		String sql = String.format("SELECT * FROM ( %1$s.VIVIENDASUNIVS NATURAL INNER JOIN %1$s.OPERADORES) WHERE ID = %2$d", USUARIO, id); 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			return convertResultSetToHostal(rs);
+			return convertResultSetToViviendaUniversitaria(rs);
 		}
 		return null;
 	}
-	
-	public void addHostal(Hostal hostal) throws SQLException, Exception {
-		
-		addOperador(hostal);
-		String sql = String.format("INSERT INTO %1$s.HOSTALES (ID, DIRECCION, HABDISPONIBLES, HABOCUPADAS, RUT, HORAAPERTURA, HORACIERRE) VALUES (%2$s, '%3$s', '%4$s', '%5$s', '%6$s', '%7$s', '%8$s' )", 
-									USUARIO, 
-									hostal.getId(),
-									hostal.getDireccion(),
-									hostal.getHabDisponibles(),
-									hostal.getHabOcupadas(),
-									hostal.getRut(),
-									hostal.getHoraApertura(),
-									hostal.getHoraCierre());	
+
+	public void addViviendaUniversitaria(ViviendaUniversitaria viviendaUniversitaria) throws SQLException, Exception {
+
+		addOperador(viviendaUniversitaria);
+		String sql = String.format("INSERT INTO %1$s.VIVIENDASUNIVS (ID, DIRECCION, HABDISPONIBLES, HABOCUPADAS, RUT) VALUES (%2$s, '%3$s', '%4$s', '%5$s', '%6$s' )", 
+				USUARIO, 
+				viviendaUniversitaria.getId(),
+				viviendaUniversitaria.getDireccion(),
+				viviendaUniversitaria.getHabDisponibles(),
+				viviendaUniversitaria.getHabOcupadas(),
+				viviendaUniversitaria.getRut());	
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 
 	}
 
-	public void updateHostal(Hostal hostal) throws SQLException, Exception {
-		updateOperador(hostal);
-		
-		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.HOSTALES SET ", USUARIO));
-		sql.append(String.format( "HORAAPERTURA = '%1$s', DIRECCION = '%2$s', HABDISPONIBLES = '%3$s', HABOCUPADAS = '%4$s', RUT = '%5$s', HORACIERRE = '%6$s' ", 
-				hostal.getHoraApertura(),
-				hostal.getDireccion(),
-				hostal.getHabDisponibles(),
-				hostal.getHabOcupadas(),
-				hostal.getRut(),
-				hostal.getHoraCierre()));
-		sql.append ("WHERE ID = " + hostal.getId ());
+	public void updateViviendaUniversitaria(ViviendaUniversitaria viviendaUniversitaria) throws SQLException, Exception {
+		updateOperador(viviendaUniversitaria);
 
-		
+		StringBuilder sql = new StringBuilder();
+		sql.append(String.format("UPDATE %s.VIVIENDASUNIVS SET ", USUARIO));
+		sql.append(String.format( "DIRECCION = '%1$s', HABDISPONIBLES = '%2$s', HABOCUPADAS = '%3$s', RUT = '%4$s'", 
+				viviendaUniversitaria.getDireccion(),
+				viviendaUniversitaria.getHabDisponibles(),
+				viviendaUniversitaria.getHabOcupadas(),
+				viviendaUniversitaria.getRut()));
+		sql.append ("WHERE ID = " + viviendaUniversitaria.getId ());
+
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
 
-	
-	public void deleteHostal(Hostal hostal) throws SQLException, Exception {
 
-		deleteOperador(hostal);
-				
-		String sql = String.format("DELETE FROM %1$s.HOSTALES WHERE ID = %2$d", USUARIO, hostal.getId());
-		
+	public void deleteViviendaUniversitaria(ViviendaUniversitaria viviendaUniversitaria) throws SQLException, Exception {
+
+		deleteOperador(viviendaUniversitaria);
+
+		String sql = String.format("DELETE FROM %1$s.VIVIENDASUNIVS WHERE ID = %2$d", USUARIO, viviendaUniversitaria.getId());
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-	
+
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODOS AUXILIARES
 	//----------------------------------------------------------------------------------------------------------------------------------
 
-	
+
 	/**
 	 * Metodo encargado de inicializar la conexion del DAO a la Base de Datos a partir del parametro <br/>
 	 * <b>Postcondicion: </b> el atributo conn es inicializado <br/>
@@ -116,7 +112,7 @@ public class DAOHostal extends DAOOperador{
 	public void setConn(Connection connection){
 		this.conn = connection;
 	}
-	
+
 	/**
 	 * Metodo que cierra todos los recursos que se encuentran en el arreglo de recursos<br/>
 	 * <b>Postcondicion: </b> Todos los recurso del arreglo de recursos han sido cerrados.
@@ -132,9 +128,9 @@ public class DAOHostal extends DAOOperador{
 		}
 	}
 	//..................
-	private Hostal convertResultSetToHostal(ResultSet rs) throws SQLException {
+	private ViviendaUniversitaria convertResultSetToViviendaUniversitaria(ResultSet rs) throws SQLException {
 		// TODO Auto-generated method stub
-		
+
 		//Atributos heredados
 		Long id = rs.getLong("ID");
 		Integer capacidad = rs.getInt("CAPACIDAD");
@@ -145,9 +141,7 @@ public class DAOHostal extends DAOOperador{
 		Integer habDisponibles = rs.getInt("HABDISPONIBLES");
 		Integer habOcupadas = rs.getInt("HABOCUPADAS");
 		Integer rut = rs.getInt("RUT");
-		Integer horaApertura = rs.getInt("HORAAPERTURA");
-		Integer horaCierre = rs.getInt("HORACIERRE");
-		
-		return new Hostal(direccion, habDisponibles, habOcupadas, rut, horaApertura, horaCierre, id, capacidad, nombre, telefono);
+
+		return new ViviendaUniversitaria(direccion, habDisponibles, habOcupadas, rut, id, capacidad, nombre, telefono, Operador.VIVIENDA_UNIVERSITARIA);
 	}
 }
