@@ -113,6 +113,15 @@ public class DAOOperador {
 	
 	public void deleteOperador(Operador operador) throws SQLException, Exception {
 
+
+//		FALTA SACAR TODA LA INFO CORRESPONDIENTE A ESTE OPERADOR EN LAS OTRAS TABLAS
+//		String sqlPr = String.format("DELETE FROM %1$s.OFERTAS WHERE OPERADOR = %2$d", USUARIO, operador.getId());
+//		
+//		PreparedStatement prepStmtPr = conn.prepareStatement(sqlPr);
+//		recursos.add(prepStmtPr);
+//		prepStmtPr.executeQuery();
+		
+		
 		String sql = String.format("DELETE FROM %1$s.OPERADORES WHERE ID = %2$d", USUARIO, operador.getId());
 
 		System.out.println(sql);

@@ -95,6 +95,14 @@ public class DAOAlojamiento {
 	
 	public void deleteAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
 
+
+//		FALTA SACAR TODA LA INFO CORRESPONDIENTE A ESTE ALOJAMIENTO EN LAS OTRAS TABLAS
+//		String sqlPr = String.format("DELETE FROM %1$s.OFERTAS WHERE ALOJAMIENTO = %2$d", USUARIO, alojamiento.getId());
+//		
+//		PreparedStatement prepStmtPr = conn.prepareStatement(sqlPr);
+//		recursos.add(prepStmtPr);
+//		prepStmtPr.executeQuery();
+		
 		String sql = String.format("DELETE FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, alojamiento.getId());
 
 		System.out.println(sql);

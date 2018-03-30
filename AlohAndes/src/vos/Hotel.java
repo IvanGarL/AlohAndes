@@ -69,6 +69,11 @@ public class Hotel extends Operador{
 		this.rut = rut;
 	}
 
+	public Integer getEstrellas() {
+		return estrellas;
+	}
 
-
+	public void setEstrellas(Integer estrellas) {
+		this.estrellas = estrellas;
+	}
 }
