@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.ViviendaComunidad;
+import vos.HabitacionUniversitaria;
 
-public class DAOViviendaComunidad extends DAOAlojamiento{
+public class DAOHabitacionUniversitaria  extends DAOAlojamiento{
 	public final static String USUARIO = "ISIS2304A481810";
 	
 	/**
@@ -21,56 +21,56 @@ public class DAOViviendaComunidad extends DAOAlojamiento{
 	 */
 	private Connection conn;
 	
-	public DAOViviendaComunidad() {
+	public DAOHabitacionUniversitaria() {
 		recursos = new ArrayList<Object>();
 	}
 	
-	public ArrayList<ViviendaComunidad> getViviendasComunidad() throws SQLException, Exception {
-		ArrayList<ViviendaComunidad> vivsCom = new ArrayList<ViviendaComunidad>();
+	public ArrayList<HabitacionUniversitaria> getHabitacionesUniversitarias() throws SQLException, Exception {
+		ArrayList<HabitacionUniversitaria> habsUniv = new ArrayList<HabitacionUniversitaria>();
 
-		String sql = String.format("SELECT * FROM %1$s.VDASCOMUNIDAD", USUARIO);
+		String sql = String.format("SELECT * FROM %1$s.HABSUNIV", USUARIO);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			vivsCom.add(convertResultSetToViviendaComunidad(rs));
+			habsUniv.add(convertResultSetToHabitacionUniversitaria(rs));
 		}
 		
-		return vivsCom;
+		return habsUniv;
 	}
 	
-	public ViviendaComunidad findViviendaComunidadById(Long id) throws SQLException, Exception 
+	public HabitacionUniversitaria findHabUniversitariaById(Long id) throws SQLException, Exception 
 	{
-		ViviendaComunidad vivsCom = null;
+		HabitacionUniversitaria habUniv = null;
 
-		String sql = String.format("SELECT * FROM %1$s.VDASCOMUNIDAD WHERE ID = %2$d", USUARIO, id); 
+		String sql = String.format("SELECT * FROM %1$s.HABSUNIV WHERE ID = %2$d", USUARIO, id); 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			vivsCom = convertResultSetToViviendaComunidad(rs);
+			habUniv = convertResultSetToHabitacionUniversitaria(rs);
 		}
 
-		return vivsCom;
+		return habUniv;
 	}
 	
-	public void addViviendaComunidad(ViviendaComunidad vivCom) throws SQLException, Exception {
+	public void addHabUniversitaria(HabitacionUniversitaria habUniv) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.VDASCOMUNIDAD (ID, DIRECCION, MENAJE, DIASUSO, NUMHABITACIONES, PERSONACOM) VALUES (%2$s, '%3$s', '%4$s', '%5$s', '%6$s' )", 
+		String sql = String.format("INSERT INTO %1$s.HABSUNIV(ID, UBICACION, NUMERO, MENAJE, VIVIENDAUNIV) VALUES (%2$s, '%3$s', '%4$s', '%5$s', '%6$s')", 
 									USUARIO,
-									vivCom.getId(),
-									vivCom.getMenaje(),
-									vivCom.getDiasUso(),
-									vivCom.getNumHabitaciones(),
-									vivCom.getPersonaComunidad());
+									habUniv.getId(),
+									habUniv.getUbicacion(),
+									habUniv.getNumero(),
+									habUniv.getMenaje(),
+									habUniv.getViviendaUniv());
 		System.out.println(sql);
 		
 		//
 		//
-		addAlojamiento(vivCom);
+		addAlojamiento(habUniv);
 		//
 		//
 		
@@ -80,23 +80,22 @@ public class DAOViviendaComunidad extends DAOAlojamiento{
 
 	}
 
-	public void updateViviendaComunidad(ViviendaComunidad vivCom) throws SQLException, Exception {
+	public void updateHabUniversitaria(HabitacionUniversitaria habUniv) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.VDASCOMUNIDAD SET ", USUARIO));
-		sql.append(String.format( "ID = '%1$s' AND DIRECCION = '%2$s' AND MENAJE = '%3$s' AND DIASUSO = '%4$s' AND NUMHABITACIONES = '%5$s' AND PERSONACOM = '%6$s' ", 
-				vivCom.getId(),
-				vivCom.getDireccion(),
-				vivCom.getMenaje(),
-				vivCom.getDiasUso(),
-				vivCom.getNumHabitaciones(),
-				vivCom.getPersonaComunidad()));
+		sql.append(String.format("UPDATE %s.HABSUNIV SET ", USUARIO));
+		sql.append(String.format( "ID = '%1$s' AND UBICACION = '%2$s' AND NUMERO = '%3$s' AND MENAJE = '%4$s' AND VIVIENDAUNIV = '%5$s' ", 
+				habUniv.getId(),
+				habUniv.getUbicacion(),
+				habUniv.getNumero(),
+				habUniv.getMenaje(),
+				habUniv.getViviendaUniv()));
 		
 		System.out.println(sql);
 		
 		//
 		//
-		updateAlojamiento(vivCom);
+		updateAlojamiento(habUniv);
 		//
 		//
 		
@@ -106,15 +105,15 @@ public class DAOViviendaComunidad extends DAOAlojamiento{
 	}
 
 	
-	public void deleteViviendaComunidad(ViviendaComunidad vivCom) throws SQLException, Exception {
+	public void deleteHabUniversitaria(HabitacionUniversitaria habUniv) throws SQLException, Exception {
 
-		String sql = String.format("DELETE FROM %1$s.VDASCOMUNIDAD WHERE ID = %2$d", USUARIO, vivCom.getId());
+		String sql = String.format("DELETE FROM %1$s.HABSUNIV WHERE ID = %2$d", USUARIO, habUniv.getId());
 
 		System.out.println(sql);
 		
 		//
 		//
-		deleteAlojamiento(vivCom);
+		deleteAlojamiento(habUniv);
 		//
 		//
 		
@@ -152,20 +151,18 @@ public class DAOViviendaComunidad extends DAOAlojamiento{
 		}
 	}
 	
-	public ViviendaComunidad convertResultSetToViviendaComunidad(ResultSet resultSet) throws SQLException {
+	public HabitacionUniversitaria convertResultSetToHabitacionUniversitaria(ResultSet resultSet) throws SQLException {
 	
 		Long id = resultSet.getLong("ID");
 		Boolean menaje = resultSet.getBoolean("MENAJE");
-		Integer diasUso = resultSet.getInt("DIASUSO");
-		Integer numHabitaciones = resultSet.getInt("NUMHABITACIONES");
-		String direccion = resultSet.getString("DIRECCION");
+		Integer numero = resultSet.getInt("NUMERO");
+		String ubicacion = resultSet.getString("UBICACION");
 		Integer capacidad = resultSet.getInt("CAPACIDAD");
 		Integer tamanho = resultSet.getInt("TAMANHO");
-		Long personaComunidad = resultSet.getLong("HOTEL");
+		Long viviendaUniv = resultSet.getLong("VIVIENDAUNIV");
 
+		HabitacionUniversitaria apto = new HabitacionUniversitaria(id, ubicacion, numero, menaje, capacidad, tamanho, viviendaUniv);
 
-		ViviendaComunidad vivCom = new ViviendaComunidad(id, menaje, diasUso, numHabitaciones, direccion, capacidad, tamanho, personaComunidad);
-
-		return vivCom;
+		return apto;
 	}
 }
