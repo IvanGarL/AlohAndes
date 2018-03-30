@@ -6,9 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.HabitacionUniversitaria;
+import vos.Habitacion;
 
-public class DAOHabitacionUniversitaria  extends DAOAlojamiento{
+public class DAOHabitacion extends DAOAlojamiento{
+	
 	public final static String USUARIO = "ISIS2304A481810";
 	
 	/**
@@ -21,56 +22,56 @@ public class DAOHabitacionUniversitaria  extends DAOAlojamiento{
 	 */
 	private Connection conn;
 	
-	public DAOHabitacionUniversitaria() {
+	public DAOHabitacion() {
 		recursos = new ArrayList<Object>();
 	}
 	
-	public ArrayList<HabitacionUniversitaria> getHabitacionesUniversitarias() throws SQLException, Exception {
-		ArrayList<HabitacionUniversitaria> habsUniv = new ArrayList<HabitacionUniversitaria>();
+	public ArrayList<Habitacion> getHabitacionesUniversitarias() throws SQLException, Exception {
+		ArrayList<Habitacion> hab = new ArrayList<Habitacion>();
 
-		String sql = String.format("SELECT * FROM %1$s.HABSUNIV", USUARIO);
+		String sql = String.format("SELECT * FROM %1$s.HABITACIONES", USUARIO);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			habsUniv.add(convertResultSetToHabitacionUniversitaria(rs));
+			hab.add(convertResultSetToHabitacionUniversitaria(rs));
 		}
 		
-		return habsUniv;
+		return hab;
 	}
 	
-	public HabitacionUniversitaria findHabUniversitariaById(Long id) throws SQLException, Exception 
+	public Habitacion findHabitacion(Long id) throws SQLException, Exception 
 	{
-		HabitacionUniversitaria habUniv = null;
+		Habitacion hab = null;
 
-		String sql = String.format("SELECT * FROM %1$s.HABSUNIV WHERE ID = %2$d", USUARIO, id); 
+		String sql = String.format("SELECT * FROM %1$s.HABITACIONES WHERE ID = %2$d", USUARIO, id); 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			habUniv = convertResultSetToHabitacionUniversitaria(rs);
+			hab = convertResultSetToHabitacionUniversitaria(rs);
 		}
 
-		return habUniv;
+		return hab;
 	}
 	
-	public void addHabUniversitaria(HabitacionUniversitaria habUniv) throws SQLException, Exception {
+	public void addHabitacion(Habitacion hab) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.HABSUNIV(ID, UBICACION, NUMERO, MENAJE, VIVIENDAUNIV) VALUES (%2$s, '%3$s', '%4$s', '%5$s', '%6$s')", 
+		String sql = String.format("INSERT INTO %1$s.HABITACIONES(ID, COMPARTIDA, NUMERO, HOSTAL, PERSONANAT) VALUES (%2$s, '%3$s', '%4$s', '%5$s', '%6$s')", 
 									USUARIO,
-									habUniv.getId(),
-									habUniv.getUbicacion(),
-									habUniv.getNumero(),
-									habUniv.getMenaje(),
-									habUniv.getViviendaUniv());
+									hab.getId(),
+									hab.getCompartida(),
+									hab.getNumero(),
+									hab.getHostal(),
+									hab.getPersonaNat());
 		System.out.println(sql);
 		
 		//
 		//
-		addAlojamiento(habUniv);
+		addAlojamiento(hab);
 		//
 		//
 		
@@ -80,22 +81,22 @@ public class DAOHabitacionUniversitaria  extends DAOAlojamiento{
 
 	}
 
-	public void updateHabUniversitaria(HabitacionUniversitaria habUniv) throws SQLException, Exception {
+	public void updateHabitacion(Habitacion hab) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.HABSUNIV SET ", USUARIO));
-		sql.append(String.format( "ID = '%1$s' AND UBICACION = '%2$s' AND NUMERO = '%3$s' AND MENAJE = '%4$s' AND VIVIENDAUNIV = '%5$s' ", 
-				habUniv.getId(),
-				habUniv.getUbicacion(),
-				habUniv.getNumero(),
-				habUniv.getMenaje(),
-				habUniv.getViviendaUniv()));
+		sql.append(String.format("UPDATE %s.HABITACIONES SET ", USUARIO));
+		sql.append(String.format( "ID = '%1$s' AND COMPARTIDA = '%2$s' AND NUMERO = '%3$s' AND HOSTAL = '%4$s' AND PERSONANAT = '%5$s' ", 
+				hab.getId(),
+				hab.getCompartida(),
+				hab.getNumero(),
+				hab.getHostal(),
+				hab.getPersonaNat()));
 		
 		System.out.println(sql);
 		
 		//
 		//
-		updateAlojamiento(habUniv);
+		updateAlojamiento(hab);
 		//
 		//
 		
@@ -105,7 +106,7 @@ public class DAOHabitacionUniversitaria  extends DAOAlojamiento{
 	}
 
 	
-	public void deleteHabUniversitaria(HabitacionUniversitaria habUniv) throws SQLException, Exception {
+	public void deleteHabUniversitaria(Habitacion habUniv) throws SQLException, Exception {
 
 		String sql = String.format("DELETE FROM %1$s.HABSUNIV WHERE ID = %2$d", USUARIO, habUniv.getId());
 
@@ -151,18 +152,18 @@ public class DAOHabitacionUniversitaria  extends DAOAlojamiento{
 		}
 	}
 	
-	public HabitacionUniversitaria convertResultSetToHabitacionUniversitaria(ResultSet resultSet) throws SQLException {
+	public Habitacion convertResultSetToHabitacionUniversitaria(ResultSet resultSet) throws SQLException {
 	
 		Long id = resultSet.getLong("ID");
-		Boolean menaje = resultSet.getBoolean("MENAJE");
+		Boolean compartida = resultSet.getBoolean("COMPARTIDA");
 		Integer numero = resultSet.getInt("NUMERO");
-		String ubicacion = resultSet.getString("UBICACION");
 		Integer capacidad = resultSet.getInt("CAPACIDAD");
 		Integer tamanho = resultSet.getInt("TAMANHO");
-		Long viviendaUniv = resultSet.getLong("VIVIENDAUNIV");
+		Long hostal = resultSet.getLong("HOSTAL");
+		Long personaNat = resultSet.getLong("PERSONANAT");
 
-		HabitacionUniversitaria habUniv = new HabitacionUniversitaria(id, ubicacion, numero, menaje, capacidad, tamanho, viviendaUniv);
+		Habitacion hab = new Habitacion(id, compartida, numero, capacidad, tamanho, hostal, personaNat);
 
-		return habUniv;
+		return hab;
 	}
 }
