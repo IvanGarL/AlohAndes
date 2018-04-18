@@ -28,7 +28,8 @@ public class Reserva {
 	@JsonProperty(value="idCliente")
 	private Integer idCliente;
 
-	
+	@JsonProperty(value="estado")
+	private String estado;
 	
 	public Reserva(@JsonProperty(value="id") Long id, 
 		@JsonProperty(value="cobro") Double cobro, 
@@ -37,7 +38,8 @@ public class Reserva {
 		@JsonProperty(value="fechaRealizacion") String fechaRealizacion,
 		@JsonProperty(value="idOperador") Integer idOperador,
 		@JsonProperty(value="idOferta") Integer idOferta,
-		@JsonProperty(value="idCliente") Integer idCliente) {
+		@JsonProperty(value="idCliente") Integer idCliente,
+		@JsonProperty(value="estado") String estado) {
 		
 		this.id = id;
 		this.cobro = cobro;
@@ -47,6 +49,7 @@ public class Reserva {
 		this.idOperador = idOperador;
 		this.idOferta = idOferta;
 		this.idCliente = idCliente;
+		this.estado = estado;
 	}
 
 	public Long getId() {
@@ -113,7 +116,13 @@ public class Reserva {
 		this.idCliente = idCliente;
 	}
 
-	
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 	
 		
 }

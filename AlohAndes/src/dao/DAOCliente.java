@@ -72,13 +72,14 @@ public class DAOCliente extends DAOUsuario{
 		//
 		addUsuario(cliente);
 		//
+		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 
 	}
 
-	public void updateUsuario(Cliente cliente) throws SQLException, Exception {
+	public void updateCliente(Cliente cliente) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.CLIENTES SET ", USUARIO));
@@ -91,7 +92,7 @@ public class DAOCliente extends DAOUsuario{
 
 		System.out.println(sql);
 
-		updateUsuario(cliente);
+		updateCliente(cliente);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);
@@ -99,7 +100,7 @@ public class DAOCliente extends DAOUsuario{
 	}
 
 
-	public void deleteUsuario(Cliente cliente) throws SQLException, Exception {
+	public void deleteCliente(Cliente cliente) throws SQLException, Exception {
 
 		String sql = String.format("DELETE FROM %1$s.USUARIOS WHERE ID = %2$d", USUARIO, cliente.getId());
 
@@ -108,6 +109,28 @@ public class DAOCliente extends DAOUsuario{
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+	}
+	
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// RFC5
+	//----------------------------------------------------------------------------------------------------------------------------------
+
+	public ArrayList<String> getUso() throws SQLException, Exception{
+		ArrayList<String> respuesta = new ArrayList<>();
+
+		String sql = String.format("select *"
+				+ "from %1$s.clientes, %1$s.reservas"
+				+ "WHERE clientes.id = reservas.cliente)", USUARIO);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			respuesta.add("");
+		}
+
+		return respuesta;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------

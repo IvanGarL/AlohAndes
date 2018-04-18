@@ -44,6 +44,10 @@ public class DAOOferta {
 		return reservas;
 	}
 	
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// RFC2
+	//----------------------------------------------------------------------------------------------------------------------------------
+		
 	public ArrayList<Oferta> getOfertasPopulares() throws SQLException, Exception {
 		ArrayList<Oferta> reservas = new ArrayList<Oferta>();
 
@@ -166,8 +170,8 @@ public class DAOOferta {
 		String nombre = resultSet.getString("NOMBRE");
 		Integer idOperador = resultSet.getInt("OPERADOR");
 		Integer idAlojamiento = resultSet.getInt("ALOJAMIENTO");
-
-		Oferta of = new Oferta(id, costo, fechaR, nombre, idOperador, idAlojamiento);
+		String estado = resultSet.getString("ESTADO");
+		Oferta of = new Oferta(id, costo, fechaR, nombre, idOperador, idAlojamiento, estado);
 
 		return of;
 	}

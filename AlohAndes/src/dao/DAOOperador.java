@@ -43,13 +43,18 @@ public class DAOOperador {
 		return operadores;
 	}
 	
-	public double gananciasOperador(String id) throws SQLException, Exception {
+
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// RFC1
+	//----------------------------------------------------------------------------------------------------------------------------------
+	
+	public double gananciasOperadores(String id) throws SQLException, Exception {
 		double respuesta = 0;
 
 		String sql = String.format("Select Sum(cobro) as ganancias"
 				+ "from (select cobro "
 				+ "from %1$s.reservas "
-				+ "where operador = '%2$s' and FECHAFIN > '1/1/2018')filtro", USUARIO,id);
+				+ "where operador = '%2$s' and FECHAFIN > '1/1/2018')filtro", USUARIO, id);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

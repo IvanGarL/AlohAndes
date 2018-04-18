@@ -15,8 +15,6 @@ public class PersonaNatural extends Operador{
 	public PersonaNatural(@JsonProperty(value="nombre")String nombre,
 			@JsonProperty(value="edad") Integer edad, 
 			@JsonProperty(value = "cedula") Long cedula, 
-			@JsonProperty(value="login")String login, 
-			@JsonProperty(value="contrasenia")String contrasenia,
 			@JsonProperty(value="id") Long id,
 			@JsonProperty(value="capacidad") Integer capacidad, 
 			@JsonProperty(value="telefono") Integer telefono){

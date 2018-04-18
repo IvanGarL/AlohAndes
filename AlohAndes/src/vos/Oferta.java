@@ -21,19 +21,24 @@ public class Oferta {
 	
 	@JsonProperty(value="idAlojamiento")
 	private Integer idAlojamiento;
+	
+	@JsonProperty(value="estado")
+	private String estado;
 
 	public Oferta(@JsonProperty(value="id") Long id, 
 			@JsonProperty(value="costo") Double costo,
 			@JsonProperty(value="fechaRetiro") String fechaRetiro,
 			@JsonProperty(value="nombre") String nombre,
 			@JsonProperty(value="idOperador") Integer idOperador,
-			@JsonProperty(value="idAlojamiento") Integer idAlojamiento) {
+			@JsonProperty(value="idAlojamiento") Integer idAlojamiento,
+			@JsonProperty(value="estado") String estado) {
 		this.id = id;
 		this.fechaRetiro = fechaRetiro;
 		this.costo = costo;
 		this.nombre = nombre;
 		this.idOperador = idOperador;
 		this.idAlojamiento = idAlojamiento;
+		this.estado = estado;
 	}
 
 	public Double getCosto() {
@@ -82,6 +87,14 @@ public class Oferta {
 
 	public void setIdAlojamiento(Integer idAlojamiento) {
 		this.idAlojamiento = idAlojamiento;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 	
 	

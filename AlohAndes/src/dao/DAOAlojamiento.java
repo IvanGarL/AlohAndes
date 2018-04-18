@@ -93,6 +93,8 @@ public class DAOAlojamiento {
 	}
 
 	
+	
+	
 	public void deleteAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
 
 
@@ -111,6 +113,32 @@ public class DAOAlojamiento {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
+	
+
+
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// RFC3
+	//----------------------------------------------------------------------------------------------------------------------------------
+	
+	public ArrayList<String> getIndicesOcupacion() throws SQLException, Exception{
+		ArrayList<String> respuesta = new ArrayList<>();
+
+		String sql = String.format("select t1.nombre, count(reservas), t1.capacidad"
+				+ "from (%1$s.alojamientos INNER JOIN %1$s.ofertas ON oferta = id) t1, %1$s.reservas, %1$s.dual"
+				+ "WHERE TO_CHAR(dual.CURRENT_DATE, 'DD-MON-YYYY')=TO_CHAR(reservas.fecha, 'DD-MON-YYYY')"
+				+ "group by t1.nombre)", USUARIO);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			respuesta.add(rs.getString(0) + " : " + rs.getInt(1) + " de "+ rs.getInt(2));
+		}
+		
+		return respuesta;
+	}
+	
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODOS AUXILIARES

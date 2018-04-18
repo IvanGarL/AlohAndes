@@ -136,10 +136,6 @@ public class DAOPersonaNatural extends DAOOperador {
 		Integer edad = rs.getInt("EDAD");
 		Long cedula = rs.getLong("CEDULA");
 		
-		//ES IMPORTANTE REVISAR SI SE NECESITAN LOS ATRIBUTOS DE LOGIN Y CONTRASENIA
-		String login;
-		String contrasenia;
-		
-		return null;//new PersonaNatural(nombre, edad, cedula, login, contrasenia, id, capacidad, telefono);
+		return new PersonaNatural(nombre, edad, cedula, id, capacidad, telefono);
 	}
 }
