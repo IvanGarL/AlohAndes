@@ -28,7 +28,7 @@ public class ViviendaComunidad extends Alojamiento{
 			@JsonProperty(value="tamanho") Integer tamanho,
 			@JsonProperty(value="personaComunidad") Long personaComunidad) {
 
-		super(id, tamanho, capacidad, Alojamiento.VIVIENDA_COMUNITARIA);
+		super(id, tamanho, capacidad, Alojamiento.VIVIENDA_COMUNITARIA, personaComunidad, direccion);
 		this.menaje = menaje;
 		this.diasUso = diasUso;
 		this.direccion = direccion;

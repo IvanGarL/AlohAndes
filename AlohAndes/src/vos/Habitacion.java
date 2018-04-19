@@ -25,7 +25,7 @@ public class Habitacion extends Alojamiento{
 			@JsonProperty(value="hostal") Long hostal,
 			@JsonProperty(value="personaNat") Long personaNat){
 		
-		super(id, tamanho, capacidad, Alojamiento.HABITACION);
+		super(id, tamanho, capacidad, Alojamiento.HABITACION, personaNat, "");
 		this.compartida = compartida;
 		this.numero = numero;
 		this.hostal = hostal;

@@ -66,8 +66,7 @@ public class DAOApartamento extends DAOAlojamiento{
 									apto.getDireccion(),
 									apto.getMenaje(),
 									apto.getAmoblado(),
-									apto.getNumHabitaciones(),
-									apto.getPersonaComunidad());
+									apto.getNumHabitaciones());
 		System.out.println(sql);
 		
 		//
@@ -91,8 +90,7 @@ public class DAOApartamento extends DAOAlojamiento{
 				apto.getDireccion(),
 				apto.getMenaje(),
 				apto.getAmoblado(),
-				apto.getNumHabitaciones(),
-				apto.getPersonaComunidad()));
+				apto.getNumHabitaciones()));
 		
 		System.out.println(sql);
 		

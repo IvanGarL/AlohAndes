@@ -197,7 +197,7 @@ public class DAOAlojamiento {
 		Integer capacidad = resultSet.getInt("CAPACIDAD");
 		String tipo = resultSet.getString("TIPO");
 
-		Alojamiento alo = new Alojamiento(id, tamanho, capacidad, tipo);
+		Alojamiento alo = new Alojamiento(id, tamanho, capacidad, tipo, id, tipo);
 
 		return alo;
 	}

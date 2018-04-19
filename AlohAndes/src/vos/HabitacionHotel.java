@@ -30,7 +30,7 @@ public class HabitacionHotel extends Alojamiento{
 			@JsonProperty(value="tamanho") Integer tamanho, 
 			@JsonProperty(value="capacidad") Integer capacidad,
 			@JsonProperty(value="hotel") Long hotel){
-		super(id, tamanho, capacidad, Alojamiento.HABITACION_HOTEL);
+		super(id, tamanho, capacidad, Alojamiento.HABITACION_HOTEL, hotel, ubicacion);
 		this.ubicacion = ubicacion;
 		this.numero = numero;
 		this.categoria = categoria;

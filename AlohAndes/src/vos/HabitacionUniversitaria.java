@@ -25,7 +25,7 @@ public class HabitacionUniversitaria extends Alojamiento{
 			@JsonProperty(value="tamanho") Integer tamanho, 
 			@JsonProperty(value="capacidad") Integer capacidad,
 			@JsonProperty(value="viviendaUniv") Long viviendaUniv){
-		super(id, tamanho, capacidad, Alojamiento.HABITACION_UNIVERSITARIA);
+		super(id, tamanho, capacidad, Alojamiento.HABITACION_UNIVERSITARIA, viviendaUniv, ubicacion);
 		this.ubicacion = ubicacion;
 		this.numero = numero;
 		this.menaje = menaje;
