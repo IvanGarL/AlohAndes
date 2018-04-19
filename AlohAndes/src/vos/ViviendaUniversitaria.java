@@ -25,9 +25,10 @@ public class ViviendaUniversitaria extends Operador{
 			@JsonProperty(value="capacidad") Integer capacidad, 
 			@JsonProperty(value="nombre") String nombre, 
 			@JsonProperty(value="telefono") Integer telefono,
-			@JsonProperty(value="tipo") String tipo){
+			@JsonProperty(value="tipo") String tipo,
+			@JsonProperty(value="idResponsable") Long idResponsable){
 
-		super(id, capacidad, nombre, telefono, tipo);
+		super(id, capacidad, nombre, telefono, tipo, idResponsable);
 		this.direccion = direccion;
 		this.habDisponibles = habDisponibles;
 		this.habOcupadas = habOcupadas;

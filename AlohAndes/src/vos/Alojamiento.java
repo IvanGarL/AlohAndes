@@ -26,21 +26,19 @@ public class Alojamiento {
 	protected Long idOferta;
 	
 	@JsonProperty(value="idOperador")
-	protected String idOperador;
+	protected Long idOperador;
 	
 	
 	public Alojamiento(@JsonProperty(value="id") Long id, 
 			@JsonProperty(value="tamanho") Integer tamanho,
 			@JsonProperty(value="capacidad") Integer capacidad,
 			@JsonProperty(value="tipo") String tipo,
-			@JsonProperty(value="idOferta") Long idOferta,
-			@JsonProperty(value="idOperador")String idOperador) {
+			@JsonProperty(value="idOferta") Long idOferta) {
 		this.tipo = tipo;
 		this.capacidad = capacidad;
 		this.tamanho = tamanho;
 		this.id = id;
 		this.idOferta = idOferta;
-		this.idOperador = idOperador;
 	}
 
 	public Integer getCapacidad() {
@@ -84,11 +82,11 @@ public class Alojamiento {
 		this.idOferta = idOferta;
 	}
 
-	public String getIdOperador() {
+	public Long getIdOperador() {
 		return idOperador;
 	}
 
-	public void setIdOperador(String idOperador) {
+	public void setIdOperador(Long idOperador) {
 		this.idOperador = idOperador;
 	}
 	

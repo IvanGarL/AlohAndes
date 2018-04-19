@@ -10,26 +10,19 @@ public class Habitacion extends Alojamiento{
 	@JsonProperty(value="numero")
 	private Integer numero;
 	
-	@JsonProperty(value="hostal")
-	private Long hostal;
-	
-	@JsonProperty(value="personaNat")
-	private Long personaNat;
-	
 	
 	public Habitacion(@JsonProperty(value="id")Long id,
 			@JsonProperty(value="compartida") Boolean compartida,
 			@JsonProperty(value="numero") Integer numero,
 			@JsonProperty(value="tamanho") Integer tamanho, 
 			@JsonProperty(value="capacidad") Integer capacidad,
-			@JsonProperty(value="hostal") Long hostal,
-			@JsonProperty(value="personaNat") Long personaNat){
+			@JsonProperty(value="idOperador") Long idOperador,
+			@JsonProperty(value="idOferta") Long idOferta){
 		
-		super(id, tamanho, capacidad, Alojamiento.HABITACION, personaNat, "");
+		super(id, tamanho, capacidad, Alojamiento.HABITACION, idOferta);
 		this.compartida = compartida;
 		this.numero = numero;
-		this.hostal = hostal;
-		this.personaNat = personaNat;
+		this.idOperador = idOperador;
 	}
 
 	public Boolean getCompartida() {
@@ -48,21 +41,5 @@ public class Habitacion extends Alojamiento{
 		this.numero = numero;
 	}
 
-	public Long getHostal() {
-		return hostal;
-	}
-
-	public void setHostal(Long hostal) {
-		this.hostal = hostal;
-	}
-
-	public Long getPersonaNat() {
-		return personaNat;
-	}
-
-	public void setPersonaNat(Long personaNat) {
-		this.personaNat = personaNat;
-	}
-	
 	
 }

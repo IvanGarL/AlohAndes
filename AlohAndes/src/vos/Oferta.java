@@ -1,5 +1,7 @@
 package vos;
 
+import java.util.ArrayList;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Oferta {
@@ -24,6 +26,11 @@ public class Oferta {
 	
 	@JsonProperty(value="estado")
 	private String estado;
+	
+	@JsonProperty(value="reservas")
+	private ArrayList<Reserva> reservas;
+
+	
 
 	public Oferta(@JsonProperty(value="id") Long id, 
 			@JsonProperty(value="costo") Double costo,
@@ -31,6 +38,7 @@ public class Oferta {
 			@JsonProperty(value="nombre") String nombre,
 			@JsonProperty(value="idOperador") Integer idOperador,
 			@JsonProperty(value="idAlojamiento") Integer idAlojamiento,
+			@JsonProperty(value="reservas") ArrayList<Reserva> reservas,
 			@JsonProperty(value="estado") String estado) {
 		this.id = id;
 		this.fechaRetiro = fechaRetiro;
@@ -39,6 +47,7 @@ public class Oferta {
 		this.idOperador = idOperador;
 		this.idAlojamiento = idAlojamiento;
 		this.estado = estado;
+		this.reservas = reservas;
 	}
 
 	public Double getCosto() {
@@ -71,6 +80,14 @@ public class Oferta {
 
 	public void setFechaRetiro(String fechaRetiro) {
 		this.fechaRetiro = fechaRetiro;
+	}
+
+	public ArrayList<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(ArrayList<Reserva> reservas) {
+		this.reservas = reservas;
 	}
 
 	public Integer getIdOperador() {

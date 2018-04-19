@@ -14,9 +14,6 @@ public class HabitacionUniversitaria extends Alojamiento{
 	@JsonProperty(value="menaje")
 	private Boolean menaje;
 	
-	@JsonProperty(value="viviendaUniv")
-	private Long viviendaUniv;
-	
 	
 	public HabitacionUniversitaria(@JsonProperty(value="id")Long id,
 			@JsonProperty(value="ubicacion") String ubicacion, 
@@ -24,12 +21,13 @@ public class HabitacionUniversitaria extends Alojamiento{
 			@JsonProperty(value="menaje") Boolean menaje,
 			@JsonProperty(value="tamanho") Integer tamanho, 
 			@JsonProperty(value="capacidad") Integer capacidad,
-			@JsonProperty(value="viviendaUniv") Long viviendaUniv){
-		super(id, tamanho, capacidad, Alojamiento.HABITACION_UNIVERSITARIA, viviendaUniv, ubicacion);
+			@JsonProperty(value="idVivuni") Long idVivuni,
+			@JsonProperty(value="idOferta") Long idOferta){
+		super(id, tamanho, capacidad, Alojamiento.HABITACION_UNIVERSITARIA, idOferta);
 		this.ubicacion = ubicacion;
 		this.numero = numero;
 		this.menaje = menaje;
-		this.viviendaUniv = viviendaUniv;
+		this.idOperador = idVivuni;
 	}
 
 	public Integer getNumero() {
@@ -40,13 +38,7 @@ public class HabitacionUniversitaria extends Alojamiento{
 		this.numero = numero;
 	}
 
-	public Long getViviendaUniv() {
-		return viviendaUniv;
-	}
 
-	public void setViviendaUniv(Long viviendaUni) {
-		this.viviendaUniv = viviendaUni;
-	}
 
 	public String getUbicacion() {
 		return ubicacion;

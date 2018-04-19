@@ -10,25 +10,24 @@ public class Apartamento extends Alojamiento{
 	@JsonProperty(value="menaje")
 	private Boolean menaje;
 	
-	@JsonProperty(value="amoblado")
-	private Boolean amoblado;
-	
 	@JsonProperty(value="numHabitaciones")
 	private Integer numHabitaciones;
 	
 	public Apartamento(@JsonProperty(value="id")Long id,
 			@JsonProperty(value="direccion")String direccion,
 			@JsonProperty(value="menaje") Boolean menaje,
-			@JsonProperty(value="amoblado") Boolean amoblado,
 			@JsonProperty(value="numHabitaciones") Integer numHabitaciones, 
 			@JsonProperty(value="capacidad") Integer capacidad,
 			@JsonProperty(value="tamanho") Integer tamanho,
-			@JsonProperty(value="idOperador") Long idOperador) {
+			@JsonProperty(value="idPersonaCom") Long idPersonaCom,
+			@JsonProperty(value="idOferta") Long idOferta) {
 
-		super(id, tamanho, capacidad, Alojamiento.APARTAMENTO, idOperador, direccion);
+		super(id, tamanho, capacidad, Alojamiento.APARTAMENTO, idOferta);
 		this.menaje = menaje;
-		this.amoblado = amoblado;
 		this.numHabitaciones = numHabitaciones;
+		this.direccion = direccion;
+		this.idOperador = idPersonaCom;
+		
 	}
 
 	public Boolean getMenaje() {
@@ -37,16 +36,6 @@ public class Apartamento extends Alojamiento{
 
 	public void setMenaje(Boolean menaje) {
 		this.menaje = menaje;
-	}
-	
-	
-	
-	public Boolean getAmoblado() {
-		return amoblado;
-	}
-
-	public void setAmoblado(Boolean amoblado) {
-		this.amoblado = amoblado;
 	}
 
 	public String getDireccion() {

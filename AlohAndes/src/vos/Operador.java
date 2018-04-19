@@ -24,17 +24,22 @@ public class Operador {
 
 	@JsonProperty(value="tipo")
 	protected String tipo;
+	
+	@JsonProperty(value="idResponsable")
+	protected Long idResponsable;
 
 	public Operador(@JsonProperty(value="id") Long id,
 			@JsonProperty(value="capacidad") Integer capacidad, 
 			@JsonProperty(value="nombre") String nombre, 
 			@JsonProperty(value="telefono") Integer telefono,
-			@JsonProperty(value="tipo") String tipo) {
+			@JsonProperty(value="tipo") String tipo,
+			@JsonProperty(value="idResponsable") Long idResponsable) {
 		this.id = id;
 		this.capacidad = capacidad;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.tipo = tipo;
+		this.idResponsable = idResponsable;
 	}
 
 	public Long getId() {
@@ -43,6 +48,14 @@ public class Operador {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getIdResponsable() {
+		return idResponsable;
+	}
+
+	public void setIdResponsable(Long idResponsable) {
+		this.idResponsable = idResponsable;
 	}
 
 	public String getTipo() {

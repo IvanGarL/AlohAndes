@@ -13,9 +13,7 @@ public class Hostal extends Operador{
 	@JsonProperty(value="habOcupadas")
 	private Integer habOcupadas;
 	
-	@JsonProperty(value="rut")
-	private Integer rut;
-	
+
 	@JsonProperty(value="horaApertura")
 	private Integer horaApertura;
 	
@@ -25,19 +23,18 @@ public class Hostal extends Operador{
 	public Hostal(@JsonProperty(value="direccion") String direccion, 
 			@JsonProperty(value="habDisponibles") Integer habDisponibles, 
 			@JsonProperty(value="habOcupadas") Integer habOcupadas, 
-			@JsonProperty(value="rut") Integer rut, 
 			@JsonProperty(value="horaApertura") Integer horaApertura,
 			@JsonProperty(value="horaCierre") Integer horaCierre,
 			@JsonProperty(value="id") Long id,
 			@JsonProperty(value="capacidad") Integer capacidad, 
 			@JsonProperty(value="nombre") String nombre, 
-			@JsonProperty(value="telefono") Integer telefono) {
+			@JsonProperty(value="telefono") Integer telefono,
+			@JsonProperty(value="idResponsable") Long idResponsable) {
 		
-		super(id, capacidad, nombre, telefono, Operador.HOSTAL);
+		super(id, capacidad, nombre, telefono, Operador.HOSTAL, idResponsable);
 		this.direccion = direccion;
 		this.habDisponibles = habDisponibles;
 		this.habOcupadas = habOcupadas;
-		this.rut = rut;
 		this.horaApertura = horaApertura;
 		this.horaCierre = horaCierre;
 	}
@@ -64,14 +61,6 @@ public class Hostal extends Operador{
 
 	public void setHabOcupadas(Integer habOcupadas) {
 		this.habOcupadas = habOcupadas;
-	}
-
-	public Integer getRut() {
-		return rut;
-	}
-
-	public void setRut(Integer rut) {
-		this.rut = rut;
 	}
 
 	public Integer getHoraApertura() {

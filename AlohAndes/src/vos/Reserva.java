@@ -1,5 +1,7 @@
 package vos;
 
+import java.util.ArrayList;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Reserva {
@@ -22,8 +24,8 @@ public class Reserva {
 	@JsonProperty(value="idOperador")
 	private Integer idOperador;
 	
-	@JsonProperty(value="idOferta")
-	private Integer idOferta;
+	@JsonProperty(value="ofertas")
+	private ArrayList<Oferta> ofertas;
 	
 	@JsonProperty(value="idCliente")
 	private Integer idCliente;
@@ -36,8 +38,8 @@ public class Reserva {
 		@JsonProperty(value="fechaInicio") String fechaInicio, 
 		@JsonProperty(value="fechaCierre") String fechaCierre, 
 		@JsonProperty(value="fechaRealizacion") String fechaRealizacion,
+		@JsonProperty(value="ofertas") ArrayList<Oferta> ofertas,
 		@JsonProperty(value="idOperador") Integer idOperador,
-		@JsonProperty(value="idOferta") Integer idOferta,
 		@JsonProperty(value="idCliente") Integer idCliente,
 		@JsonProperty(value="estado") String estado) {
 		
@@ -47,9 +49,9 @@ public class Reserva {
 		this.fechaCierre = fechaCierre;
 		this.fechaRealizacion = fechaRealizacion;
 		this.idOperador = idOperador;
-		this.idOferta = idOferta;
 		this.idCliente = idCliente;
 		this.estado = estado;
+		this.ofertas = ofertas;
 	}
 
 	public Long getId() {
@@ -100,12 +102,13 @@ public class Reserva {
 		this.idOperador = idOperador;
 	}
 
-	public Integer getIdOferta() {
-		return idOferta;
+
+	public ArrayList<Oferta> getOfertas() {
+		return ofertas;
 	}
 
-	public void setIdOferta(Integer idOferta) {
-		this.idOferta = idOferta;
+	public void setOfertas(ArrayList<Oferta> ofertas) {
+		this.ofertas = ofertas;
 	}
 
 	public Integer getIdCliente() {

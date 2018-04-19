@@ -14,15 +14,9 @@ public class Responsable extends Usuario{
 	@JsonProperty(value="nombre")
 	private String nombre;
 	
-	/**
-	 * Edad del responsable
-	 */
 	@JsonProperty(value="edad")
 	private Integer edad;
 	
-	/**
-	 * Telefono del responsable
-	 */
 	@JsonProperty(value="telefono")
 	private Integer telefono;
 	
