@@ -139,6 +139,27 @@ public class DAOAlojamiento {
 		return respuesta;
 	}
 	
+	//----------------------------------------------------------------------------------------------------------------------------------
+		// RFC9
+		//----------------------------------------------------------------------------------------------------------------------------------
+		
+		public ArrayList<Alojamiento> getMenosUsados() throws SQLException, Exception{
+			ArrayList<Alojamiento> respuesta = new ArrayList<>();
+
+			String sql = String.format("select *"
+					+ "from (%1$s.alojamientos INNER JOIN %1$s.ofertas ON oferta = id) t1 INNER JOIN %1$s.reservas ON t1.oferta = reservas.oferta"
+					+ "order by fechaInicio, fechaFin)", USUARIO);
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				respuesta.add(convertResultSetToAlojamiento(rs));
+			}
+			
+			return respuesta;
+		}
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODOS AUXILIARES

@@ -126,6 +126,12 @@ public class DAOOperador {
 //		recursos.add(prepStmtPr);
 //		prepStmtPr.executeQuery();
 		
+//		String sqlPr2 = String.format("DELETE FROM %1$s.ALOJAMIENTOS WHERE OPERADOR = %2$d", USUARIO, operador.getId());
+//		
+//		PreparedStatement prepStmtPr2 = conn.prepareStatement(sqlPr2);
+//		recursos.add(prepStmtPr2);
+//		prepStmtPr2.executeQuery();
+		
 		
 		String sql = String.format("DELETE FROM %1$s.OPERADORES WHERE ID = %2$d", USUARIO, operador.getId());
 

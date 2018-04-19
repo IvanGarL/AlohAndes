@@ -80,7 +80,7 @@ public class DAOResponsable extends DAOUsuario{
 
 	}
 
-	public void updateUsuario(Responsable responsable) throws SQLException, Exception {
+	public void updateResponsable(Responsable responsable) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.RESPONSABLES SET ", USUARIO));
@@ -102,9 +102,9 @@ public class DAOResponsable extends DAOUsuario{
 	}
 
 	
-	public void deleteUsuario(Responsable responsable) throws SQLException, Exception {
+	public void deleteResponsable(Responsable responsable) throws SQLException, Exception {
 
-		String sql = String.format("DELETE FROM %1$s.USUARIOS WHERE ID = %2$d", USUARIO, responsable.getId());
+		String sql = String.format("DELETE FROM %1$s.RESPONSABLES WHERE ID = %2$d", USUARIO, responsable.getId());
 
 		System.out.println(sql);
 		

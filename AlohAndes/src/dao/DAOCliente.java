@@ -101,6 +101,13 @@ public class DAOCliente extends DAOUsuario{
 
 
 	public void deleteCliente(Cliente cliente) throws SQLException, Exception {
+		
+		//FALTA borrar todo lo relacionado al cliente en otras tablas (reservas)
+//		String sqlPr = String.format("DELETE FROM %1$s.reservas WHERE CLIENTE = %2$d", USUARIO, cliente.getId());
+//		
+//		PreparedStatement prepStmtPr = conn.prepareStatement(sqlPr);
+//		recursos.add(prepStmtPr);
+//		prepStmtPr.executeQuery();
 
 		String sql = String.format("DELETE FROM %1$s.USUARIOS WHERE ID = %2$d", USUARIO, cliente.getId());
 
