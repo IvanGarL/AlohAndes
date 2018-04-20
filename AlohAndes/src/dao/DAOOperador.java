@@ -48,7 +48,7 @@ public class DAOOperador {
 	// RFC1
 	//----------------------------------------------------------------------------------------------------------------------------------
 	
-	public double gananciasOperadores(String id) throws SQLException, Exception {
+	public double gananciasOperadores(Long id) throws SQLException, Exception {
 		double respuesta = 0;
 
 		String sql = String.format("Select Sum(cobro) as ganancias"
