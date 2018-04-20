@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="C:/Juan/uniandes/Tareas/2018-1/Sistemas transaccionales/tutorial/ISIS2304-Tutorial-Arquitectura-master/isis2304-tutorial-arquitectura/WebContent/WEB-INF/lib/jackson-all-1.7.5.jar"/>
 	<classpathentry kind="lib" path="//CODD.SIS.VIRTUAL.UNIANDES.EDU.CO/Estudiantes/Profiles/if.garcia/Documents/SISTRANS/ISIS2304-Tutorial-Arquitectura/isis2304-tutorial-arquitectura/WebContent/WEB-INF/lib/jackson-all-1.7.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -59,7 +59,4 @@ public class HabitacionHotel extends Alojamiento{
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
 	}
-	
-	
-	
 }

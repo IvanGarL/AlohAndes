@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import vos.Alojamiento;
 
+//TODO revisar manejo de datos -> IdOferta
 public class DAOAlojamiento {
 
 	
@@ -61,12 +62,13 @@ public class DAOAlojamiento {
 	
 	public void addAlojamiento(Alojamiento alojamiento) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, TAMANHO, CAPACIDAD, TIPO) VALUES (%2$s, '%3$s', '%4$s', '%5$s')", 
+		String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, TAMANHO, CAPACIDAD, TIPO, IDOFERTA) VALUES (%2$s, '%3$s', '%4$s', '%5$s', '%6$s')", 
 									USUARIO,
 									alojamiento.getId(),
 									alojamiento.getTamanho(), 
 									alojamiento.getCapacidad(),
-									alojamiento.getTipo());
+									alojamiento.getTipo(),
+									alojamiento.getIdOferta());
 		System.out.println(sql);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -79,11 +81,10 @@ public class DAOAlojamiento {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.ALOJAMIENTOS SET ", USUARIO));
-		sql.append(String.format( "ID = '%1$s' AND TAMANHO = '%2$s' AND CAPACIDAD = '%3$s' AND TIPO = '%4$s' ", 
+		sql.append(String.format( "ID = '%1$s' AND TAMANHO = '%2$s' AND CAPACIDAD = '%3$s' ", 
 				alojamiento.getId(),
 				alojamiento.getTamanho(), 
-				alojamiento.getCapacidad(),
-				alojamiento.getTipo()));
+				alojamiento.getCapacidad()));
 		
 		System.out.println(sql);
 		
@@ -196,8 +197,9 @@ public class DAOAlojamiento {
 		Integer tamanho = resultSet.getInt("TAMANHO");
 		Integer capacidad = resultSet.getInt("CAPACIDAD");
 		String tipo = resultSet.getString("TIPO");
+		Long idOferta = resultSet.getLong("IDOFERTA");
 
-		Alojamiento alo = new Alojamiento(id, tamanho, capacidad, tipo, id, tipo);
+		Alojamiento alo = new Alojamiento(id, tamanho, capacidad, tipo, idOferta);
 
 		return alo;
 	}

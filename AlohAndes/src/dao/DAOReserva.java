@@ -73,7 +73,7 @@ public class DAOReserva {
 		isolation.executeQuery();
 
 		
-		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, FECHAREALIZACION, FECHAINICIO, FECHAFIN, OPERADOR, OFERTA, CLIENTE) VALUES (%2$s ,%3$s, '%4$s', '%5$s', '%6$s', '%7$s', '%8$s')", 
+		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, ESTADO, FECHAFIN, FECHAINICIO, FECHAREALIZACION, IDCLIENTE, IDOPERADOR, COLECTIVA) VALUES (%2$s ,%3$s, '%4$s', '%5$s', '%6$s', '%7$s', '%8$s', '%9$s', '%10$s')", 
 				USUARIO, 
 				reserva.getId(),
 				reserva.getCobro(),
@@ -81,7 +81,6 @@ public class DAOReserva {
 				reserva.getFechaInicio(),
 				reserva.getFechaCierre(),
 				reserva.getIdOperador(),
-				reserva.getIdOferta(),
 				reserva.getIdCliente());
 		System.out.println(sql);
 
@@ -150,14 +149,12 @@ public class DAOReserva {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.RESERVAS SET ", USUARIO));
-		sql.append(String.format("ID = '%1$s' AND COBRO = '%2$s' AND FECHAREALIZACION = '%3$s' AND FECHAINICIO = '%4$s' AND FECHAFIN = '%5$s' AND OPERADOR = '%6$s'  AND OFERTA = '%7$s'  AND CLIENTE = '%8$s'  ", 
-				reserva.getId(),
+		sql.append(String.format("COBRO = '%1$s' AND ESTADO = '%2$s AND FECHAREALIZACION = '%3$s' AND FECHAINICIO = '%4$s' AND FECHAFIN = '%5$s'  AND CLIENTE = '%6$s' ", 
 				reserva.getCobro(),
+				reserva.getEstado(),
 				reserva.getFechaRealizacion(), 
 				reserva.getFechaInicio(), 
 				reserva.getFechaCierre(),
-				reserva.getIdOperador(), 
-				reserva.getIdOferta(),
 				reserva.getIdCliente()));
 
 		System.out.println(sql);
@@ -179,6 +176,11 @@ public class DAOReserva {
 		prepStmt.executeQuery();
 	}
 
+
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// RF9
+	//----------------------------------------------------------------------------------------------------------------------------------
+	
 	public void deleteReservaColectiva(ReservaEjColectiva reserva) throws SQLException, Exception {
 		String sql = String.format("DELETE FROM %1$s.RESERVAS WHERE OPERADOR = %2$s AND FECHAINICIO = %3$s AND FECHAFIN = %4$s" , USUARIO, reserva.getIdCliente(), reserva.getFechaInicio(), reserva.getFechaCierre());
 

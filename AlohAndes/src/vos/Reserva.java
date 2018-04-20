@@ -33,6 +33,9 @@ public class Reserva {
 	@JsonProperty(value="estado")
 	private String estado;
 	
+	@JsonProperty(value="colectiva")
+	private Character colectiva;
+	
 	public Reserva(@JsonProperty(value="id") Long id, 
 		@JsonProperty(value="cobro") Double cobro, 
 		@JsonProperty(value="fechaInicio") String fechaInicio, 
@@ -41,7 +44,8 @@ public class Reserva {
 		@JsonProperty(value="ofertas") ArrayList<Oferta> ofertas,
 		@JsonProperty(value="idOperador") Integer idOperador,
 		@JsonProperty(value="idCliente") Integer idCliente,
-		@JsonProperty(value="estado") String estado) {
+		@JsonProperty(value="estado") String estado,
+		@JsonProperty(value="estado") Character colectiva) {
 		
 		this.id = id;
 		this.cobro = cobro;
@@ -52,6 +56,7 @@ public class Reserva {
 		this.idCliente = idCliente;
 		this.estado = estado;
 		this.ofertas = ofertas;
+		this.colectiva = colectiva;
 	}
 
 	public Long getId() {
@@ -126,6 +131,15 @@ public class Reserva {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+
+	public Character getColectiva() {
+		return colectiva;
+	}
+
+	public void setColectiva(Character colectiva) {
+		this.colectiva = colectiva;
+	}
+	
 	
 		
 }

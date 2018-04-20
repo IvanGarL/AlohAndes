@@ -1,0 +1,24 @@
+Hola GARCIA LAVERDE IVAN FELIPE (carnet: 201614488),
+Con el objetivo de garantizar la privacidad de su información académica en el momento de publicación de las notas,
+ pero al mismo tiempo darle la oportunidad de comparar su desempeño con el de los demás estudiantes del curso,
+ le estoy enviando el código mediante el cual Ud. puede reconocer su nota: ------------- izYqTjcmzI
+
+Este código aplica para todas las publicaciones de notas del semestre, incluyendo 30% y finales.
+Para asegurar su privacidad, le aconsejo no compartir este código con ninguna otra persona.
+
+Por otro lado, el usuario y contraseña para que pueda acceder a la base de datos que utilizará para el desarrollo de los trabajos prácticos del curso son:
+Usuario: ISIS2304A481810
+Password: lBSJDXYw2b
+
+Evidentemente, esta cuenta es personal e intransferible y tiene validez durante este semestre.
+Debe tener en cuenta que este acceso es para uso exclusivo de las prácticas del curso.
+Las copias de respaldo de lo que Ud. genere en el desarrollo de sus talleres son SU responsabilidad.
+
+Los datos de acceso al servidor son:
+Servidor: fn3.oracle.virtual.uniandes.edu.co
+Puerto: 1521
+SID: prod
+
+Para acceder utilice el programa SQL DEVELOPER, disponible en forma gratuita en el sitio de oracle.com
+http://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html
+NOTA: Debe crear, si no la tiene, una cuenta en Oracle
