@@ -22,30 +22,30 @@ public class Reserva {
 	private String fechaRealizacion;
 	
 	@JsonProperty(value="idOperador")
-	private Integer idOperador;
+	private Long idOperador;
 	
 	@JsonProperty(value="ofertas")
 	private ArrayList<Oferta> ofertas;
 	
 	@JsonProperty(value="idCliente")
-	private Integer idCliente;
+	private Long idCliente;
 
 	@JsonProperty(value="estado")
 	private String estado;
 	
 	@JsonProperty(value="colectiva")
-	private Character colectiva;
+	private String colectiva;
 	
 	public Reserva(@JsonProperty(value="id") Long id, 
-		@JsonProperty(value="cobro") Double cobro, 
+		@JsonProperty(value="cobro") Double cobro,
+		@JsonProperty(value="estado") String estado,
 		@JsonProperty(value="fechaInicio") String fechaInicio, 
 		@JsonProperty(value="fechaCierre") String fechaCierre, 
 		@JsonProperty(value="fechaRealizacion") String fechaRealizacion,
 		@JsonProperty(value="ofertas") ArrayList<Oferta> ofertas,
-		@JsonProperty(value="idOperador") Integer idOperador,
-		@JsonProperty(value="idCliente") Integer idCliente,
-		@JsonProperty(value="estado") String estado,
-		@JsonProperty(value="estado") Character colectiva) {
+		@JsonProperty(value="idOperador") Long idOperador,
+		@JsonProperty(value="idCliente") Long idCliente,
+		@JsonProperty(value="estado") String colectiva) {
 		
 		this.id = id;
 		this.cobro = cobro;
@@ -99,11 +99,11 @@ public class Reserva {
 		this.fechaRealizacion = fechaRealizacion;
 	}
 
-	public Integer getIdOperador() {
+	public Long getIdOperador() {
 		return idOperador;
 	}
 
-	public void setIdOperador(Integer idOperador) {
+	public void setIdOperador(Long idOperador) {
 		this.idOperador = idOperador;
 	}
 
@@ -116,11 +116,11 @@ public class Reserva {
 		this.ofertas = ofertas;
 	}
 
-	public Integer getIdCliente() {
+	public Long getIdCliente() {
 		return idCliente;
 	}
 
-	public void setIdCliente(Integer idCliente) {
+	public void setIdCliente(Long idCliente) {
 		this.idCliente = idCliente;
 	}
 
@@ -132,11 +132,11 @@ public class Reserva {
 		this.estado = estado;
 	}
 
-	public Character getColectiva() {
+	public String getColectiva() {
 		return colectiva;
 	}
 
-	public void setColectiva(Character colectiva) {
+	public void setColectiva(String colectiva) {
 		this.colectiva = colectiva;
 	}
 	

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import vos.Alojamiento;
+import vos.Oferta;
 import vos.Reserva;
 import vos.ReservaEjColectiva;
 
@@ -77,11 +78,14 @@ public class DAOReserva {
 				USUARIO, 
 				reserva.getId(),
 				reserva.getCobro(),
-				reserva.getFechaRealizacion(),
-				reserva.getFechaInicio(),
+				reserva.getEstado(),
 				reserva.getFechaCierre(),
+				reserva.getFechaInicio(),
+				reserva.getFechaRealizacion(),
 				reserva.getIdOperador(),
-				reserva.getIdCliente());
+				reserva.getIdCliente(),
+				reserva.getIdOperador(),
+				reserva.getColectiva());
 		System.out.println(sql);
 
 		
@@ -221,19 +225,27 @@ public class DAOReserva {
 		}
 	}
 
-	public Reserva convertResultSetToReserva(ResultSet resultSet) throws SQLException {
+	public Reserva convertResultSetToReserva(ResultSet resultSet, ResultSet rsOfertas) throws SQLException {
 
+		ArrayList<Oferta> ofertas = null;
+		//TODO hacer resultSet de rsOfertas para obtener las ofertas de una misma reserva;
+		
 		Long id = resultSet.getLong("ID");
 		Double cobro = resultSet.getDouble("COBRO");
+		String estado = resultSet.getString("ESTADO");
 		String fechaR = resultSet.getString("FECHAREALIZACION");
 		String fechaI = resultSet.getString("FECHAINICIO");
 		String fechaF = resultSet.getString("FECHAFIN");
-		Integer idOperador = resultSet.getInt("OPERADOR");
-		Integer idOferta = resultSet.getInt("OFERTA");
-		Integer idCliente = resultSet.getInt("CLIENTE");
-		String estado = resultSet.getString("ESTADO"); 
+		Long idOperador = resultSet.getLong("OPERADOR");
+		Long idCliente = resultSet.getLong("CLIENTE");
+		String colectiva = resultSet.getString("COLECTIVA");
+		
+		
+		while(rsOfertas.next()){
+			
+		}
 
-		Reserva res = new Reserva(id, cobro, fechaR, fechaI, fechaF, idOperador, idOferta, idCliente, estado);
+		Reserva res = new Reserva(id, cobro, estado, fechaI, fechaF, fechaR, ofertas, idOperador, idCliente, colectiva);
 
 		return res;
 	}
