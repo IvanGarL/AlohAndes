@@ -10,16 +10,21 @@ public class ReservaEjColectiva {
 	private String fechaCierre;
 
 	@JsonProperty(value="idCliente")
-	private Integer idCliente;
+	private Long idCliente;
 	
 	@JsonProperty(value="tipoViv")
 	private String tipoViv;
 	
+	@JsonProperty(value="idCol")
+	private Long idCol;
+	
+	
 	public ReservaEjColectiva(
 			@JsonProperty(value="fechaInicio") String fechaInicio, 
 			@JsonProperty(value="fechaCierre") String fechaCierre,
-			@JsonProperty(value="idCliente") Integer idCliente,
-			@JsonProperty(value="tipoViv") String tipoViv) {
+			@JsonProperty(value="idCliente") Long idCliente,
+			@JsonProperty(value="tipoViv") String tipoViv,
+			@JsonProperty(value="idCol") Long idCol) {
 			
 			this.fechaInicio = fechaInicio;
 			this.fechaCierre = fechaCierre;
@@ -43,11 +48,11 @@ public class ReservaEjColectiva {
 		this.fechaCierre = fechaCierre;
 	}
 
-	public Integer getIdCliente() {
+	public Long getIdCliente() {
 		return idCliente;
 	}
 
-	public void setIdCliente(Integer idCliente) {
+	public void setIdCliente(Long idCliente) {
 		this.idCliente = idCliente;
 	}
 
@@ -57,6 +62,14 @@ public class ReservaEjColectiva {
 
 	public void setTipoViv(String tipoViv) {
 		this.tipoViv = tipoViv;
+	}
+
+	public Long getIdCol() {
+		return idCol;
+	}
+
+	public void setIdCol(Long idCol) {
+		this.idCol = idCol;
 	}
 	
 	
