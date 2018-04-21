@@ -89,7 +89,6 @@ public class DAOOferta {
 				USUARIO, 
 				oferta.getId(),
 				oferta.getCosto(),
-				oferta.getFechaRetiro(),
 				oferta.getNombre(),
 				oferta.getIdOperador(),
 				oferta.getIdAlojamiento());
@@ -111,7 +110,6 @@ public class DAOOferta {
 		sql.append(String.format("ID = '%1$s' AND COSTO = '%2$s' AND FECHARETIRO = '%3$s' AND NOMBRE = '%4$s' AND OPERADOR = '%5$s' AND ALOJAMIENTO = '%6$s' ", 
 				oferta.getId(),
 				oferta.getCosto(),
-				oferta.getFechaRetiro(),
 				oferta.getNombre(),
 				oferta.getIdOperador(),
 				oferta.getIdAlojamiento()));
@@ -171,12 +169,11 @@ public class DAOOferta {
 
 		Long id = resultSet.getLong("ID");
 		Double costo = resultSet.getDouble("COSTO");
-		String fechaR = resultSet.getString("FECHARETIRO");
 		String nombre = resultSet.getString("NOMBRE");
-		Integer idOperador = resultSet.getInt("OPERADOR");
-		Integer idAlojamiento = resultSet.getInt("ALOJAMIENTO");
+		Long idOperador = resultSet.getLong("IDOPERADOR");
+		Long idAlojamiento = resultSet.getLong("IDALOJAMIENTO");
 		String estado = resultSet.getString("ESTADO");
-		Oferta of = new Oferta(id, costo, fechaR, nombre, idOperador, idAlojamiento, estado);
+		Oferta of = new Oferta(id, costo, estado,nombre, idOperador, idAlojamiento);
 
 		return of;
 	}

@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+//import org.codehaus.jackson.annotate.JsonProperty;
 
 import vos.Alojamiento;
 import vos.Oferta;
@@ -43,8 +43,9 @@ public class DAOReserva {
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
+		//TODO: poblar tablas para probar esta sentencia SQL
 		while (rs.next()) {
-			String sqlOfertas = String.format("SELECT * FROM %1$s.OFERTAS INNER JOIN (SELECT * FROM %1$s.OFERTASRESERVAS WHERE IDRESERVA = %2$s) ON %1$s.OFERTAS = %1$s.OFERTASRESERVAS", USUARIO, rs.getLong("ID"));
+			String sqlOfertas = String.format("SELECT * FROM %1$s.OFERTAS FULL OUTER JOIN (SELECT * FROM %1$s.OFERTASRESERVAS WHERE IDRESERVA = %2$s) ON %1$s.OFERTAS.id = %1$s.OFERTASRESERVAS.idoferta", USUARIO, rs.getLong("ID"));
 			PreparedStatement prepStmtOf = conn.prepareStatement(sql);
 			recursos.add(prepStmtOf);
 			ResultSet rs2 = prepStmtOf.executeQuery();
@@ -78,7 +79,6 @@ public class DAOReserva {
 	public void addReserva(Reserva reserva) throws SQLException, Exception {
 
 		//Las líneas de código respectivas al aislamiento no estoy seguro si hagan falta o estén correctas
-
 		PreparedStatement isolation = conn.prepareStatement("SET ISOLATION TRANSACTION LEVEL SERIALIZABLE");
 		recursos.add(isolation);
 		isolation.executeQuery();
@@ -163,32 +163,19 @@ public class DAOReserva {
 
 	}
 
-	public void updateReserva(Reserva reserva) throws SQLException, Exception {
-
-		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.RESERVAS SET ", USUARIO));
-		sql.append(String.format("COBRO = '%1$s' AND ESTADO = '%2$s AND FECHAREALIZACION = '%3$s' AND FECHAINICIO = '%4$s' AND FECHAFIN = '%5$s'  AND CLIENTE = '%6$s' ", 
-				reserva.getCobro(),
-				reserva.getEstado(),
-				reserva.getFechaRealizacion(), 
-				reserva.getFechaInicio(), 
-				reserva.getFechaCierre(),
-				reserva.getIdCliente()));
-
-		System.out.println(sql);
-
-		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
-		recursos.add(prepStmt);
-		prepStmt.executeQuery();
-	}
-
 
 	public void deleteReserva(Reserva reserva) throws SQLException, Exception {
 
 		//TODO: Quitar la información de la reserva en la tabla OFERTARESERVA
+		String sqlJoin = String.format("DELETE FROM %1$s.OFERTASRESERVAS where IDRESERVA = %2$s", USUARIO,reserva.getId());
 		String sql = String.format("DELETE FROM %1$s.RESERVAS WHERE ID = %2$d", USUARIO, reserva.getId());
-
+		
+		System.out.println(sqlJoin);
 		System.out.println(sql);
+		
+		PreparedStatement prepStmtJoin = conn.prepareStatement(sqlJoin);
+		recursos.add(sqlJoin);
+		prepStmtJoin.executeQuery();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -201,11 +188,12 @@ public class DAOReserva {
 	//----------------------------------------------------------------------------------------------------------------------------------
 
 	public void deleteReservaColectiva(ReservaEjColectiva reserva) throws SQLException, Exception {
-		String sql = String.format("DELETE FROM %1$s.RESERVAS WHERE OPERADOR = %2$s AND FECHAINICIO = %3$s AND FECHAFIN = %4$s" , USUARIO, reserva.getIdCliente(), reserva.getFechaInicio(), reserva.getFechaCierre());
+		
+		String sqlReservas = String.format("DELETE FROM %1$s.RESERVAS WHERE OPERADOR = %2$s AND FECHAINICIO = %3$s AND FECHAFIN = %4$s" , USUARIO, reserva.getIdCliente(), reserva.getFechaInicio(), reserva.getFechaCierre());
+		
+		System.out.println(sqlReservas);
 
-		System.out.println(sql);
-
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		PreparedStatement prepStmt = conn.prepareStatement(sqlReservas);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
@@ -242,7 +230,7 @@ public class DAOReserva {
 
 	public Reserva convertResultSetToReserva(ResultSet resultSet, ResultSet rsOfertas) throws SQLException {
 
-		ArrayList<Oferta> ofertas = null;
+		ArrayList<Oferta> ofertas = new ArrayList<Oferta>();
 		//TODO hacer resultSet de rsOfertas para obtener las ofertas de una misma reserva;
 
 		Long id = resultSet.getLong("ID");
@@ -257,14 +245,13 @@ public class DAOReserva {
 
 		//TODO: Crear la oferta correctamente
 		while(rsOfertas.next()){
-			Long id = rsOfertas.getLong("")
-			Double costo
-			String fechaRetiro
-			String nombre
-			Integer idOperador
-			Integer idAlojamiento
-			String estado
-			ofertas.add(of);
+			Long idOferta = rsOfertas.getLong("IDOFERTA");
+			Double costoOferta = rsOfertas.getDouble("COSTO");
+			String estadoOferta = rsOfertas.getString("ESTADO");
+			String nombre = rsOfertas.getString("NOMBRE");
+			Long idOperadorOf = rsOfertas.getLong("IDOPERADOR");
+			Long idAlojamientoOf = rsOfertas.getLong("IDALOJAMIENTO");
+			ofertas.add(new Oferta(idOferta, costoOferta, nombre, estadoOferta, idOperadorOf, idAlojamientoOf));
 		}
 
 		Reserva res = new Reserva(id, cobro, estado, fechaI, fechaF, fechaR, ofertas, idOperador, idCliente, colectiva);

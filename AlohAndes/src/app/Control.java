@@ -19,7 +19,7 @@ public class Control {
 				registroOperador(sc);
 				break;
 			case 2:
-
+				
 				break;
 			case 3:
 
