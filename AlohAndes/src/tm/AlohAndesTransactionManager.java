@@ -286,7 +286,6 @@ public class AlohAndesTransactionManager {
 	 */
 	public void addReserva(Cliente cliente) throws Exception 
 	{
-
 		DAOCliente daoCliente = new DAOCliente( );
 		try
 		{
@@ -593,4 +592,84 @@ public class AlohAndesTransactionManager {
 		}	
 	}
 
+	//-----------------------------------------------------------------------------------------------------------------------
+	//RFC5
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * 
+	 */
+	public ArrayList<String> getUsoAlohandes() throws Exception 
+	{
+		DAOCliente daoCliente = new DAOCliente();
+		try
+		{
+			this.conn = darConexion();
+			daoCliente.setConn( conn );
+			return daoCliente.getUso();
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				daoCliente.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//RFC7
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * 
+	 */
+	public void addReservaColectiva(int num, String tipo) throws Exception 
+	{
+		DAOCliente daoCliente = new DAOCliente();
+		try
+		{
+			this.conn = darConexion();
+			daoCliente.setConn( conn );
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				daoCliente.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
 }
