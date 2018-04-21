@@ -23,11 +23,10 @@ public class HabitacionUniversitaria extends Alojamiento{
 			@JsonProperty(value="capacidad") Integer capacidad,
 			@JsonProperty(value="idVivuni") Long idVivuni,
 			@JsonProperty(value="idOferta") Long idOferta){
-		super(id, tamanho, capacidad, Alojamiento.HABITACION_UNIVERSITARIA, idOferta);
+		super(id, tamanho, capacidad, Alojamiento.HABITACION_UNIVERSITARIA, idOferta, idVivuni);
 		this.ubicacion = ubicacion;
 		this.numero = numero;
 		this.menaje = menaje;
-		this.idOperador = idVivuni;
 	}
 
 	public Integer getNumero() {

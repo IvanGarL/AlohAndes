@@ -19,15 +19,12 @@ public class Apartamento extends Alojamiento{
 			@JsonProperty(value="numHabitaciones") Integer numHabitaciones, 
 			@JsonProperty(value="capacidad") Integer capacidad,
 			@JsonProperty(value="tamanho") Integer tamanho,
-			@JsonProperty(value="idPersonaCom") Long idPersonaCom,
 			@JsonProperty(value="idOferta") Long idOferta) {
 
 		super(id, tamanho, capacidad, Alojamiento.APARTAMENTO, idOferta);
 		this.menaje = menaje;
 		this.numHabitaciones = numHabitaciones;
 		this.direccion = direccion;
-		this.idOperador = idPersonaCom;
-		
 	}
 
 	public Boolean getMenaje() {
