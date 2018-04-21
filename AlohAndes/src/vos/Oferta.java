@@ -19,10 +19,10 @@ public class Oferta {
 	private String nombre;
 	
 	@JsonProperty(value="idOperador")
-	private Integer idOperador;
+	private Long idOperador;
 	
 	@JsonProperty(value="idAlojamiento")
-	private Integer idAlojamiento;
+	private Long idAlojamiento;
 	
 	@JsonProperty(value="estado")
 	private String estado;
@@ -30,13 +30,11 @@ public class Oferta {
 
 	public Oferta(@JsonProperty(value="id") Long id, 
 			@JsonProperty(value="costo") Double costo,
-			@JsonProperty(value="fechaRetiro") String fechaRetiro,
 			@JsonProperty(value="nombre") String nombre,
-			@JsonProperty(value="idOperador") Integer idOperador,
-			@JsonProperty(value="idAlojamiento") Integer idAlojamiento,
-			@JsonProperty(value="estado") String estado) {
+			@JsonProperty(value="estado") String estado,
+			@JsonProperty(value="idOperador") Long idOperador,
+			@JsonProperty(value="idAlojamiento") Long idAlojamiento) {
 		this.id = id;
-		this.fechaRetiro = fechaRetiro;
 		this.costo = costo;
 		this.nombre = nombre;
 		this.idOperador = idOperador;
@@ -68,27 +66,19 @@ public class Oferta {
 		this.nombre = nombre;
 	}
 
-	public String getFechaRetiro() {
-		return fechaRetiro;
-	}
-
-	public void setFechaRetiro(String fechaRetiro) {
-		this.fechaRetiro = fechaRetiro;
-	}
-
-	public Integer getIdOperador() {
+	public Long getIdOperador() {
 		return idOperador;
 	}
 
-	public void setIdOperador(Integer idOperador) {
+	public void setIdOperador(Long idOperador) {
 		this.idOperador = idOperador;
 	}
 
-	public Integer getIdAlojamiento() {
+	public Long getIdAlojamiento() {
 		return idAlojamiento;
 	}
 
-	public void setIdAlojamiento(Integer idAlojamiento) {
+	public void setIdAlojamiento(Long idAlojamiento) {
 		this.idAlojamiento = idAlojamiento;
 	}
 

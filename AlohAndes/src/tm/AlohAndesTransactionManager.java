@@ -284,13 +284,14 @@ public class AlohAndesTransactionManager {
 	 * @param cliente - el cliente a agregar. cliente != null
 	 * @throws Exception - Cualquier error que se genere agregando al cliente
 	 */
-	public void addReserva(Cliente cliente) throws Exception 
+	public void addReserva(Reserva reserva) throws Exception 
 	{
-		DAOCliente daoCliente = new DAOCliente( );
+		DAOReserva daoReserva = new DAOReserva( );
 		try
 		{
 			this.conn = darConexion();
-			daoCliente.setConn(conn);
+			daoReserva.setConn(conn);
+			daoReserva.addReserva(reserva);
 			//TODO: Llamar el metodo correspondiente
 		}
 		catch (SQLException sqlException) {
@@ -305,7 +306,7 @@ public class AlohAndesTransactionManager {
 		} 
 		finally {
 			try {
-				daoCliente.cerrarRecursos();
+				daoReserva.cerrarRecursos();
 				if(this.conn!=null){
 					this.conn.close();					
 				}
