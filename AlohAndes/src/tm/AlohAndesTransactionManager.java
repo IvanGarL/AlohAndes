@@ -150,8 +150,7 @@ public class AlohAndesTransactionManager {
 	 */
 	public void addOperador(Operador operador) throws Exception 
 	{
-
-		DAOOperador daoOperador = new DAOOperador( );
+		DAOOperador daoOperador = new DAOOperador();
 		try
 		{
 			this.conn = darConexion();
