@@ -132,14 +132,17 @@ public class DAOServicio {
 		}
 	}
 	
+	//TODO: Arreglar el result set y su transformación para crear un objeto de tipo servicio
+	
 	public Servicio convertResultSetToServicio(ResultSet resultSet) throws SQLException {
 	
 		Long id = resultSet.getLong("ID");
 		Double costo = resultSet.getDouble("COSTO");
 		String nombre = resultSet.getString("NOMBRE");
 		String tipo = resultSet.getString("DESCRIPCION");
+		Long idOferta = null;
 
-		Servicio serv = new Servicio(id, costo, nombre, tipo);
+		Servicio serv = new Servicio(id, costo, nombre, tipo, idOferta);
 
 		return serv;
 	}

@@ -67,7 +67,9 @@ public class DAOReserva {
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			reserva = convertResultSetToReserva(rs);
+			ResultSet rsOfertas = null;
+			//TODO: Definir el resultSet que se genera al hacer la consulta de las ofertas que tiene esta reserva
+			reserva = convertResultSetToReserva(rs, rsOfertas);
 		}
 
 		return reserva;
@@ -81,6 +83,7 @@ public class DAOReserva {
 		recursos.add(isolation);
 		isolation.executeQuery();
 
+		//------------------------------------------------------------------------------------------------
 
 		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, ESTADO, FECHAFIN, FECHAINICIO, FECHAREALIZACION, IDCLIENTE, IDOPERADOR, COLECTIVA) VALUES (%2$s ,%3$s, '%4$s', '%5$s', '%6$s', '%7$s', '%8$s', '%9$s', '%10$s')", 
 				USUARIO, 
@@ -101,10 +104,13 @@ public class DAOReserva {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 
+		//Las líneas de código respectivas al aislamiento no estoy seguro si hagan falta o estén correctas
 
 		PreparedStatement commit = conn.prepareStatement("COMMIT");
 		recursos.add(commit);
 		commit.executeQuery();
+		//------------------------------------------------------------------------------------------------
+
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -179,6 +185,7 @@ public class DAOReserva {
 
 	public void deleteReserva(Reserva reserva) throws SQLException, Exception {
 
+		//TODO: Quitar la información de la reserva en la tabla OFERTARESERVA
 		String sql = String.format("DELETE FROM %1$s.RESERVAS WHERE ID = %2$d", USUARIO, reserva.getId());
 
 		System.out.println(sql);
@@ -248,6 +255,7 @@ public class DAOReserva {
 		Long idCliente = resultSet.getLong("CLIENTE");
 		String colectiva = resultSet.getString("COLECTIVA");
 
+		//TODO: Crear la oferta correctamente
 		while(rsOfertas.next()){
 			Long id = rsOfertas.getLong("")
 			Double costo

@@ -296,7 +296,7 @@ public class DAOOperador {
 		if(operador.getTipo() == Operador.HOSTAL) {
 			Hostal host = (Hostal) operador;
 			tabla = "HOSTALES";
-			sql = "INSERT INTO ";
+			sql = String.format("INSERT INTO %1$s.%2$s () VALUES", USUARIO, tabla);
 		}
 		else if(operador.getTipo() == Operador.HOTEL) {
 			Hotel hot = (Hotel) operador;

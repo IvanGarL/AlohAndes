@@ -274,10 +274,11 @@ public class AlohAndesTransactionManager {
 	}
 
 	//-----------------------------------------------------------------------------------------------------------------------
-	//RF3
+	//RF4
 	//-----------------------------------------------------------------------------------------------------------------------
 
 	/**
+	 * TODO: CAMBIAR NOMBRES Y TIPOS VARIABLES
 	 * Metodo que modela la transaccion que agrega un cliente a la base de datos. <br/>
 	 * <b> post: </b> se ha agregado el cliente que entra como parametro <br/>
 	 * @param cliente - el cliente a agregar. cliente != null
@@ -290,7 +291,7 @@ public class AlohAndesTransactionManager {
 		{
 			this.conn = darConexion();
 			daoCliente.setConn(conn);
-			daoCliente.addCliente(cliente);
+			//TODO: Llamar el metodo correspondiente
 		}
 		catch (SQLException sqlException) {
 			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
@@ -633,7 +634,7 @@ public class AlohAndesTransactionManager {
 	}
 
 	//-----------------------------------------------------------------------------------------------------------------------
-	//RFC7
+	//RF7
 	//-----------------------------------------------------------------------------------------------------------------------
 
 	/**

@@ -102,6 +102,8 @@ public class DAOOferta {
 
 	}
 
+	//TODO: Habilitar el cambio de estado de habilitado a deshabilitado y cambiar las reservas que le corresponden
+	//O el cambio de estado de deshabilitado a habilitado. No hay que cambiar nada mas en este caso
 	public void updateOferta(Oferta oferta) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
@@ -124,6 +126,9 @@ public class DAOOferta {
 
 	public void deleteOferta(Oferta oferta) throws SQLException, Exception {
 
+		//TODO: Quitar la información de esta oferta en las correspondientes tablas OFERTARESERVA, RESERVA, 
+		//SERVICIO, ALOJAMIENTO y el alojamiento específico (se puede basar en lo que hice para borrar un operador)
+		
 		String sql = String.format("DELETE FROM %1$s.OFERTAS WHERE ID = %2$d", USUARIO, oferta.getId());
 
 		System.out.println(sql);
