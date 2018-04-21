@@ -19,7 +19,6 @@ public class Alojamiento {
 	@JsonProperty(value="tamanho")
 	protected Integer tamanho;
 	
-	
 	@JsonProperty(value="tipo")
 	protected String tipo;
 	

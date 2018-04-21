@@ -26,9 +26,7 @@ public class Oferta {
 	
 	@JsonProperty(value="estado")
 	private String estado;
-	
-
-	
+		
 
 	public Oferta(@JsonProperty(value="id") Long id, 
 			@JsonProperty(value="costo") Double costo,

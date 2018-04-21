@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import vos.Alojamiento;
 import vos.Oferta;
 import vos.Reserva;
@@ -36,12 +38,18 @@ public class DAOReserva {
 
 		String sql = String.format("SELECT * FROM %1$s.RESERVAS", USUARIO);
 
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			reservas.add(convertResultSetToReserva(rs));
+			String sqlOfertas = String.format("SELECT * FROM %1$s.OFERTAS INNER JOIN (SELECT * FROM %1$s.OFERTASRESERVAS WHERE IDRESERVA = %2$s) ON %1$s.OFERTAS = %1$s.OFERTASRESERVAS", USUARIO, rs.getLong("ID"));
+			PreparedStatement prepStmtOf = conn.prepareStatement(sql);
+			recursos.add(prepStmtOf);
+			ResultSet rs2 = prepStmtOf.executeQuery();
+			reservas.add(convertResultSetToReserva(rs, rs2));
+
 		}
 
 		return reservas;
@@ -66,14 +74,14 @@ public class DAOReserva {
 	}
 
 	public void addReserva(Reserva reserva) throws SQLException, Exception {
-		
+
 		//Las líneas de código respectivas al aislamiento no estoy seguro si hagan falta o estén correctas
 
 		PreparedStatement isolation = conn.prepareStatement("SET ISOLATION TRANSACTION LEVEL SERIALIZABLE");
 		recursos.add(isolation);
 		isolation.executeQuery();
 
-		
+
 		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, ESTADO, FECHAFIN, FECHAINICIO, FECHAREALIZACION, IDCLIENTE, IDOPERADOR, COLECTIVA) VALUES (%2$s ,%3$s, '%4$s', '%5$s', '%6$s', '%7$s', '%8$s', '%9$s', '%10$s')", 
 				USUARIO, 
 				reserva.getId(),
@@ -88,12 +96,12 @@ public class DAOReserva {
 				reserva.getColectiva());
 		System.out.println(sql);
 
-		
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-		
-		
+
+
 		PreparedStatement commit = conn.prepareStatement("COMMIT");
 		recursos.add(commit);
 		commit.executeQuery();
@@ -113,7 +121,7 @@ public class DAOReserva {
 		PreparedStatement prepStmt = conn.prepareStatement(sqlConsulta.toString());
 		recursos.add(prepStmt);
 		ResultSet rs1 = prepStmt.executeQuery();
-		
+
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("INSERT ALL", USUARIO));
@@ -184,7 +192,7 @@ public class DAOReserva {
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// RF9
 	//----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	public void deleteReservaColectiva(ReservaEjColectiva reserva) throws SQLException, Exception {
 		String sql = String.format("DELETE FROM %1$s.RESERVAS WHERE OPERADOR = %2$s AND FECHAINICIO = %3$s AND FECHAFIN = %4$s" , USUARIO, reserva.getIdCliente(), reserva.getFechaInicio(), reserva.getFechaCierre());
 
@@ -229,7 +237,7 @@ public class DAOReserva {
 
 		ArrayList<Oferta> ofertas = null;
 		//TODO hacer resultSet de rsOfertas para obtener las ofertas de una misma reserva;
-		
+
 		Long id = resultSet.getLong("ID");
 		Double cobro = resultSet.getDouble("COBRO");
 		String estado = resultSet.getString("ESTADO");
@@ -239,10 +247,16 @@ public class DAOReserva {
 		Long idOperador = resultSet.getLong("OPERADOR");
 		Long idCliente = resultSet.getLong("CLIENTE");
 		String colectiva = resultSet.getString("COLECTIVA");
-		
-		
+
 		while(rsOfertas.next()){
-			
+			Long id = rsOfertas.getLong("")
+			Double costo
+			String fechaRetiro
+			String nombre
+			Integer idOperador
+			Integer idAlojamiento
+			String estado
+			ofertas.add(of);
 		}
 
 		Reserva res = new Reserva(id, cobro, estado, fechaI, fechaF, fechaR, ofertas, idOperador, idCliente, colectiva);
