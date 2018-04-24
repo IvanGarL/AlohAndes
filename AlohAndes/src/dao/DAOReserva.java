@@ -78,12 +78,17 @@ public class DAOReserva {
 
 	public void addReserva(Reserva reserva) throws SQLException, Exception {
 
+		conn.setAutoCommit(false);
 		//Las líneas de código respectivas al aislamiento no estoy seguro si hagan falta o estén correctas
 		PreparedStatement isolation = conn.prepareStatement("SET ISOLATION TRANSACTION LEVEL SERIALIZABLE");
 		recursos.add(isolation);
 		isolation.executeQuery();
 
 		//------------------------------------------------------------------------------------------------
+		
+		PreparedStatement prepStmtprev = conn.prepareStatement("SELECT ESTADO FROM (OFERTA INNER JOIN OFERTASRESERVAS) ON ID = IDOFERTA WHERE IDRESERVA = "+ reserva.getId());
+		recursos.add(prepStmtprev);
+		prepStmtprev.executeQuery();
 
 		String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, COBRO, ESTADO, FECHAFIN, FECHAINICIO, FECHAREALIZACION, IDCLIENTE, IDOPERADOR, COLECTIVA) VALUES (%2$s ,%3$s, '%4$s', '%5$s', '%6$s', '%7$s', '%8$s', '%9$s', '%10$s')", 
 				USUARIO, 
@@ -106,9 +111,7 @@ public class DAOReserva {
 
 		//Las líneas de código respectivas al aislamiento no estoy seguro si hagan falta o estén correctas
 
-		PreparedStatement commit = conn.prepareStatement("COMMIT");
-		recursos.add(commit);
-		commit.executeQuery();
+		conn.commit();
 		//------------------------------------------------------------------------------------------------
 
 	}
@@ -128,9 +131,8 @@ public class DAOReserva {
 		recursos.add(prepStmt);
 		ResultSet rs1 = prepStmt.executeQuery();
 
-
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("INSERT ALL", USUARIO));
+		sql.append("INSERT ALL");
 
 		String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 		int numReservasHechasAct = 0;
@@ -149,6 +151,7 @@ public class DAOReserva {
 						rs1.getInt("OFERTA"),
 						reserva.getIdCliente(),
 						"reserva"));
+				numReservasHechasAct++;
 			}		
 		}
 		sql.append("SELECT * FROM DUAL");
@@ -166,7 +169,6 @@ public class DAOReserva {
 
 	public void deleteReserva(Reserva reserva) throws SQLException, Exception {
 
-		//TODO: Quitar la información de la reserva en la tabla OFERTARESERVA
 		String sqlJoin = String.format("DELETE FROM %1$s.OFERTASRESERVAS where IDRESERVA = %2$s", USUARIO,reserva.getId());
 		String sql = String.format("DELETE FROM %1$s.RESERVAS WHERE ID = %2$d", USUARIO, reserva.getId());
 		

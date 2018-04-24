@@ -72,7 +72,7 @@ public class DAOCliente extends DAOUsuario{
 		//
 		addUsuario(cliente);
 		//
-		
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
@@ -99,13 +99,13 @@ public class DAOCliente extends DAOUsuario{
 
 
 	public void deleteCliente(Cliente cliente) throws SQLException, Exception {
-		
+
 		//FALTA borrar todo lo relacionado al cliente en otras tablas (reservas)
-//		String sqlPr = String.format("DELETE FROM %1$s.reservas WHERE CLIENTE = %2$d", USUARIO, cliente.getId());
-//		
-//		PreparedStatement prepStmtPr = conn.prepareStatement(sqlPr);
-//		recursos.add(prepStmtPr);
-//		prepStmtPr.executeQuery();
+		//		String sqlPr = String.format("DELETE FROM %1$s.reservas WHERE CLIENTE = %2$d", USUARIO, cliente.getId());
+		//		
+		//		PreparedStatement prepStmtPr = conn.prepareStatement(sqlPr);
+		//		recursos.add(prepStmtPr);
+		//		prepStmtPr.executeQuery();
 
 		String sql = String.format("DELETE FROM %1$s.USUARIOS WHERE ID = %2$d", USUARIO, cliente.getId());
 
@@ -115,12 +115,34 @@ public class DAOCliente extends DAOUsuario{
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-	
+
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// RFC5
 	//----------------------------------------------------------------------------------------------------------------------------------
 
 	public ArrayList<String> getUso() throws SQLException, Exception{
+		ArrayList<String> respuesta = new ArrayList<>();
+
+		String sql = String.format("select *"
+				+ "from %1$s.clientes, %1$s.reservas"
+				+ "WHERE clientes.id = reservas.cliente)", USUARIO);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			respuesta.add("");
+		}
+
+		return respuesta;
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// RFC6 TODO
+	//----------------------------------------------------------------------------------------------------------------------------------
+
+	public ArrayList<String> getUso(Long id) throws SQLException, Exception{
 		ArrayList<String> respuesta = new ArrayList<>();
 
 		String sql = String.format("select *"

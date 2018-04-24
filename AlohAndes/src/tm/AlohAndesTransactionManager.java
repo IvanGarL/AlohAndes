@@ -367,6 +367,54 @@ public class AlohAndesTransactionManager {
 	}
 
 	//-----------------------------------------------------------------------------------------------------------------------
+	//RF6
+	//-----------------------------------------------------------------------------------------------------------------------
+	/**
+	 * Metodo que modela la transaccion que elimina de la base de datos a la oferta que entra por parametro. <br/>
+	 * Solamente se actualiza si existe la oferta en la Base de Datos <br/>
+	 * <b> post: </b> se ha eliminado la oferta que entra por parametro <br/>
+	 * @param oferta - reserva a eliminar. oferta != null
+	 * @throws Exception - Cualquier error que se genere eliminando la oferta.
+	 */
+	public void deleteOferta(Oferta oferta) throws Exception 
+	{
+		DAOOferta daoOferta = new DAOOferta( );
+		try
+		{
+			this.conn = darConexion();
+			daoOferta.setConn( conn );
+			if(daoOferta.findOfertaById(oferta.getId()) == null) {
+				throw new Exception("No existe una oferta con ese identificador");
+			}else {
+				daoOferta.deleteOferta(oferta);
+			}
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				daoOferta.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
 	//RF7
 	//-----------------------------------------------------------------------------------------------------------------------
 
@@ -452,6 +500,106 @@ public class AlohAndesTransactionManager {
 		finally {
 			try {
 				daoReserva.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//Rf9
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Metodo que modela la transaccion que inhabilita a la oferta que entra por parametro. <br/>
+	 * Solamente se actualiza si existe la oferta en la Base de Datos <br/>
+	 * <b> post: </b> se ha cambiado el estado de la oferta que entra por parametro, y sus reservas se han reacomodado <br/>
+	 * @param oferta - oferta a deshabilitar. oferta != null
+	 * @throws Exception - Cualquier error que se genere inhabilitando la oferta.
+	 */
+	public void inhabilitarOferta(Oferta oferta) throws Exception 
+	{
+		DAOOferta daoOferta = new DAOOferta( );
+		try
+		{
+			this.conn = darConexion();
+			daoOferta.setConn( conn );
+			if(daoOferta.findOfertaById(oferta.getId()) == null) {
+				throw new Exception("No existe una reserva con ese identificador");
+			}else {
+				oferta.setEstado("deshabilitado");
+				daoOferta.updateOferta(oferta);
+			}
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				daoOferta.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//Rf10
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Metodo que modela la transaccion que rehabilita a la oferta que entra por parametro. <br/>
+	 * Solamente se actualiza si existe la oferta en la Base de Datos <br/>
+	 * <b> post: </b> se ha cambiado el estado de la oferta que entra por parametro <br/>
+	 * @param oferta - oferta a deshabilitar. oferta != null
+	 * @throws Exception - Cualquier error que se genere rehabilitando la oferta.
+	 */
+	public void rehabilitarOferta(Oferta oferta) throws Exception 
+	{
+		DAOOferta daoOferta = new DAOOferta( );
+		try
+		{
+			this.conn = darConexion();
+			daoOferta.setConn( conn );
+			if(daoOferta.findOfertaById(oferta.getId()) == null) {
+				throw new Exception("No existe una reserva con ese identificador");
+			}else {
+				oferta.setEstado("habilitado");
+				daoOferta.updateOferta(oferta);
+			}
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				daoOferta.cerrarRecursos();
 				if(this.conn!=null){
 					this.conn.close();					
 				}
@@ -593,6 +741,51 @@ public class AlohAndesTransactionManager {
 	}
 
 	//-----------------------------------------------------------------------------------------------------------------------
+	//RFC4 TODO
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * El método retorna las ganancias del año para el proveedor
+	 */
+	public String getViviendasEspecificaciones(Long idAlojamiento) throws Exception 
+	{
+		DAOAlojamiento daoAlojamiento = new DAOAlojamiento( );
+		try
+		{
+			this.conn = darConexion();
+			daoAlojamiento.setConn( conn );
+			if(daoAlojamiento.findAlojamientoById(idAlojamiento) == null) {
+				throw new Exception("No existe un operador con ese identificador");
+			}else {
+				return daoAlojamiento.getIndiceOcupacion(idAlojamiento);
+			}
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				daoAlojamiento.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
 	//RFC5
 	//-----------------------------------------------------------------------------------------------------------------------
 
@@ -634,19 +827,20 @@ public class AlohAndesTransactionManager {
 	}
 
 	//-----------------------------------------------------------------------------------------------------------------------
-	//RF7
+	//RFC6 TODO
 	//-----------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * 
 	 */
-	public void addReservaColectiva(int num, String tipo) throws Exception 
+	public ArrayList<String> getUsoCliente(Long id) throws Exception 
 	{
 		DAOCliente daoCliente = new DAOCliente();
 		try
 		{
 			this.conn = darConexion();
 			daoCliente.setConn( conn );
+			return daoCliente.getUso(id);
 		}
 		catch (SQLException sqlException) {
 			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
@@ -672,4 +866,5 @@ public class AlohAndesTransactionManager {
 			}
 		}	
 	}
+
 }

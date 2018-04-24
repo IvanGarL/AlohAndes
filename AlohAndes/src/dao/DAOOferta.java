@@ -112,7 +112,11 @@ public class DAOOferta {
 	public void updateOferta(Oferta oferta) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.OFERTAS SET ESTADO = 'DESHABILITADO'", USUARIO));
+		sql.append(String.format("UPDATE %1$s.OFERTAS SET ESTADO = '%2$s", USUARIO, oferta.getEstado()));
+		
+		if(oferta.getEstado()=="deshabilitado"){
+			cambiarReservas(oferta);
+		}
 
 		System.out.println(sql);
 
@@ -121,14 +125,15 @@ public class DAOOferta {
 		prepStmt.executeQuery();
 	}
 
+	private void cambiarReservas(Oferta oferta) {
+		
+	}
+
 	/*
 	 * RF6 -------- RETIRAR UNA OFERTA DE ALOJAMIENTO
 	 */
 	public void deleteOferta(Oferta oferta) throws SQLException, Exception {
 
-		//TODO: Quitar la información de esta oferta en las correspondientes tablas OFERTARESERVA, RESERVA, 
-		//SERVICIO, ALOJAMIENTO y el alojamiento específico (se puede basar en lo que hice para borrar un operador)
-		
 		//Elimina alojamiento asociado a la oferta que se va a eliminar
 		DAOAlojamiento daoAl = new DAOAlojamiento();
 		String sqlAlojamientoSelect = String.format("SELECT FROM %1$s.ALOJAMIENTOS WHERE ALOJAMIENTO.ID = %2$s",USUARIO,oferta.getIdAlojamiento());
