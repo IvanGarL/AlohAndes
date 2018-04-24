@@ -10,7 +10,6 @@ public class Habitacion extends Alojamiento{
 	@JsonProperty(value="numero")
 	private Integer numero;
 	
-	
 	@JsonProperty(value="idHostal")
 	private Long idHostal;
 	
@@ -25,8 +24,8 @@ public class Habitacion extends Alojamiento{
 			@JsonProperty(value="idPersonaNat") Long idPersonaNat,
 			@JsonProperty(value="idHostal") Long idHostal,
 			@JsonProperty(value="idOferta") Long idOferta) throws Exception{
-		
 		super(id, tamanho, capacidad, Alojamiento.HABITACION, idOferta);
+
 		this.compartida = compartida;
 		this.numero = numero;
 		if(idPersonaNat != null && idHostal == null){
@@ -39,7 +38,8 @@ public class Habitacion extends Alojamiento{
 		}
 		else if(idHostal == null && idPersonaNat == null){
 			throw new Exception("los dos identificadores de operador no pueden ser null, por favor asigne un operador");
-		}
+		}		
+
 	}
 
 	public Boolean getCompartida() {

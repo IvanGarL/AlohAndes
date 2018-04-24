@@ -236,8 +236,9 @@ public class DAOAlojamiento {
 		Integer capacidad = resultSet.getInt("CAPACIDAD");
 		String tipo = resultSet.getString("TIPO");
 		Long idOferta = resultSet.getLong("IDOFERTA");
-
-		Alojamiento alo = new Alojamiento(id, tamanho, capacidad, tipo, idOferta);
+		Long idOperador = resultSet.getLong("IDOPERADOR");
+		
+		Alojamiento alo = new Alojamiento(id, tamanho, capacidad, tipo, idOferta, idOperador);
 
 		return alo;
 	}

@@ -29,11 +29,10 @@ public class HabitacionHotel extends Alojamiento{
 			@JsonProperty(value="capacidad") Integer capacidad,
 			@JsonProperty(value="idHotel") Long idHotel,
 			@JsonProperty(value="idOferta") Long idOferta){
-		super(id, tamanho, capacidad, Alojamiento.HABITACION_HOTEL, idOferta);
+		super(id, tamanho, capacidad, Alojamiento.HABITACION_HOTEL, idOferta, idHotel);
 		this.ubicacion = ubicacion;
 		this.numero = numero;
 		this.categoria = categoria;
-		this.idOperador = idHotel;
 	}
 
 	public Integer getNumero() {

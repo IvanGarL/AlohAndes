@@ -95,21 +95,14 @@ public class DAOOperador {
 		String sql, idAsignado;
 		Long nuevoId;
 		if(operador.getIdResponsable() != null){
-			sql = String.format("INSERT INTO %1$s.OPERADORES (CAPACIDAD, NOMBRE, TELEFONO, TIPO, IDRESPONSABLE) VALUES (%2$s, '%3$s', '%4$s', '%5$s','%6$s' )", 
+			sql = String.format("INSERT INTO %1$s.OPERADORES (CAPACIDAD, NOMBRE, TELEFONO, TIPO, IDRESPONSABLE) "
+					+ "VALUES (%2$s, '%3$s', '%4$s', '%5$s','%6$s')", 
 					USUARIO, 
 					operador.getCapacidad(),
 					operador.getNombre(), 
 					operador.getTelefono(), 
 					operador.getTipo(),
 					operador.getIdResponsable());
-			idAsignado = String.format("SELECT ID FROM %1$s.OPERADORES WHERE CAPACIDAD = %2$s AND NOMBRE = '%3$s', TELEFONO = '%4$s', TIPO = '%5$s', IDRESPONSABLE = '%6$s'", 
-					USUARIO, 
-					operador.getCapacidad(),
-					operador.getNombre(), 
-					operador.getTelefono(), 
-					operador.getTipo(),
-					operador.getIdResponsable());
-
 		}
 		else{
 			sql = String.format("INSERT INTO %1$s.OPERADORES (CAPACIDAD, NOMBRE, TELEFONO, TIPO) VALUES (%2$s, '%3$s', '%4$s', '%5$s)", 
@@ -118,15 +111,8 @@ public class DAOOperador {
 					operador.getNombre(), 
 					operador.getTelefono(), 
 					operador.getTipo());
-			idAsignado = String.format("SELECT ID FROM %1$s.OPERADORES WHERE CAPACIDAD = %2$s AND NOMBRE = '%3$s', TELEFONO = '%4$s', TIPO = '%5$s', IDRESPONSABLE = '%6$s'", 
-					USUARIO, 
-					operador.getCapacidad(),
-					operador.getNombre(), 
-					operador.getTelefono(), 
-					operador.getTipo(),
-					operador.getIdResponsable());
 		}
-
+		idAsignado = String.format("SELECT MAX(ID) FROM %1$s.OPERADORES", USUARIO);
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
@@ -140,7 +126,6 @@ public class DAOOperador {
 		nuevoId = rs.getLong(0);
 		operador.setId(nuevoId);
 		return operador;
-
 	}
 
 
@@ -180,15 +165,25 @@ public class DAOOperador {
 		recursos.add(prepStmtOfRs);
 		prepStmtOfRs.executeQuery();
 
-		//Borrar sus ofertas
-		String sqlPr = String.format("DELETE FROM %1$s.OFERTAS WHERE IDOPERADOR = %2$d", USUARIO, operador.getId());
+		//Borrar sus ofertas, con los servicios que esta posee
+		String sqlServicios = String.format("DELETE FROM %1$s.SERVICIOS "
+				+ "WHERE IDOFERTA IN (SELECT ID FROM %1$s.OFERTAS WHERE IDOPERADOR = %2$s)",
+				USUARIO, operador.getId());
+
+		PreparedStatement prepStmtServicios = conn.prepareStatement(sqlServicios);
+		recursos.add(prepStmtServicios);
+		prepStmtServicios.executeQuery();
+		
+		String sqlPr = String.format("DELETE FROM %1$s.OFERTAS WHERE IDOPERADOR = %2$d",
+				USUARIO, operador.getId());
 
 		PreparedStatement prepStmtPr = conn.prepareStatement(sqlPr);
 		recursos.add(prepStmtPr);
 		prepStmtPr.executeQuery();
 
 		//Borrar sus reservas
-		String sqlPrRes = String.format("DELETE FROM %1$s.RESERVAS WHERE IDOPERADOR = %2$d", USUARIO, operador.getId());
+		String sqlPrRes = String.format("DELETE FROM %1$s.RESERVAS WHERE IDOPERADOR = %2$d", 
+				USUARIO, operador.getId());
 
 		PreparedStatement prepStmtPrRes = conn.prepareStatement(sqlPrRes);
 		recursos.add(prepStmtPrRes);
@@ -197,7 +192,8 @@ public class DAOOperador {
 		//Finalmente se borra el operador de la tabla especifica y la general
 		borrarOperadorEspecifico(operador);
 
-		String sql = String.format("DELETE FROM %1$s.OPERADORES WHERE ID = %2$d", USUARIO, operador.getId());
+		String sql = String.format("DELETE FROM %1$s.OPERADORES WHERE ID = %2$d",
+				USUARIO, operador.getId());
 
 		System.out.println(sql);
 
@@ -213,7 +209,8 @@ public class DAOOperador {
 	private void borrarAlojamientosEspecificos(Operador operador) throws SQLException {
 
 		String seleccionIdAlojamiento = String.format("SELECT ID FROM %1$s.ALOJAMIENTOS "
-				+ "WHERE IDOFERTA IN (SELECT ID FROM %1$s.OFERTAS WHERE IDOPERADOR = %2$s)", USUARIO, operador.getId());
+				+ "WHERE IDOFERTA IN (SELECT ID FROM %1$s.OFERTAS WHERE IDOPERADOR = %2$s)", 
+				USUARIO, operador.getId());
 		String tabla = "no";
 		String tabla2 = "no";
 
@@ -239,7 +236,8 @@ public class DAOOperador {
 		}
 
 		if(tabla!="no"){
-			String sql = String.format("DELETE FROM %1$s.%2$s WHERE ID IN %3$s", USUARIO, tabla, seleccionIdAlojamiento);
+			String sql = String.format("DELETE FROM %1$s.%2$s WHERE ID IN %3$s", 
+					USUARIO, tabla, seleccionIdAlojamiento);
 
 			System.out.println(sql);
 
@@ -248,7 +246,8 @@ public class DAOOperador {
 			prepStmt.executeQuery();
 		}
 		if(tabla2!="no"){
-			String sql = String.format("DELETE FROM %1$s.%2$s WHERE ID IN %3$s", USUARIO, tabla, seleccionIdAlojamiento);
+			String sql = String.format("DELETE FROM %1$s.%2$s WHERE ID IN %3$s",
+					USUARIO, tabla, seleccionIdAlojamiento);
 
 			System.out.println(sql);
 
@@ -280,7 +279,8 @@ public class DAOOperador {
 		default:
 			return;
 		}
-		String sql = String.format("DELETE FROM %1$s.%2$s WHERE ID %3$s", USUARIO, tabla, operador.getId());
+		String sql = String.format("DELETE FROM %1$s.%2$s WHERE ID %3$s", 
+				USUARIO, tabla, operador.getId());
 
 		System.out.println(sql);
 
@@ -296,24 +296,32 @@ public class DAOOperador {
 		if(operador.getTipo() == Operador.HOSTAL) {
 			Hostal host = (Hostal) operador;
 			tabla = "HOSTALES";
-			sql = String.format("INSERT INTO %1$s.%2$s () VALUES", USUARIO, tabla);
+			sql = String.format("INSERT INTO %1$s.%2$s (HORAAPERTURA, HORACIERRE, HABOCUPADAS, HABDISPONIBLES) VALUES (%3$s, %4$s, %5$s, %6$s)", 
+					USUARIO, tabla, host.getHoraApertura(), host.getHoraCierre(), host.getHabOcupadas(), host.getHabDisponibles());
 		}
 		else if(operador.getTipo() == Operador.HOTEL) {
 			Hotel hot = (Hotel) operador;
 			tabla = "HOTELES";
+			sql = String.format("INSERT INTO %1$s.%2$s (DIRECCION, HABDISPONIBLES, HABOCUPADAS, ESTRELLAS) VALUES (%3$s, %4$s, %5$s, %6$s)", 
+					USUARIO, tabla, hot.getDireccion(), hot.getHabDisponibles(), hot.getHabOcupadas(), hot.getEstrellas());
 		}
 		else if(operador.getTipo() == Operador.PERSONA_COMUNIDAD) {
 			PersonaComunidad pc = (PersonaComunidad) operador;
 			tabla = "PERSONASCOMUNIDAD";
+			sql = String.format("INSERT INTO %1$s.%2$s (CEDULA, EDAD, NOMBRE, TELEFONO) VALUES (%3$s, %4$s, %5$s, %6$s)", 
+					USUARIO, tabla, pc.getCedula(), pc.getEdad(), pc.getNombre(), pc.getTelefono());
 		}
 		else if(operador.getTipo() == Operador.PERSONA_NATURAL) {
 			PersonaNatural pn = (PersonaNatural) operador;
 			tabla = "PERSONASNATURALES";
+			sql = String.format("INSERT INTO %1$s.%2$s (NOMBRE, EDAD, CEDULA, TELEFONO) VALUES (%3$s, %4$s, %5$s, %6$s)", 
+					USUARIO, tabla, pn.getNombre(), pn.getEdad(), pn.getCedula(), pn.getTelefono());
 		}
 		else if(operador.getTipo() == Operador.VIVIENDA_UNIVERSITARIA) {
 			ViviendaUniversitaria vu = (ViviendaUniversitaria) operador;
 			tabla = "VIVIENDASUNIVERSITARIAS";
-			
+			sql = String.format("INSERT INTO %1$s.%2$s (DIRECCION, HABDISPONIBLES, HABOCUPADAS) VALUES (%3$s, %4$s, %5$s)", 
+					USUARIO, tabla, vu.getDireccion(), vu.getHabDisponibles(), vu.getHabOcupadas());
 		}
 		else return;
 

@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import vos.Cliente;
+import vos.Responsable;
 import vos.Usuario;
 
 public class DAOUsuario {
@@ -60,18 +62,36 @@ public class DAOUsuario {
 		return usuario;
 	}
 
-	public void addUsuario(Usuario usuario) throws SQLException, Exception {
+	public Usuario addUsuario(Usuario usuario) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.USUARIOS (ID, LOGIN, CONTRASENIA, TIPO) VALUES (%2$s ,%3$s, '%4$s', '%5$s')", 
+		String sql = String.format("INSERT INTO %1$s.USUARIOS (LOGIN, CONTRASENIA, TIPO) VALUES (%2$s ,%3$s, '%4$s')", 
 				USUARIO, 
 				usuario.getLogin(), 
 				usuario.getContrasenia(),
 				usuario.getTipo());
+		
 		System.out.println(sql);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+		
+		PreparedStatement prepStmt2 = conn.prepareStatement(String.format("SELECT MAX(ID) FROM %1$s.USUARIOS", USUARIO));
+		recursos.add(prepStmt2);
+		ResultSet rs = prepStmt2.executeQuery();
+		
+		if(usuario.getTipo() == Usuario.CLIENTE){
+			Cliente cl = (Cliente) usuario;
+			DAOCliente dao = new DAOCliente();
+			dao.addCliente(cl);
+		}else if(usuario.getTipo() == Usuario.RESPONSABLE){
+			Responsable r = (Responsable) usuario;
+			DAOResponsable dao = new DAOResponsable();
+			dao.addResponsable(r);
+		}
+		
+		usuario.setId(rs.getLong(0));
+		return usuario;
 
 	}
 
