@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import vos.Alojamiento;
 import vos.Oferta;
+import vos.Operador;
 import vos.Reserva;
 
 
@@ -82,7 +84,8 @@ public class DAOOferta {
 
 		return oferta;
 	}
-
+	
+	
 	public void addOferta(Oferta oferta) throws SQLException, Exception {
 
 		String sql = String.format("INSERT INTO %1$s.OFERTAS (ID, COSTO, FECHARETIRO, NOMBRE, OPERADOR, ALOJAMIENTO) VALUES (%2$s ,%3$s, '%4$s', '5$s', '%6$s')", 
@@ -101,18 +104,15 @@ public class DAOOferta {
 
 	}
 
+	/*
+	 * RF9 -------------- DESHABILITAR OFERTA DE ALOJAMIENTO
+	 */
 	//TODO: Habilitar el cambio de estado de habilitado a deshabilitado y cambiar las reservas que le corresponden
 	//O el cambio de estado de deshabilitado a habilitado. No hay que cambiar nada mas en este caso
 	public void updateOferta(Oferta oferta) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.OFERTAS SET ", USUARIO));
-		sql.append(String.format("ID = '%1$s' AND COSTO = '%2$s' AND FECHARETIRO = '%3$s' AND NOMBRE = '%4$s' AND OPERADOR = '%5$s' AND ALOJAMIENTO = '%6$s' ", 
-				oferta.getId(),
-				oferta.getCosto(),
-				oferta.getNombre(),
-				oferta.getIdOperador(),
-				oferta.getIdAlojamiento()));
+		sql.append(String.format("UPDATE %s.OFERTAS SET ESTADO = 'DESHABILITADO'", USUARIO));
 
 		System.out.println(sql);
 
@@ -121,19 +121,74 @@ public class DAOOferta {
 		prepStmt.executeQuery();
 	}
 
-
+	/*
+	 * RF6 -------- RETIRAR UNA OFERTA DE ALOJAMIENTO
+	 */
 	public void deleteOferta(Oferta oferta) throws SQLException, Exception {
 
 		//TODO: Quitar la información de esta oferta en las correspondientes tablas OFERTARESERVA, RESERVA, 
 		//SERVICIO, ALOJAMIENTO y el alojamiento específico (se puede basar en lo que hice para borrar un operador)
 		
-		String sql = String.format("DELETE FROM %1$s.OFERTAS WHERE ID = %2$d", USUARIO, oferta.getId());
+		//Elimina alojamiento asociado a la oferta que se va a eliminar
+		DAOAlojamiento daoAl = new DAOAlojamiento();
+		String sqlAlojamientoSelect = String.format("SELECT FROM %1$s.ALOJAMIENTOS WHERE ALOJAMIENTO.ID = %2$s",USUARIO,oferta.getIdAlojamiento());
+		PreparedStatement prepStmtSelect = conn.prepareStatement(sqlAlojamientoSelect);
+		recursos.add(prepStmtSelect);
+		ResultSet rsSelect = prepStmtSelect.executeQuery();
+		Alojamiento alo = daoAl.convertResultSetToAlojamiento(rsSelect);
+		System.out.println(eliminarOfertaEspecifica(alo));
+		
+		//Elimina de la tabla de alojamientos
+		String sqlAlojamientos = String.format("DELETE FROM %1$s.ALOJAMIENTOS WHERE ALOJAMIENTO.ID = %2$d", USUARIO, oferta.getIdAlojamiento());
+		PreparedStatement prepStmtAlojamientos = conn.prepareStatement(sqlAlojamientos);
+		recursos.add(prepStmtAlojamientos);
+		prepStmtAlojamientos.executeQuery();
+		System.out.println(sqlAlojamientos);
+
+		//Elimina de la tabla join
+		String sqlJoinAlRe = String.format("DELETE FROM %1$s.OFERTASRESERVAS WHERE OFERTASRESERVAS.IDOFERTA = %2$d", USUARIO, oferta.getId());
+		PreparedStatement prepStmtJoinAlRe = conn.prepareStatement(sqlJoinAlRe);
+		recursos.add(prepStmtJoinAlRe);
+		prepStmtJoinAlRe.executeQuery();
+		System.out.println(sqlJoinAlRe);
+		
+		//Elimina de la tabla de ofertas
+		String sqlfinal = String.format("DELETE FROM %1$s.OFERTAS WHERE ID = %2$d", USUARIO, oferta.getId());
+		PreparedStatement prepStmtfinal = conn.prepareStatement(sqlfinal);
+		recursos.add(prepStmtfinal);
+		prepStmtfinal.executeQuery();
+		System.out.println(sqlfinal);
+	}
+	
+	private String eliminarOfertaEspecifica(Alojamiento alo) throws SQLException{
+		String tabla = "no";
+		switch (alo.getTipo()) {
+		case Alojamiento.APARTAMENTO:
+			tabla = "APARTAMENTOS";
+			break;
+		case Alojamiento.HABITACION:
+			tabla = "HABITACIONES";
+			break;
+		case Alojamiento.HABITACION_HOTEL:
+			tabla = "HABSHOTEL";
+			break;
+		case Alojamiento.HABITACION_UNIVERSITARIA:
+			tabla = "HABSUNIVERSITARIAS";
+			break;
+		case Alojamiento.VIVIENDA_COMUNITARIA:
+			tabla = "VIVIENDASUNIVERSITARIAS";
+			break;	
+		default:
+			return "error";
+		}
+		String sql = String.format("DELETE FROM %1$s.%2$s WHERE ID %3$s", USUARIO, tabla, alo.getId());
 
 		System.out.println(sql);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+		return sql;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------

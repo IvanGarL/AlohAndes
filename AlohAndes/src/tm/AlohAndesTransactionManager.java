@@ -292,9 +292,8 @@ public class AlohAndesTransactionManager {
 			this.conn = darConexion();
 			daoReserva.setConn(conn);
 			daoReserva.addReserva(reserva);
-			//TODO: Llamar el metodo correspondiente
 		}
-		catch (SQLException sqlException) {
+		catch (SQLException sqlException){
 			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
 			sqlException.printStackTrace();
 			throw sqlException;

@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 
 import vos.Alojamiento;
 import vos.Cliente;
+import vos.Servicio;
 
 //TODO revisar manejo de datos -> IdOferta
 public class DAOAlojamiento {
@@ -140,6 +142,17 @@ public class DAOAlojamiento {
 		}
 
 
+	}
+	
+	//------------------------------------------------
+	// RFC6
+	//------------------------------------------------
+	public ArrayList<Alojamiento> alojamientosFechaServicios(Date fechaI, Date fechaF,ArrayList<Servicio> servicios){
+		ArrayList<Alojamiento> resp = new ArrayList<>();
+		
+		String sql = String.format("", USUARIO,args);
+		
+		return resp;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------

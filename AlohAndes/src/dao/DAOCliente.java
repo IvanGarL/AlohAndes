@@ -43,8 +43,7 @@ public class DAOCliente extends DAOUsuario{
 		return clientes;
 	}
 
-	public Cliente findClienteById(Long id) throws SQLException, Exception 
-	{
+	public Cliente findClienteById(Long id) throws SQLException, Exception{
 		Cliente cliente = null;
 
 		String sql = String.format("SELECT * FROM %1$s.CLIENTES WHERE ID = %2$d", USUARIO, id); 
@@ -92,8 +91,6 @@ public class DAOCliente extends DAOUsuario{
 				cliente.getTelefono()));
 
 		System.out.println(sql);
-
-		updateCliente(cliente);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);
