@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import vos.Hostal;
 import vos.Hotel;
@@ -56,10 +59,15 @@ public class DAOOperador {
 	public double gananciasOperadores(Long id) throws SQLException, Exception {
 		double respuesta = 0;
 
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = new Date();
+		Date initDate = new Date(date.getYear()-1, date.getMonth(), date.getDate());
+
 		String sql = String.format("Select Sum(cobro) as ganancias"
 				+ "from (select cobro "
 				+ "from %1$s.reservas "
-				+ "where operador = '%2$s' and FECHAFIN > '1/1/2018')filtro", USUARIO, id);
+				+ "where operador = '%2$s' and FECHAINICIO <= %3$s AND FECHAINICIO >= %4$s);", 
+				USUARIO, id, dateFormat.format(date), dateFormat.format(initDate));
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -92,6 +100,8 @@ public class DAOOperador {
 	}
 
 	public Operador addOperador(Operador operador) throws SQLException, Exception {
+		conn.setAutoCommit(false);
+		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 		String sql, idAsignado;
 		Long nuevoId;
 		if(operador.getIdResponsable() != null){
@@ -125,24 +135,30 @@ public class DAOOperador {
 
 		nuevoId = rs.getLong(0);
 		operador.setId(nuevoId);
+		conn.commit();
 		return operador;
 	}
 
 
 	public void updateOperador(Operador operador) throws SQLException, Exception {
 
+		conn.setAutoCommit(false);
+		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.OPERADORES SET ", USUARIO));
 		sql.append(String.format("CAPACIDAD = '%1$s', NOMBRE = '%2$s', TELEFONO = '%3$s' ", operador.getCapacidad(), operador.getNombre(), operador.getTelefono(), operador.getTipo()));
-
+		sql.append(String.format("WHERE ID = %1$s", operador.getId()));
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+		conn.commit();
 	}
 
 
 	public void deleteOperador(Operador operador) throws SQLException, Exception {
 
+		conn.setAutoCommit(false);
+		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 		//Borrar sus alojamientos. Primero de las tablas especificas y luego de la general
 
 		borrarAlojamientosEspecificos(operador);
@@ -200,6 +216,46 @@ public class DAOOperador {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+		conn.commit();
+	}
+	
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// TODO RFC5
+	//----------------------------------------------------------------------------------------------------------------------------------
+
+	public String getUso(Long id) throws SQLException, Exception {
+		
+		String resp = "";
+		PreparedStatement prepStmt = conn.prepareStatement(String.format("Select tipo from %1$s.operadores where id = %2$s.", USUARIO, id));
+		recursos.add(prepStmt);
+		ResultSet tipoSet = prepStmt.executeQuery();
+		if(tipoSet.next()) {
+			String tipo = tipoSet.getString("tipo");			
+			
+			resp = "El operador con id " + id + ", que es un "+ tipo +", tiene:\n";
+			
+			String sqlHot = String.format("select count(*)as numreservas, sum(cobro) as totalRecibido \r\n" + 
+					"from %1$s.operadores inner join %1$s.reservas on %1$s.operadores.id = idoperador \r\n" + 
+					"where idoperador = %2$s", USUARIO, id);
+			PreparedStatement prepStmth = conn.prepareStatement(sqlHot);
+			recursos.add(prepStmth);
+			ResultSet hotSet = prepStmth.executeQuery();
+			resp += (hotSet.getInt("numreservas") + " reservas, que se reparten entre sus ");
+			
+			String sqlhabs = String.format("select count(*) as numofertas\r\n" + 
+					"from %1$s.ofertas\r\n" + 
+					"where idoperador = %2$s", USUARIO, id);
+			PreparedStatement pf = conn.prepareStatement(sqlhabs);
+			recursos.add(pf);
+			ResultSet alojsSet = pf.executeQuery();
+			
+			resp+=(alojsSet.getInt("numofertas") + " ofertas de habitaciones\n y que le han generado $"+hotSet.getInt("totalRecibido"));
+		
+		}else {
+			throw new Exception("No existe el operador con ese id");
+		}
+		
+		return resp;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------

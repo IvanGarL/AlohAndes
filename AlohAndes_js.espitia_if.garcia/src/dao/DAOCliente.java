@@ -6,8 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import vos.Alojamiento;
 import vos.Cliente;
+import vos.Operador;
 
 public class DAOCliente extends DAOUsuario{
 
@@ -59,7 +62,8 @@ public class DAOCliente extends DAOUsuario{
 	}
 
 	public void addCliente(Cliente cliente) throws SQLException, Exception {
-
+		conn.setAutoCommit(false);
+		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 		String sql = String.format("INSERT INTO %1$s.CLIENTES (ID, CEDULA, EDAD, NOMBRE, TELEFONO) VALUES (%2$s ,%3$s, '%4$s', '%5$s', '%6$s')", 
 				USUARIO, 
 				cliente.getId(), 
@@ -76,15 +80,17 @@ public class DAOCliente extends DAOUsuario{
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+		conn.commit();
 
 	}
 
 	public void updateCliente(Cliente cliente) throws SQLException, Exception {
 
+		conn.setAutoCommit(false);
+		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.CLIENTES SET ", USUARIO));
-		sql.append(String.format("ID = '%1$s' AND CEDULA = '%2$s' AND EDAD = '%3$s' AND NOMBRE = '%4$s' AND TELEFONO = '%5$s' ", 
-				cliente.getId(),
+		sql.append(String.format(" CEDULA = '%1$s' AND EDAD = '%2$s' AND NOMBRE = '%3$s' AND TELEFONO = '%4$s' ", 
 				cliente.getCedula(), 
 				cliente.getEdad(), 
 				cliente.getNombre(),
@@ -95,17 +101,20 @@ public class DAOCliente extends DAOUsuario{
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+		conn.commit();
 	}
 
 
 	public void deleteCliente(Cliente cliente) throws SQLException, Exception {
 
-		//FALTA borrar todo lo relacionado al cliente en otras tablas (reservas)
-		//		String sqlPr = String.format("DELETE FROM %1$s.reservas WHERE CLIENTE = %2$d", USUARIO, cliente.getId());
-		//		
-		//		PreparedStatement prepStmtPr = conn.prepareStatement(sqlPr);
-		//		recursos.add(prepStmtPr);
-		//		prepStmtPr.executeQuery();
+		conn.setAutoCommit(false);
+		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+		
+		String sqlPr = String.format("DELETE FROM %1$s.reservas WHERE IDCLIENTE = %2$d", USUARIO, cliente.getId());
+
+		PreparedStatement prepStmtPr = conn.prepareStatement(sqlPr);
+		recursos.add(prepStmtPr);
+		prepStmtPr.executeQuery();
 
 		String sql = String.format("DELETE FROM %1$s.USUARIOS WHERE ID = %2$d", USUARIO, cliente.getId());
 
@@ -114,51 +123,65 @@ public class DAOCliente extends DAOUsuario{
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-	}
-
-	//----------------------------------------------------------------------------------------------------------------------------------
-	// TODO RFC5
-	//----------------------------------------------------------------------------------------------------------------------------------
-
-	public ArrayList<String> getUso() throws SQLException, Exception{
-		ArrayList<String> respuesta = new ArrayList<>();
-
-		String sql = String.format("select *"
-				+ "from %1$s.clientes, %1$s.reservas"
-				+ "WHERE clientes.id = reservas.cliente)", USUARIO);
-
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
-
-		while (rs.next()) {
-			respuesta.add("");
-		}
-
-		return respuesta;
+		conn.commit();
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// TODO RFC6 
 	//----------------------------------------------------------------------------------------------------------------------------------
 
-	public ArrayList<String> getUso(Long id) throws SQLException, Exception{
-		ArrayList<String> respuesta = new ArrayList<>();
+	public String getUso(Long idCliente) throws SQLException, Exception{
 
-		String sql = String.format("select *"
-				+ "from %1$s.clientes, %1$s.reservas"
-				+ "WHERE clientes.id = reservas.cliente)", USUARIO);
+		String sql = String.format("select * from\r\n" + 
+				"( select *       \r\n" + 
+				"from (select id as idreserva, cobro, estado, fechafin- fechainicio, idcliente\r\n" + 
+				"from %1$s.reservas) natural inner join %1$s.ofertasreservas) \r\n" + 
+				"natural inner join (select * from (select id as idoferta, idalojamiento, idoperador, tipo from %1$s.ofertas natural inner join (select id as idalojamiento, tipo from %1$s.alojamientos))natural inner join (select id as idoperador, tipo as tipoOp from %1$s.operadores))\r\n" + 
+				"where idcliente = %2$s;"
+				, USUARIO, idCliente);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
+		int numNoches = 0;
+		int dineroTotal = 0;
+		int hotelesContratados = 0, hostalesContratados = 0, vivCContratadas = 0, vivUContratadas = 0, aptosContratados = 0, habsNormContratadas = 0;
 		while (rs.next()) {
-			//TODO esto debería entregar algo 
-			respuesta.add("");
+			long diff = rs.getInt("diff");
+			numNoches += diff;
+			dineroTotal += rs.getInt("COBRO");
+			String tipo = rs.getString("TIPO");
+			String tipoOp = rs.getString("TIPOOP");
+			if(tipo.equals(Alojamiento.APARTAMENTO)) {
+				aptosContratados++;
+			}
+			else if (tipo.equals(Alojamiento.HABITACION)){
+				if(tipoOp.equals(Operador.HOSTAL) ){
+					hostalesContratados++;
+				}else if(tipoOp.equals(Operador.PERSONA_NATURAL)) {
+					habsNormContratadas++;
+				}
+			}
+			else if (tipo.equals(Alojamiento.HABITACION_HOTEL)){
+				hotelesContratados++;
+			}
+			else if (tipo.equals(Alojamiento.HABITACION_UNIVERSITARIA)){
+				vivUContratadas++;
+			}
+			else if (tipo.equals(Alojamiento.VIVIENDA_COMUNITARIA)){
+				vivCContratadas++;
+			}
 		}
-
-		return respuesta;
+		return "Cliente con id " + rs.getLong("ID")
+		+ "\nHa contratado " + aptosContratados + " apartamentos"
+		+ "\nHa contratado " + hostalesContratados + " habitaciones de hostal"
+		+ "\nHa contratado " + hotelesContratados + " habitaciones de hotel"
+		+ "\nHa contratado " + habsNormContratadas + " habitaciones de personas naturales"
+		+ "\nHa contratado " + vivUContratadas + " habitaciones de vivienda universitaria"
+		+ "\nHa contratado " + vivCContratadas + " viviendas de la comunidad"
+		+ "\nHa reservado un total de " + numNoches + " noches gracias a AlohAndes"
+		+ "\nY ha pagado un total de $" + dineroTotal;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------

@@ -53,10 +53,8 @@ public class DAOOferta {
 	public ArrayList<Oferta> getOfertasPopulares() throws SQLException, Exception {
 		ArrayList<Oferta> reservas = new ArrayList<Oferta>();
 
-		String sql = String.format("select * from(select oferta ,count(oferta) as populares "
-				+ "from %1$s.reservas group by oferta"
-				+ "order by populares desc)"
-				+ "WHERE ROWNUM <= 20", USUARIO);
+		String sql = String.format("select count(idreserva) as numreservas, ofertas.id, ofertas.costo, ofertas.ESTADO, ofertas.NOMBRE from ofertas inner join ofertasreservas on id = idoferta  where rownum <=20 group by ofertas.id, ofertas.costo, ofertas.ESTADO, ofertas.NOMBRE order by count(idreserva)\r\n" + 
+				";", USUARIO);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

@@ -79,12 +79,7 @@ public class DAOReserva {
 	public void addReserva(Reserva reserva) throws SQLException, Exception {
 
 		conn.setAutoCommit(false);
-		//Las líneas de código respectivas al aislamiento no estoy seguro si hagan falta o estén correctas
-		PreparedStatement isolation = conn.prepareStatement("SET ISOLATION TRANSACTION LEVEL SERIALIZABLE");
-		recursos.add(isolation);
-		isolation.executeQuery();
-
-		//------------------------------------------------------------------------------------------------
+		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 		
 		PreparedStatement prepStmtprev = conn.prepareStatement("SELECT ESTADO FROM (OFERTA INNER JOIN OFERTASRESERVAS) ON ID = IDOFERTA WHERE IDRESERVA = "+ reserva.getId());
 		recursos.add(prepStmtprev);
@@ -121,6 +116,8 @@ public class DAOReserva {
 	//----------------------------------------------------------------------------------------------------------------------------------
 
 	public void addReservaColectiva(ReservaEjColectiva reserva, int num) throws SQLException, Exception{
+		conn.setAutoCommit(false);
+		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 		//Elegir cuáles alojamientos son candidatos
 		StringBuilder sqlConsulta = new StringBuilder(); 
 		sqlConsulta.append("SELECT T2.OFERTA, COUNT(T2.RESERVA) as OCUPACION, T2.CAPACIDAD");
@@ -157,11 +154,13 @@ public class DAOReserva {
 		sql.append("SELECT * FROM DUAL");
 		if(numReservasHechasAct!=num && !rs1.next()) {
 			//No hay más alojamientos, hay que avisar
+			conn.rollback();
 		}
 		else {
 			PreparedStatement prepStFin = conn.prepareStatement(sql.toString());
 			recursos.add(prepStFin);
 			prepStFin.executeQuery();
+			conn.commit();
 		}
 
 	}
@@ -169,6 +168,9 @@ public class DAOReserva {
 
 	public void deleteReserva(Reserva reserva) throws SQLException, Exception {
 
+		conn.setAutoCommit(false);
+		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+		
 		String sqlJoin = String.format("DELETE FROM %1$s.OFERTASRESERVAS where IDRESERVA = %2$s", USUARIO,reserva.getId());
 		String sql = String.format("DELETE FROM %1$s.RESERVAS WHERE ID = %2$d", USUARIO, reserva.getId());
 		
@@ -182,6 +184,7 @@ public class DAOReserva {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+		conn.commit();
 	}
 
 
@@ -190,7 +193,8 @@ public class DAOReserva {
 	//----------------------------------------------------------------------------------------------------------------------------------
 
 	public void deleteReservaColectiva(ReservaEjColectiva reserva) throws SQLException, Exception {
-		
+		conn.setAutoCommit(false);
+		conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 		String sqlReservas = String.format("DELETE FROM %1$s.RESERVAS WHERE OPERADOR = %2$s AND FECHAINICIO = %3$s AND FECHAFIN = %4$s" , USUARIO, reserva.getIdCliente(), reserva.getFechaInicio(), reserva.getFechaCierre());
 		
 		System.out.println(sqlReservas);
@@ -198,6 +202,7 @@ public class DAOReserva {
 		PreparedStatement prepStmt = conn.prepareStatement(sqlReservas);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+		conn.commit();
 	}
 
 
