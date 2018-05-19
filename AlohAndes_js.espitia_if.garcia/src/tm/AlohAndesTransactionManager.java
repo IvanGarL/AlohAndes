@@ -607,173 +607,173 @@ public class AlohAndesTransactionManager {
 	}
 
 	//-----------------------------------------------------------------------------------------------------------------------
-		//TODO RFC1
-		//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC1
+	//-----------------------------------------------------------------------------------------------------------------------
 
-		/**
-		 * El método retorna las ganancias del año para el proveedor
-		 */
-		public double getDineroAnhoProveedor(Long idProveedor) throws Exception 
+	/**
+	 * El método retorna las ganancias del año para el proveedor
+	 */
+	public double getDineroAnhoProveedor(Long idProveedor) throws Exception 
+	{
+		DAOOperador daoOperador = new DAOOperador( );
+		try
 		{
-			DAOOperador daoOperador = new DAOOperador( );
-			try
-			{
-				this.conn = darConexion();
-				daoOperador.setConn( conn );
-				if(daoOperador.findOperadorrById(idProveedor) == null) {
-					throw new Exception("No existe un operador con ese identificador");
-				}else {
-					return daoOperador.gananciasOperadores(idProveedor);
+			this.conn = darConexion();
+			daoOperador.setConn( conn );
+			if(daoOperador.findOperadorrById(idProveedor) == null) {
+				throw new Exception("No existe un operador con ese identificador");
+			}else {
+				return daoOperador.gananciasOperadores(idProveedor);
+			}
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				daoOperador.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
 				}
 			}
-			catch (SQLException sqlException) {
-				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
-				sqlException.printStackTrace();
-				throw sqlException;
-			} 
-			catch (Exception exception) {
-				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
 				exception.printStackTrace();
 				throw exception;
-			} 
-			finally {
-				try {
-					daoOperador.cerrarRecursos();
-					if(this.conn!=null){
-						this.conn.close();					
-					}
-				}
-				catch (SQLException exception) {
-					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
-					exception.printStackTrace();
-					throw exception;
-				}
-			}	
-		}
-
-		//-----------------------------------------------------------------------------------------------------------------------
-		//TODO RFC2 
-		//-----------------------------------------------------------------------------------------------------------------------
-		//TODO revisar entrega de String
-		public ArrayList<Oferta> getOfertasPopulares() throws Exception 
-		{
-			DAOOferta daoOferta = new DAOOferta( );
-			try
-			{
-				this.conn = darConexion();
-				daoOferta.setConn( conn );
-				return daoOferta.getOfertasPopulares();
 			}
-			catch (SQLException sqlException) {
-				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
-				sqlException.printStackTrace();
-				throw sqlException;
-			} 
-			catch (Exception exception) {
-				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			} 
-			finally {
-				try {
-					daoOferta.cerrarRecursos();
-					if(this.conn!=null){
-						this.conn.close();					
-					}
-				}
-				catch (SQLException exception) {
-					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
-					exception.printStackTrace();
-					throw exception;
-				}
-			}	
-		}
+		}	
+	}
 
-		//-----------------------------------------------------------------------------------------------------------------------
-		//TODO RFC3
-		//-----------------------------------------------------------------------------------------------------------------------
-
-		/**
-		 * El método retorna las ganancias del año para el proveedor
-		 */
-		public String getIndiceOcupacion(Long idAlojamiento) throws Exception 
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC2 
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO revisar entrega de String
+	public ArrayList<Oferta> getOfertasPopulares() throws Exception 
+	{
+		DAOOferta daoOferta = new DAOOferta( );
+		try
 		{
-			DAOAlojamiento daoAlojamiento = new DAOAlojamiento( );
-			try
-			{
-				this.conn = darConexion();
-				daoAlojamiento.setConn( conn );
-				if(daoAlojamiento.findAlojamientoById(idAlojamiento) == null) {
-					throw new Exception("No existe un operador con ese identificador");
-				}else {
-					return daoAlojamiento.getIndiceOcupacion(idAlojamiento);
+			this.conn = darConexion();
+			daoOferta.setConn( conn );
+			return daoOferta.getOfertasPopulares();
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				daoOferta.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
 				}
 			}
-			catch (SQLException sqlException) {
-				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
-				sqlException.printStackTrace();
-				throw sqlException;
-			} 
-			catch (Exception exception) {
-				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
 				exception.printStackTrace();
 				throw exception;
-			} 
-			finally {
-				try {
-					daoAlojamiento.cerrarRecursos();
-					if(this.conn!=null){
-						this.conn.close();					
-					}
-				}
-				catch (SQLException exception) {
-					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
-					exception.printStackTrace();
-					throw exception;
-				}
-			}	
-		}
-
-		//-----------------------------------------------------------------------------------------------------------------------
-		//TODO RFC4
-		//-----------------------------------------------------------------------------------------------------------------------
-
-		/**
-		 * El método retorna las ganancias del año para el proveedor
-		 */
-		public ArrayList<Alojamiento> getViviendasEspecificaciones(String fechaI, String fechaF, ArrayList<String> servicios) throws Exception 
-		{
-			DAOAlojamiento daoAlojamiento = new DAOAlojamiento( );
-			try
-			{
-				this.conn = darConexion();
-				daoAlojamiento.setConn( conn );
-				return daoAlojamiento.alojamientosFechaServicios(fechaI, fechaF, servicios);
 			}
-			catch (SQLException sqlException) {
-				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
-				sqlException.printStackTrace();
-				throw sqlException;
-			} 
-			catch (Exception exception) {
-				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+		}	
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC3
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * El método retorna las ganancias del año para el proveedor
+	 */
+	public String getIndiceOcupacion(Long idAlojamiento) throws Exception 
+	{
+		DAOAlojamiento daoAlojamiento = new DAOAlojamiento( );
+		try
+		{
+			this.conn = darConexion();
+			daoAlojamiento.setConn( conn );
+			if(daoAlojamiento.findAlojamientoById(idAlojamiento) == null) {
+				throw new Exception("No existe un operador con ese identificador");
+			}else {
+				return daoAlojamiento.getIndiceOcupacion(idAlojamiento);
+			}
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				daoAlojamiento.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
 				exception.printStackTrace();
 				throw exception;
-			} 
-			finally {
-				try {
-					daoAlojamiento.cerrarRecursos();
-					if(this.conn!=null){
-						this.conn.close();					
-					}
-				}
-				catch (SQLException exception) {
-					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
-					exception.printStackTrace();
-					throw exception;
-				}
-			}	
+			}
+		}	
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC4
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * El método retorna las ganancias del año para el proveedor
+	 */
+	public ArrayList<Alojamiento> getViviendasEspecificaciones(String fechaI, String fechaF, ArrayList<String> servicios) throws Exception 
+	{
+		DAOAlojamiento daoAlojamiento = new DAOAlojamiento( );
+		try
+		{
+			this.conn = darConexion();
+			daoAlojamiento.setConn( conn );
+			return daoAlojamiento.alojamientosFechaServicios(fechaI, fechaF, servicios);
 		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				daoAlojamiento.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
 
 	//-----------------------------------------------------------------------------------------------------------------------
 	//TODO RFC5
@@ -892,4 +892,42 @@ public class AlohAndesTransactionManager {
 		}	
 	}
 
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC8
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	public ArrayList<Cliente> getConsumo(Long id) throws Exception 
+	{
+		DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
+		try
+		{
+			this.conn = darConexion();
+			daoAlojamiento.setConn( conn );
+			return daoAlojamiento.getClientesFrecuentes(id);
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				daoAlojamiento.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
 }

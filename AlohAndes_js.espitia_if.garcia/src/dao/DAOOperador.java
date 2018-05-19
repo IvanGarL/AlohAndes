@@ -427,4 +427,51 @@ public class DAOOperador {
 		return op;
 	}
 
+	
+	
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	public Operador getMasSolicitado() throws SQLException{
+		StringBuilder sql = new StringBuilder();
+		
+		//ESTA MAL ÑERO
+		sql.append("SELECT * FROM"); 
+		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.IDOPERADOR", USUARIO));
+		sql.append(String.format("FROM %s.OFERTASRESERVAS, %s.OFERTAS", USUARIO));
+		sql.append(String.format("WHERE %s.OFERTASRESERVAS.IDOFERTA = %s.OFERTAS.ID", USUARIO)); 
+		sql.append(String.format("group by %s.OFERTAS.IDOPERADOR",USUARIO));
+		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) DESC), %s.OPERADORES", USUARIO)); 
+		sql.append(String.format("WHERE IDOPERADOR = %s.OPERADORES.ID", USUARIO));
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+		if(rs.next()){
+			return convertResultSetToOperador(rs);
+		}
+		return null;
+	}
+	
+	public Operador getMenosSolicitado() throws SQLException{
+		StringBuilder sql = new StringBuilder();
+		
+		
+		// ESTA MAL ÑERO
+		sql.append("SELECT * FROM"); 
+		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.IDOPERADOR", USUARIO));
+		sql.append(String.format("FROM %s.OFERTASRESERVAS, %s.OFERTAS", USUARIO));
+		sql.append(String.format("WHERE %s.OFERTASRESERVAS.IDOFERTA = %s.OFERTAS.ID", USUARIO)); 
+		sql.append(String.format("group by %s.OFERTAS.IDOPERADOR",USUARIO));
+		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) ASC), %s.OPERADORES", USUARIO)); 
+		sql.append(String.format("WHERE IDOPERADOR = %s.OPERADORES.ID", USUARIO));
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+		if(rs.next()){
+			return convertResultSetToOperador(rs);
+		}
+		return null;
+	}
 }

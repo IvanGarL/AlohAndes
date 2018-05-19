@@ -233,4 +233,53 @@ public class DAOOferta {
 
 		return of;
 	}
+	
+	
+	
+	
+	
+	
+	
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	public Oferta getOfertaMasOcupada() throws SQLException{
+		
+		StringBuilder sql = new StringBuilder("SELECT * FROM"); 
+		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.ID, %s.OFERTAS.IDOPERADOR, %s.OFERTAS.IDALOJAMIENTO, %s.OFERTAS.COSTO, %s.OFERTAS.ESTADO, %s.OFERTAS.NOMBRE", USUARIO));
+		sql.append(String.format("FROM %s.OFERTASRESERVAS, %s.OFERTAS", USUARIO));
+		sql.append(String.format("WHERE %s.OFERTASRESERVAS.IDOFERTA = %s.OFERTAS.ID", USUARIO)); 
+		sql.append(String.format("group by %s.OFERTAS.ID, %s.OFERTAS.IDOPERADOR, %s.OFERTAS.IDALOJAMIENTO, %s.OFERTAS.COSTO, %s.OFERTAS.ESTADO, %s.OFERTAS.NOMBRE", USUARIO));
+		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) DESC), %sALOJAMIENTOS", USUARIO)); 
+		sql.append(String.format("WHERE ROWNUM = 1 AND IDALOJAMIENTO = %s.ALOJAMIENTOS.ID", USUARIO));
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+		if(rs.next()){
+			return convertResultSetToOferta(rs);
+		}
+		return null;
+	}
+	
+	public Oferta getOfertaMenosOcupada() throws SQLException{
+		
+		StringBuilder sql = new StringBuilder("SELECT * FROM"); 
+		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.ID, %s.OFERTAS.IDOPERADOR, %s.OFERTAS.IDALOJAMIENTO, %s.OFERTAS.COSTO, %s.OFERTAS.ESTADO, %s.OFERTAS.NOMBRE", USUARIO));
+		sql.append(String.format("FROM %s.OFERTASRESERVAS, %s.OFERTAS", USUARIO));
+		sql.append(String.format("WHERE %s.OFERTASRESERVAS.IDOFERTA = %s.OFERTAS.ID", USUARIO)); 
+		sql.append(String.format("group by %s.OFERTAS.ID, %s.OFERTAS.IDOPERADOR, %s.OFERTAS.IDALOJAMIENTO, %s.OFERTAS.COSTO, %s.OFERTAS.ESTADO, %s.OFERTAS.NOMBRE", USUARIO));
+		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) ASC), %sALOJAMIENTOS", USUARIO)); 
+		sql.append(String.format("WHERE ROWNUM = 1 AND IDALOJAMIENTO = %s.ALOJAMIENTOS.ID", USUARIO));
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+		if(rs.next()){
+			return convertResultSetToOferta(rs);
+		}
+		return null;
+	}
+	
 }
