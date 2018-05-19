@@ -104,7 +104,6 @@ public class DAOAlojamiento {
 
 		//		FALTA SACAR TODA LA INFO CORRESPONDIENTE A ESTE ALOJAMIENTO EN LAS OTRAS TABLAS
 		//		String sqlPr = String.format("DELETE FROM %1$s.OFERTAS WHERE ALOJAMIENTO = %2$d", USUARIO, alojamiento.getId());
-		//		
 		//		PreparedStatement prepStmtPr = conn.prepareStatement(sqlPr);
 		//		recursos.add(prepStmtPr);
 		//		prepStmtPr.executeQuery();

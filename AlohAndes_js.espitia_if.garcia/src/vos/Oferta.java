@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class Oferta {
+public class Oferta{
 
 	@JsonProperty(value="id")
 	private Long id;
