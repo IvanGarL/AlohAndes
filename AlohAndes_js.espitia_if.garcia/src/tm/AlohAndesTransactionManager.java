@@ -1159,4 +1159,153 @@ public class AlohAndesTransactionManager {
 			}
 		}	
 	}
+
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC12 - OfertasMasOcupadasPorSemana
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	public Oferta[] getOfertasMasOcupacionSemanal() throws SQLException {
+		DAOOferta dao = new DAOOferta();
+		try
+		{
+			this.conn = darConexion();
+			dao.setConn( conn );
+			return dao.getOfertaMasOcupada();
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC12 - OfertasMenosOcupadasPorSemana
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	public Oferta[] getOfertasMenosOcupacionSemanal() throws SQLException {
+		DAOOferta dao = new DAOOferta();
+		try
+		{
+			this.conn = darConexion();
+			dao.setConn( conn );
+			return dao.getOfertaMenosOcupada();
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC12 - Operador mas solicitado por semana
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	public Operador[] getOperadorMasSolicitadoSemanal() throws SQLException {
+		DAOOperador dao = new DAOOperador();
+		try
+		{
+			this.conn = darConexion();
+			dao.setConn( conn );
+			return dao.getMasSolicitado();
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC12 - Operador menos solicitado por semana
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	public Operador[] getOperadorMenosSolicitadoSemanal() throws SQLException {
+		DAOOperador dao = new DAOOperador();
+		try
+		{
+			this.conn = darConexion();
+			dao.setConn( conn );
+			return dao.getMenosSolicitado();
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
 }

@@ -45,11 +45,11 @@ public class DAOOferta {
 
 		return reservas;
 	}
-	
+
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// TODO RFC2
 	//----------------------------------------------------------------------------------------------------------------------------------
-		
+
 	public ArrayList<Oferta> getOfertasPopulares() throws SQLException, Exception {
 		ArrayList<Oferta> reservas = new ArrayList<Oferta>();
 
@@ -63,7 +63,7 @@ public class DAOOferta {
 		while (rs.next()) {
 			reservas.add(convertResultSetToOferta(rs));
 		}
-		
+
 		return reservas;
 	}
 
@@ -82,8 +82,8 @@ public class DAOOferta {
 
 		return oferta;
 	}
-	
-	
+
+
 	public void addOferta(Oferta oferta) throws SQLException, Exception {
 
 		String sql = String.format("INSERT INTO %1$s.OFERTAS (ID, COSTO, FECHARETIRO, NOMBRE, OPERADOR, ALOJAMIENTO) VALUES (%2$s ,%3$s, '%4$s', '5$s', '%6$s')", 
@@ -109,7 +109,7 @@ public class DAOOferta {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %1$s.OFERTAS SET ESTADO = '%2$s", USUARIO, oferta.getEstado()));
-		
+
 		if(oferta.getEstado()=="deshabilitado"){
 			cambiarReservas(oferta);
 		}
@@ -122,7 +122,7 @@ public class DAOOferta {
 	}
 
 	private void cambiarReservas(Oferta oferta) {
-		
+
 	}
 
 	/*
@@ -138,7 +138,7 @@ public class DAOOferta {
 		ResultSet rsSelect = prepStmtSelect.executeQuery();
 		Alojamiento alo = daoAl.convertResultSetToAlojamiento(rsSelect);
 		System.out.println(eliminarOfertaEspecifica(alo));
-		
+
 		//Elimina de la tabla de alojamientos
 		String sqlAlojamientos = String.format("DELETE FROM %1$s.ALOJAMIENTOS WHERE ALOJAMIENTO.ID = %2$d", USUARIO, oferta.getIdAlojamiento());
 		PreparedStatement prepStmtAlojamientos = conn.prepareStatement(sqlAlojamientos);
@@ -152,7 +152,7 @@ public class DAOOferta {
 		recursos.add(prepStmtJoinAlRe);
 		prepStmtJoinAlRe.executeQuery();
 		System.out.println(sqlJoinAlRe);
-		
+
 		//Elimina de la tabla de ofertas
 		String sqlfinal = String.format("DELETE FROM %1$s.OFERTAS WHERE ID = %2$d", USUARIO, oferta.getId());
 		PreparedStatement prepStmtfinal = conn.prepareStatement(sqlfinal);
@@ -160,7 +160,7 @@ public class DAOOferta {
 		prepStmtfinal.executeQuery();
 		System.out.println(sqlfinal);
 	}
-	
+
 	private String eliminarOfertaEspecifica(Alojamiento alo) throws SQLException{
 		String tabla = "no";
 		switch (alo.getTipo()) {
@@ -233,37 +233,48 @@ public class DAOOferta {
 
 		return of;
 	}
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	public Oferta getOfertaMasOcupada() throws SQLException{
-		
-		StringBuilder sql = new StringBuilder("SELECT * FROM"); 
-		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.ID, %s.OFERTAS.IDOPERADOR, %s.OFERTAS.IDALOJAMIENTO, %s.OFERTAS.COSTO, %s.OFERTAS.ESTADO, %s.OFERTAS.NOMBRE", USUARIO));
-		sql.append(String.format("FROM %s.OFERTASRESERVAS, %s.OFERTAS", USUARIO));
-		sql.append(String.format("WHERE %s.OFERTASRESERVAS.IDOFERTA = %s.OFERTAS.ID", USUARIO)); 
-		sql.append(String.format("group by %s.OFERTAS.ID, %s.OFERTAS.IDOPERADOR, %s.OFERTAS.IDALOJAMIENTO, %s.OFERTAS.COSTO, %s.OFERTAS.ESTADO, %s.OFERTAS.NOMBRE", USUARIO));
-		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) DESC), %sALOJAMIENTOS", USUARIO)); 
-		sql.append(String.format("WHERE ROWNUM = 1 AND IDALOJAMIENTO = %s.ALOJAMIENTOS.ID", USUARIO));
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
-		
-		if(rs.next()){
-			return convertResultSetToOferta(rs);
+
+	public Oferta[] getOfertaMasOcupada() throws SQLException{
+
+		Oferta[] resp = new Oferta[53];
+
+		for(int i = 0; i < 53; i++) {
+			PreparedStatement prepStmt = conn.prepareStatement(masOcupadaSemana(i));
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			if(rs.next()) {
+				resp[i] = convertResultSetToOferta(rs);
+			}
 		}
-		return null;
+
+		return resp;
 	}
-	
-	public Oferta getOfertaMenosOcupada() throws SQLException{
-		
+
+	public Oferta[] getOfertaMenosOcupada() throws SQLException{
+
+		Oferta[] resp = new Oferta[53];
+
+		for(int i = 0; i < 53; i++) {
+			PreparedStatement prepStmt = conn.prepareStatement(menosOcupadaSemana(i));
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			if(rs.next()) {
+				resp[i] = convertResultSetToOferta(rs);
+			}
+		}
+
+		return resp;
+	}
+
+	private String menosOcupadaSemana(int semana) {
 		StringBuilder sql = new StringBuilder("SELECT * FROM"); 
 		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.ID, %s.OFERTAS.IDOPERADOR, %s.OFERTAS.IDALOJAMIENTO, %s.OFERTAS.COSTO, %s.OFERTAS.ESTADO, %s.OFERTAS.NOMBRE", USUARIO));
 		sql.append(String.format("FROM %s.OFERTASRESERVAS, %s.OFERTAS", USUARIO));
@@ -271,15 +282,17 @@ public class DAOOferta {
 		sql.append(String.format("group by %s.OFERTAS.ID, %s.OFERTAS.IDOPERADOR, %s.OFERTAS.IDALOJAMIENTO, %s.OFERTAS.COSTO, %s.OFERTAS.ESTADO, %s.OFERTAS.NOMBRE", USUARIO));
 		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) ASC), %sALOJAMIENTOS", USUARIO)); 
 		sql.append(String.format("WHERE ROWNUM = 1 AND IDALOJAMIENTO = %s.ALOJAMIENTOS.ID", USUARIO));
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
-		
-		if(rs.next()){
-			return convertResultSetToOferta(rs);
-		}
-		return null;
+		return sql.toString();
 	}
-	
+
+	private String masOcupadaSemana(int semana) {
+		StringBuilder sql = new StringBuilder("SELECT * FROM"); 
+		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.ID, %s.OFERTAS.IDOPERADOR, %s.OFERTAS.IDALOJAMIENTO, %s.OFERTAS.COSTO, %s.OFERTAS.ESTADO, %s.OFERTAS.NOMBRE", USUARIO));
+		sql.append(String.format("FROM %s.OFERTASRESERVAS, %s.OFERTAS", USUARIO));
+		sql.append(String.format("WHERE %s.OFERTASRESERVAS.IDOFERTA = %s.OFERTAS.ID", USUARIO)); 
+		sql.append(String.format("group by %s.OFERTAS.ID, %s.OFERTAS.IDOPERADOR, %s.OFERTAS.IDALOJAMIENTO, %s.OFERTAS.COSTO, %s.OFERTAS.ESTADO, %s.OFERTAS.NOMBRE", USUARIO));
+		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) DESC), %sALOJAMIENTOS", USUARIO)); 
+		sql.append(String.format("WHERE ROWNUM = 1 AND IDALOJAMIENTO = %s.ALOJAMIENTOS.ID", USUARIO));
+		return sql.toString();
+	}
 }

@@ -189,7 +189,7 @@ public class DAOOperador {
 		PreparedStatement prepStmtServicios = conn.prepareStatement(sqlServicios);
 		recursos.add(prepStmtServicios);
 		prepStmtServicios.executeQuery();
-		
+
 		String sqlPr = String.format("DELETE FROM %1$s.OFERTAS WHERE IDOPERADOR = %2$d",
 				USUARIO, operador.getId());
 
@@ -218,22 +218,22 @@ public class DAOOperador {
 		prepStmt.executeQuery();
 		conn.commit();
 	}
-	
+
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// TODO RFC5
 	//----------------------------------------------------------------------------------------------------------------------------------
 
 	public String getUso(Long id) throws SQLException, Exception {
-		
+
 		String resp = "";
 		PreparedStatement prepStmt = conn.prepareStatement(String.format("Select tipo from %1$s.operadores where id = %2$s.", USUARIO, id));
 		recursos.add(prepStmt);
 		ResultSet tipoSet = prepStmt.executeQuery();
 		if(tipoSet.next()) {
 			String tipo = tipoSet.getString("tipo");			
-			
+
 			resp = "El operador con id " + id + ", que es un "+ tipo +", tiene:\n";
-			
+
 			String sqlHot = String.format("select count(*)as numreservas, sum(cobro) as totalRecibido \r\n" + 
 					"from %1$s.operadores inner join %1$s.reservas on %1$s.operadores.id = idoperador \r\n" + 
 					"where idoperador = %2$s", USUARIO, id);
@@ -241,20 +241,20 @@ public class DAOOperador {
 			recursos.add(prepStmth);
 			ResultSet hotSet = prepStmth.executeQuery();
 			resp += (hotSet.getInt("numreservas") + " reservas, que se reparten entre sus ");
-			
+
 			String sqlhabs = String.format("select count(*) as numofertas\r\n" + 
 					"from %1$s.ofertas\r\n" + 
 					"where idoperador = %2$s", USUARIO, id);
 			PreparedStatement pf = conn.prepareStatement(sqlhabs);
 			recursos.add(pf);
 			ResultSet alojsSet = pf.executeQuery();
-			
+
 			resp+=(alojsSet.getInt("numofertas") + " ofertas de habitaciones\n y que le han generado $"+hotSet.getInt("totalRecibido"));
-		
+
 		}else {
 			throw new Exception("No existe el operador con ese id");
 		}
-		
+
 		return resp;
 	}
 
@@ -427,35 +427,40 @@ public class DAOOperador {
 		return op;
 	}
 
-	
-	
+
+
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	public Operador getMasSolicitado() throws SQLException{
-		StringBuilder sql = new StringBuilder();
-		
-		//ESTA MAL ÑERO
-		sql.append("SELECT * FROM"); 
-		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.IDOPERADOR", USUARIO));
-		sql.append(String.format("FROM %s.OFERTASRESERVAS, %s.OFERTAS", USUARIO));
-		sql.append(String.format("WHERE %s.OFERTASRESERVAS.IDOFERTA = %s.OFERTAS.ID", USUARIO)); 
-		sql.append(String.format("group by %s.OFERTAS.IDOPERADOR",USUARIO));
-		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) DESC), %s.OPERADORES", USUARIO)); 
-		sql.append(String.format("WHERE IDOPERADOR = %s.OPERADORES.ID", USUARIO));
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
-		
-		if(rs.next()){
-			return convertResultSetToOperador(rs);
+	public Operador[] getMasSolicitado() throws SQLException{
+
+		Operador[] resp = new Operador[53];
+		for(int i=1; i < 53; i++) {
+			PreparedStatement prepStmt = conn.prepareStatement(masSolicitadoSemana(i));
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			if(rs.next()){
+				resp[i] = convertResultSetToOperador(rs);
+			}
 		}
-		return null;
+		return resp;
 	}
-	
-	public Operador getMenosSolicitado() throws SQLException{
+
+	public Operador[] getMenosSolicitado() throws SQLException{
+		Operador[] resp = new Operador[53];
+		for(int i=1; i < 53; i++) {
+			PreparedStatement prepStmt = conn.prepareStatement(menosSolicitadoSemana(i));
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			if(rs.next()){
+				resp[i] = convertResultSetToOperador(rs);
+			}
+		}
+		return resp;
+	}
+
+	private String menosSolicitadoSemana(int i) {
 		StringBuilder sql = new StringBuilder();
-		
-		
+
+
 		// ESTA MAL ÑERO
 		sql.append("SELECT * FROM"); 
 		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.IDOPERADOR", USUARIO));
@@ -464,15 +469,21 @@ public class DAOOperador {
 		sql.append(String.format("group by %s.OFERTAS.IDOPERADOR",USUARIO));
 		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) ASC), %s.OPERADORES", USUARIO)); 
 		sql.append(String.format("WHERE IDOPERADOR = %s.OPERADORES.ID", USUARIO));
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
-		
-		if(rs.next()){
-			return convertResultSetToOperador(rs);
-		}
-		return null;
+
+		return sql.toString();
 	}
-	
+
+	private String masSolicitadoSemana(int semana) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("SELECT * FROM"); 
+		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.IDOPERADOR", USUARIO));
+		sql.append(String.format("FROM %s.OFERTASRESERVAS, %s.OFERTAS", USUARIO));
+		sql.append(String.format("WHERE %s.OFERTASRESERVAS.IDOFERTA = %s.OFERTAS.ID", USUARIO)); 
+		sql.append(String.format("group by %s.OFERTAS.IDOPERADOR",USUARIO));
+		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) DESC), %s.OPERADORES", USUARIO)); 
+		sql.append(String.format("WHERE IDOPERADOR = %s.OPERADORES.ID", USUARIO));
+
+		return sql.toString();
+	}
 }

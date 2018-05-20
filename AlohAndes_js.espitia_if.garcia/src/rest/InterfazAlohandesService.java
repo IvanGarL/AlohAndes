@@ -71,12 +71,12 @@ public class InterfazAlohandesService{
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/RFC10/{idAlojamiento:[0-9]}/{fechaI:[0-3][0-9]-[0-1][0-9]-[0-9][0-9][0-9][0-9]}/to/{fechaF:[0-3][0-9]/[0-1][0-9]/[0-9][0-9][0-9][0-9]}/ord/{order:[a-z]}/{tipoOrd:[a-s]}/{group:[a-z]}")
-	public Response rfc10(@PathParam("idAlojamiento") Long idAlojamiento,
-			@PathParam("fechaI") String fechaInicio,
-			@PathParam("fechaF") String fechaFin,  
-			@PathParam("order") String ordenamiento,
-			@PathParam("tipoOrd") String tipoOrd,
+	@Path("/RFC10")
+	public Response rfc10(@QueryParam("idAlojamiento") Long idAlojamiento,
+			@QueryParam("fechaI") String fechaInicio,
+			@QueryParam("fechaF") String fechaFin,  
+			@QueryParam("order") String ordenamiento,
+			@QueryParam("tipoOrd") String tipoOrd,
 			@PathParam("group") String agrupamiento) {
 
 		// TODO Requerimiento 3C: Implemente el metodo a partir de los ejemplos
@@ -98,13 +98,13 @@ public class InterfazAlohandesService{
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/RFC10/{idAlojamiento:[0-9]}/{fechaI:[0-3][0-9]-[0-1][0-9]-[0-9][0-9][0-9][0-9]}/to/{fechaF:[0-3][0-9]/[0-1][0-9]/[0-9][0-9][0-9][0-9]}/ord/{order:[a-z]}/{tipoOrd:[a-s]}/{group:[a-z]}/{operador:[0-9]}")
-	public Response rfc10Prov(@PathParam("idAlojamiento") Long idAlojamiento,
-			@PathParam("fechaI") String fechaInicio,
-			@PathParam("fechaF") String fechaFin,  
-			@PathParam("order") String ordenamiento,
-			@PathParam("tipoOrd") String tipoOrd,
-			@PathParam("group") String agrupamiento, 
+	@Path("/RFC10/{idOperador:[0-9]}")
+	public Response rfc10Prov(@QueryParam("idAlojamiento") Long idAlojamiento,
+			@QueryParam("fechaI") String fechaInicio,
+			@QueryParam("fechaF") String fechaFin,  
+			@QueryParam("order") String ordenamiento,
+			@QueryParam("tipoOrd") String tipoOrd,
+			@QueryParam("group") String agrupamiento, 
 			@PathParam("idOperador") Long idOperador) {
 
 		// TODO Requerimiento 3C: Implemente el metodo a partir de los ejemplos
@@ -126,7 +126,7 @@ public class InterfazAlohandesService{
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/RFC11/{idAlojamiento:[0-9]}/{fechaI:[0-3][0-9]-[0-1][0-9]-[0-9][0-9][0-9][0-9]}/to/{fechaF:[0-3][0-9]/[0-1][0-9]/[0-9][0-9][0-9][0-9]}/ord/{order:[a-z]}/{tipoOrd:[a-s]}/{group:[a-z]}")
+	@Path("/RFC11")
 	public Response rfc11(@PathParam("idAlojamiento") Long idAlojamiento,
 			@PathParam("fechaI") String fechaInicio,
 			@PathParam("fechaF") String fechaFin,  
@@ -153,13 +153,13 @@ public class InterfazAlohandesService{
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/RFC11/{idAlojamiento:[0-9]}/{fechaI:[0-3][0-9]-[0-1][0-9]-[0-9][0-9][0-9][0-9]}/to/{fechaF:[0-3][0-9]/[0-1][0-9]/[0-9][0-9][0-9][0-9]}/ord/{order:[a-z]}/{tipoOrd:[a-s]}/{group:[a-z]}/{idOperador:[0-9]}")
-	public Response rfc11Prov(@PathParam("idAlojamiento") Long idAlojamiento,
-			@PathParam("fechaI") String fechaInicio,
-			@PathParam("fechaF") String fechaFin,  
-			@PathParam("order") String ordenamiento,
-			@PathParam("tipoOrd") String tipoOrd,
-			@PathParam("group") String agrupamiento,
+	@Path("/RFC11/{idOperador:[0-9]}")
+	public Response rfc11Prov(@QueryParam("idAlojamiento") Long idAlojamiento,
+			@QueryParam("fechaI") String fechaInicio,
+			@QueryParam("fechaF") String fechaFin,  
+			@QueryParam("order") String ordenamiento,
+			@QueryParam("tipoOrd") String tipoOrd,
+			@QueryParam("group") String agrupamiento,
 			@PathParam("idOperador") Long idOperador) {
 
 		// TODO Requerimiento 3C: Implemente el metodo a partir de los ejemplos
@@ -180,7 +180,7 @@ public class InterfazAlohandesService{
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/suites")
+	@Path("clientes/suites")
 	public Response getGomelos() {
 
 		// TODO Requerimiento 3C: Implemente el metodo a partir de los ejemplos
@@ -198,11 +198,9 @@ public class InterfazAlohandesService{
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/cadaMes")
+	@Path("clientes/cadaMes")
 	public Response getFirmes() {
 
-		// TODO Requerimiento 3C: Implemente el metodo a partir de los ejemplos
-		// anteriores y utilizando el Transaction Manager de Parranderos
 		try {
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
 			ArrayList<Cliente> cl = tm.getClientesReservanMensual();
@@ -216,14 +214,75 @@ public class InterfazAlohandesService{
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/costoso")
+	@Path("clientes/costoso")
 	public Response getLuqueados() {
 
-		// TODO Requerimiento 3C: Implemente el metodo a partir de los ejemplos
-		// anteriores y utilizando el Transaction Manager de Parranderos
 		try {
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
 			ArrayList<Cliente> cl = tm.getClientesReservanCaro();
+			
+			return Response.status(200).entity(cl).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/ofertas/masOcupadaxsem")
+	public Response getOfertaMasOcupacionSemanal() {
+
+		try {
+			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+			Oferta[] cl = tm.getOfertasMasOcupacionSemanal();
+			
+			return Response.status(200).entity(cl).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
+	
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/ofertas/menosOcupadaxsem")
+	public Response getOfertaMenosOcupacionSemanal() {
+
+		try {
+			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+			Oferta[] cl = tm.getOfertasMenosOcupacionSemanal();
+			
+			return Response.status(200).entity(cl).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
+	
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/operadores/masSolicitadoxsem")
+	public Response getOperadorMasSolicitadoSemanal() {
+
+		try {
+			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+			Operador[] cl = tm.getOperadorMasSolicitadoSemanal();
+			
+			return Response.status(200).entity(cl).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
+	
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/operadores/menosSolicitadoxsem")
+	public Response getOperadorMenosSolicitadoSemanal() {
+
+		try {
+			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+			Operador[] cl = tm.getOperadorMenosSolicitadoSemanal();
 			
 			return Response.status(200).entity(cl).build();
 		} catch (Exception e) {
