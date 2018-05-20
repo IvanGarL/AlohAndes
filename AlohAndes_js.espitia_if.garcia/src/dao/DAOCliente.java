@@ -383,7 +383,8 @@ public class DAOCliente extends DAOUsuario{
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("SELECT * FROM"); 
-		sql.append("\r\n (SELECT IDCLIENTE, (TO_CHAR(FECHAREALIZACION-365, 'MM'))\r\n"); 
+		//en la siguiente se puede intentar poner el distinct
+		sql.append("\r\n (SELECT IDCLIENTE,(TO_CHAR(FECHAREALIZACION-365, 'MM'))\r\n"); 
 		sql.append(String.format("FROM %s.RESERVAS \r\n", USUARIO)); 
 		sql.append("WHERE FECHAREALIZACION >= (TO_CHAR(SYSDATE-365, 'DD-MM-YYYY')) \r\n"); 
 		sql.append("group by IDCLIENTE, FECHAREALIZACION, (TO_CHAR(FECHAREALIZACION-365, 'MM'))\r\n"); 
