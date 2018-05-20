@@ -234,15 +234,15 @@ public class DAOCliente extends DAOUsuario{
 	
 	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
-	public List<Cliente> getConsumoRFC10(Date fechaInicio, Date fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento) throws SQLException{
-		List<Cliente> resp = new ArrayList<>();
+	public ArrayList<Cliente> getConsumoRFC10(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento) throws SQLException{
+		ArrayList<Cliente> resp = new ArrayList<>();
 		
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * FROM ");
 		sql.append(String.format("(SELECT %s.RESERVAS.ID AS IDRESERVA, COBRO, ESTADO, FECHAINICIO, FECHAFIN, FECHAREALIZACION, IDCLIENTE, COLECTIVA, %s.CLIENTES.ID, CEDULA, NOMBRE, EDAD, TELEFONO", USUARIO));
         sql.append(String.format("FROM %s.RESERVAS INNER JOIN %s.CLIENTES ON %s.CLIENTES.ID = %s.RESERVAS.IDCLIENTE", USUARIO)); 
-        sql.append(String.format("WHERE FECHAREALIZACION >='%1$s/%2$s/%3$s' AND FECHAREALIZACION <= '%4%s/%5$s/%6$s') T1", 
-        		fechaInicio.getDate(), fechaInicio.getMonth(), fechaInicio.getYear(), fechaFin.getDate(), fechaFin.getMonth(), fechaFin.getYear()));
+        sql.append(String.format("WHERE FECHAREALIZACION >='%1$s' AND FECHAREALIZACION <= '%2%s') T1", 
+        		fechaInicio, fechaFin));
         sql.append("INNER JOIN");
         sql.append(String.format("(SELECT * FROM %s.OFERTASRESERVAS INNER JOIN %s.OFERTAS ON %s.OFERTAS.ID = %s.OFERTASRESERVAS.IDOFERTA", USUARIO));
         sql.append(String.format("WHERE %1$s.OFERTAS.IDALOJAMIENTO = %2$s) T2", USUARIO, idAlojamiento));
@@ -268,8 +268,81 @@ public class DAOCliente extends DAOUsuario{
 		return resp;
 	}
 	
-	public List<Cliente> getConsumoRFC11(Date fechaInicio, Date fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento) throws SQLException{
-		List<Cliente> resp = new ArrayList<>();
+	public ArrayList<Cliente> getConsumoRFC11(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento) throws SQLException{
+		ArrayList<Cliente> resp = new ArrayList<>();
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append(String.format("SELECT * FROM %s.CLIENTES, %.RESERVAS WHERE %s.CLIENTES.id NOT IN ", USUARIO));
+		sql.append("(SELECT IDCLIENTE FROM ");
+		sql.append(String.format("(SELECT %s.RESERVAS.ID AS IDRESERVA, COBRO, ESTADO, FECHAINICIO, FECHAFIN, FECHAREALIZACION, IDCLIENTE, COLECTIVA, %s.CLIENTES.ID, CEDULA, NOMBRE, EDAD, TELEFONO", USUARIO));
+        sql.append(String.format("FROM %s.RESERVAS INNER JOIN %s.CLIENTES ON %s.CLIENTES.ID = %s.RESERVAS.IDCLIENTE", USUARIO)); 
+        sql.append(String.format("WHERE FECHAREALIZACION >='%1$s' AND FECHAREALIZACION <= '%2%s') T1", 
+        		fechaInicio, fechaFin));
+        sql.append("INNER JOIN");
+        sql.append(String.format("(SELECT * FROM %s.OFERTASRESERVAS INNER JOIN %s.OFERTAS ON %s.OFERTAS.ID = %s.OFERTASRESERVAS.IDOFERTA", USUARIO));
+        sql.append(String.format("WHERE %1$s.OFERTAS.IDALOJAMIENTO = %2$s) T2", USUARIO, idAlojamiento));
+        sql.append("ON T1.IDRESERVA = T2.IDRESERVA");
+        sql.append(String.format(") AND %s.CLIENTES.ID = %s.RESERVAS.IDCLIENTE", USUARIO));
+		
+        if(ordenamiento != null ){
+        	sql.append(String.format("ORDER BY %1$s", ordenamiento));
+        	if(tipoOrd != null){
+        		sql.append(" " + tipoOrd);
+        	}
+        }
+        if(agrupamiento != null){
+        	sql.append(String.format("GROUP BY %s ", agrupamiento));
+        }
+        
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while(rs.next()){
+			resp.add(convertResultSetToCliente(rs));
+		}
+		return resp;
+	}
+
+	public ArrayList<Cliente> getConsumoRFC10Prov(String fechaInicio, String fechaFin, Long idAlojamiento,
+			String ordenamiento, String tipoOrd, String agrupamiento, Long idProveedor) throws SQLException {
+		
+		ArrayList<Cliente> resp = new ArrayList<>();
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * FROM ");
+		sql.append(String.format("(SELECT %s.RESERVAS.ID AS IDRESERVA, COBRO, ESTADO, FECHAINICIO, FECHAFIN, FECHAREALIZACION, IDCLIENTE, COLECTIVA, %s.CLIENTES.ID, CEDULA, NOMBRE, EDAD, TELEFONO", USUARIO));
+        sql.append(String.format("FROM %s.RESERVAS INNER JOIN %s.CLIENTES ON %s.CLIENTES.ID = %s.RESERVAS.IDCLIENTE", USUARIO)); 
+        sql.append(String.format("WHERE FECHAREALIZACION >='%1$s' AND FECHAREALIZACION <= '%2%s') T1", 
+        		fechaInicio, fechaFin));
+        sql.append("INNER JOIN");
+        sql.append(String.format("(SELECT * FROM %s.OFERTASRESERVAS INNER JOIN %s.OFERTAS ON %s.OFERTAS.ID = %s.OFERTASRESERVAS.IDOFERTA", USUARIO));
+        sql.append(String.format("WHERE %1$s.OFERTAS.IDALOJAMIENTO = %2$s AND OFERTAS.IDOPERADOR = %3$s) T2", USUARIO, idAlojamiento, idProveedor));
+        sql.append("ON T1.IDRESERVA = T2.IDRESERVA");
+		
+        if(ordenamiento != null ){
+        	sql.append(String.format("ORDER BY %1$s", ordenamiento));
+        	if(tipoOrd != null){
+        		sql.append(" " + tipoOrd);
+        	}
+        }
+        if(agrupamiento != null){
+        	sql.append(String.format("GROUP BY %s ", agrupamiento));
+        }
+        
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while(rs.next()){
+			resp.add(convertResultSetToCliente(rs));
+		}
+		return resp;
+	}
+
+	public ArrayList<Cliente> getConsumoRFC11Prov(String fechaInicio, String fechaFin, Long idAlojamiento,
+			String ordenamiento, String tipoOrd, String agrupamiento, Long idProveedor) throws SQLException {
+ArrayList<Cliente> resp = new ArrayList<>();
 		
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("SELECT * FROM %s.CLIENTES, %.RESERVAS WHERE %s.CLIENTES.id NOT IN ", USUARIO));
@@ -277,10 +350,10 @@ public class DAOCliente extends DAOUsuario{
 		sql.append(String.format("(SELECT %s.RESERVAS.ID AS IDRESERVA, COBRO, ESTADO, FECHAINICIO, FECHAFIN, FECHAREALIZACION, IDCLIENTE, COLECTIVA, %s.CLIENTES.ID, CEDULA, NOMBRE, EDAD, TELEFONO", USUARIO));
         sql.append(String.format("FROM %s.RESERVAS INNER JOIN %s.CLIENTES ON %s.CLIENTES.ID = %s.RESERVAS.IDCLIENTE", USUARIO)); 
         sql.append(String.format("WHERE FECHAREALIZACION >='%1$s/%2$s/%3$s' AND FECHAREALIZACION <= '%4%s/%5$s/%6$s') T1", 
-        		fechaInicio.getDate(), fechaInicio.getMonth(), fechaInicio.getYear(), fechaFin.getDate(), fechaFin.getMonth(), fechaFin.getYear()));
+        		fechaInicio, fechaFin));
         sql.append("INNER JOIN");
         sql.append(String.format("(SELECT * FROM %s.OFERTASRESERVAS INNER JOIN %s.OFERTAS ON %s.OFERTAS.ID = %s.OFERTASRESERVAS.IDOFERTA", USUARIO));
-        sql.append(String.format("WHERE %1$s.OFERTAS.IDALOJAMIENTO = %2$s) T2", USUARIO, idAlojamiento));
+        sql.append(String.format("WHERE %1$s.OFERTAS.IDALOJAMIENTO = %2$s AND OFERTAS.IDOPERADOR = %3$s) T2", USUARIO, idAlojamiento, idProveedor));
         sql.append("ON T1.IDRESERVA = T2.IDRESERVA");
         sql.append(String.format(") AND %s.CLIENTES.ID = %s.RESERVAS.IDCLIENTE", USUARIO));
 		

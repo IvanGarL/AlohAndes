@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 
 import dao.DAOAlojamiento;
@@ -894,17 +895,17 @@ public class AlohAndesTransactionManager {
 
 
 	//-----------------------------------------------------------------------------------------------------------------------
-	//TODO RFC8
+	//TODO RFC10-admin
 	//-----------------------------------------------------------------------------------------------------------------------
 
-	public ArrayList<Cliente> getConsumo(Long id) throws Exception 
+	public ArrayList<Cliente> getConsumo(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento) throws Exception 
 	{
-		DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
+		DAOCliente dao = new DAOCliente();
 		try
 		{
 			this.conn = darConexion();
-			daoAlojamiento.setConn( conn );
-			return daoAlojamiento.getClientesFrecuentes(id);
+			dao.setConn( conn );
+			return dao.getConsumoRFC10(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento);
 		}
 		catch (SQLException sqlException) {
 			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
@@ -918,7 +919,120 @@ public class AlohAndesTransactionManager {
 		} 
 		finally {
 			try {
-				daoAlojamiento.cerrarRecursos();
+				dao.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC10-proveedor
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	public ArrayList<Cliente> getConsumoParaProveedor(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento, Long idProveedor) throws Exception 
+	{
+		DAOCliente dao = new DAOCliente();
+		try
+		{
+			this.conn = darConexion();
+			dao.setConn( conn );
+			return dao.getConsumoRFC10Prov(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento, idProveedor);
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC11-admin
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	public ArrayList<Cliente> getConsumoNoRes(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento) throws Exception 
+	{
+		DAOCliente dao = new DAOCliente();
+		try
+		{
+			this.conn = darConexion();
+			dao.setConn( conn );
+			return dao.getConsumoRFC11(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento);
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC11-proveedor
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	public ArrayList<Cliente> getConsumoNoResProveedor(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento, Long idProveedor) throws Exception 
+	{
+		DAOCliente dao = new DAOCliente();
+		try
+		{
+			this.conn = darConexion();
+			dao.setConn( conn );
+			return dao.getConsumoRFC11Prov(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento, idProveedor);
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				dao.cerrarRecursos();
 				if(this.conn!=null){
 					this.conn.close();					
 				}

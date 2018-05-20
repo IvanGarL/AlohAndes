@@ -8,10 +8,10 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="C:/Users/IvánFelipe/Documents/SISTRANS/AlohAndes/AlohAndes/WebContent/WEB-INF/ConnectionData/jackson-all-1.7.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/IvánFelipe/Documents/SISTRANS/AlohAndes/AlohAndes/WebContent/WEB-INF/ConnectionData/javax.servlet.jar"/>
-	<classpathentry kind="lib" path="C:/Users/IvánFelipe/Documents/SISTRANS/AlohAndes/AlohAndes/WebContent/WEB-INF/ConnectionData/javax.ws.rs.jar"/>
-	<classpathentry kind="lib" path="C:/Users/IvánFelipe/Documents/SISTRANS/AlohAndes/AlohAndes/WebContent/WEB-INF/ConnectionData/ojdbc6.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Juan/uniandes/Tareas/2018-1/Sistemas transaccionales/ite2/AlohAndes/AlohAndes_js.espitia_if.garcia/WebContent/WEB-INF/lib/jackson-all-1.7.5.jar"/>
+	<classpathentry kind="lib" path="C:/Juan/uniandes/Tareas/2018-1/Sistemas transaccionales/ite2/AlohAndes/AlohAndes_js.espitia_if.garcia/WebContent/WEB-INF/lib/javax.servlet.jar"/>
+	<classpathentry kind="lib" path="C:/Juan/uniandes/Tareas/2018-1/Sistemas transaccionales/ite2/AlohAndes/AlohAndes_js.espitia_if.garcia/WebContent/WEB-INF/lib/javax.ws.rs.jar"/>
+	<classpathentry kind="lib" path="C:/Juan/uniandes/Tareas/2018-1/Sistemas transaccionales/ite2/AlohAndes/AlohAndes_js.espitia_if.garcia/WebContent/WEB-INF/lib/ojdbc6.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
