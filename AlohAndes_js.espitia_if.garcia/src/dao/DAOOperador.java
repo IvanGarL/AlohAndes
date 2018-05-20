@@ -474,4 +474,25 @@ public class DAOOperador {
 		}
 		return null;
 	}
+	
+	public ArrayList<Operador> getReservanCadaMes() throws SQLException{
+		StringBuilder sql = new StringBuilder();
+		
+		// procesar esta monda
+		sql.append("SELECT * FROM"); 
+		sql.append(String.format("\r\n (SELECT IDCLIENTE, (TO_CHAR(FECHAREALIZACION-365, 'MM'))\r\n" + 
+				"FROM %s.RESERVAS \r\n" + 
+				"WHERE FECHAREALIZACION >= (TO_CHAR(SYSDATE-365, 'DD-MM-YYYY')) \r\n" + 
+				"group by IDCLIENTE, FECHAREALIZACION, (TO_CHAR(FECHAREALIZACION-365, 'MM'))\r\n" + 
+				"ORDER BY IDCLIENTE, FECHAREALIZACION;\r\n" ));
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+		if(rs.next()){
+			
+		}
+		return null;
+	}
 }
