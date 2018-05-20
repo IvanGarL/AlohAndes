@@ -1047,7 +1047,6 @@ public class AlohAndesTransactionManager {
 
 
 
-
 	//-----------------------------------------------------------------------------------------------------------------------
 	//TODO RFC13 - Clientes que reservan una vez al mes
 	//-----------------------------------------------------------------------------------------------------------------------
@@ -1098,6 +1097,43 @@ public class AlohAndesTransactionManager {
 			this.conn = darConexion();
 			dao.setConn( conn );
 			return dao.getReservanCaro();
+		}
+		catch (SQLException sqlException) {
+			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+			sqlException.printStackTrace();
+			throw sqlException;
+		} 
+		catch (Exception exception) {
+			System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+			exception.printStackTrace();
+			throw exception;
+		} 
+		finally {
+			try {
+				dao.cerrarRecursos();
+				if(this.conn!=null){
+					this.conn.close();					
+				}
+			}
+			catch (SQLException exception) {
+				System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
+	//-----------------------------------------------------------------------------------------------------------------------
+	//TODO RFC13 - Clientes que reservan solo suites gomelas
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	public ArrayList<Cliente> getClientesReservanSuites() throws Exception 
+	{
+		DAOCliente dao = new DAOCliente();
+		try
+		{
+			this.conn = darConexion();
+			dao.setConn( conn );
+			return dao.getReservanSuites();
 		}
 		catch (SQLException sqlException) {
 			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());

@@ -435,4 +435,20 @@ public class DAOCliente extends DAOUsuario{
 		}
 		return resp;
 	}
+	
+	public ArrayList<Cliente> getReservanSuites() throws SQLException{
+		ArrayList<Cliente> resp = new ArrayList<>();
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("SELECT * FROM");
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while(rs.next()){
+			resp.add(convertResultSetToCliente(rs));
+		}
+		return resp;
+	}	
 }
