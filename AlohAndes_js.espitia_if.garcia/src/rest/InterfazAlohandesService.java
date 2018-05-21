@@ -76,17 +76,15 @@ public class InterfazAlohandesService{
 			@QueryParam("fechaI") String fechaInicio,
 			@QueryParam("fechaF") String fechaFin,  
 			@QueryParam("order") String ordenamiento,
-			@QueryParam("tipoOrd") String tipoOrd,
-			@PathParam("group") String agrupamiento) {
+			@QueryParam("tipoOrd") String tipoOrd) {
 
 		// TODO Requerimiento 3C: Implemente el metodo a partir de los ejemplos
 		// anteriores y utilizando el Transaction Manager de Parranderos
 		try {
 			if(tipoOrd.equals("no")) { tipoOrd = null; }
-			if(agrupamiento.equals("no")) { agrupamiento = null; }
 			if(ordenamiento.equals("no")) { ordenamiento = null; }
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
-			ArrayList<Cliente> cl = tm.getConsumo(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento);
+			ArrayList<Cliente> cl = tm.getConsumo(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd);
 			
 			return Response.status(200).entity(cl).build();
 		} catch (Exception e) {
@@ -104,17 +102,15 @@ public class InterfazAlohandesService{
 			@QueryParam("fechaF") String fechaFin,  
 			@QueryParam("order") String ordenamiento,
 			@QueryParam("tipoOrd") String tipoOrd,
-			@QueryParam("group") String agrupamiento, 
 			@PathParam("idOperador") Long idOperador) {
 
 		// TODO Requerimiento 3C: Implemente el metodo a partir de los ejemplos
 		// anteriores y utilizando el Transaction Manager de Parranderos
 		try {
 			if(tipoOrd.equals("no")) { tipoOrd = null; }
-			if(agrupamiento.equals("no")) { agrupamiento = null; }
 			if(ordenamiento.equals("no")) { ordenamiento = null; }
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
-			ArrayList<Cliente> cl = tm.getConsumoParaProveedor(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento, idOperador);
+			ArrayList<Cliente> cl = tm.getConsumoParaProveedor(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, idOperador);
 			
 			return Response.status(200).entity(cl).build();
 		} catch (Exception e) {
@@ -131,17 +127,15 @@ public class InterfazAlohandesService{
 			@PathParam("fechaI") String fechaInicio,
 			@PathParam("fechaF") String fechaFin,  
 			@PathParam("order") String ordenamiento,
-			@PathParam("tipoOrd") String tipoOrd,
-			@PathParam("group") String agrupamiento) {
+			@PathParam("tipoOrd") String tipoOrd) {
 
 		// TODO Requerimiento 3C: Implemente el metodo a partir de los ejemplos
 		// anteriores y utilizando el Transaction Manager de Parranderos
 		try {
 			if(tipoOrd.equals("no")) { tipoOrd = null; }
-			if(agrupamiento.equals("no")) { agrupamiento = null; }
 			if(ordenamiento.equals("no")) { ordenamiento = null; }
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
-			ArrayList<Cliente> cl = tm.getConsumoNoRes(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento);
+			ArrayList<Cliente> cl = tm.getConsumoNoRes(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd);
 			
 			return Response.status(200).entity(cl).build();
 		} catch (Exception e) {
@@ -159,17 +153,15 @@ public class InterfazAlohandesService{
 			@QueryParam("fechaF") String fechaFin,  
 			@QueryParam("order") String ordenamiento,
 			@QueryParam("tipoOrd") String tipoOrd,
-			@QueryParam("group") String agrupamiento,
 			@PathParam("idOperador") Long idOperador) {
 
 		// TODO Requerimiento 3C: Implemente el metodo a partir de los ejemplos
 		// anteriores y utilizando el Transaction Manager de Parranderos
 		try {
 			if(tipoOrd.equals("no")) { tipoOrd = null; }
-			if(agrupamiento.equals("no")) { agrupamiento = null; }
 			if(ordenamiento.equals("no")) { ordenamiento = null; }
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
-			ArrayList<Cliente> cl = tm.getConsumoNoResProveedor(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento, idOperador);
+			ArrayList<Cliente> cl = tm.getConsumoNoResProveedor(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, idOperador);
 			
 			return Response.status(200).entity(cl).build();
 		} catch (Exception e) {

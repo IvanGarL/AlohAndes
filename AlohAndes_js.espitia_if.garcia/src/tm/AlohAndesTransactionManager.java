@@ -898,14 +898,14 @@ public class AlohAndesTransactionManager {
 	//TODO RFC10-admin
 	//-----------------------------------------------------------------------------------------------------------------------
 
-	public ArrayList<Cliente> getConsumo(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento) throws Exception 
+	public ArrayList<Cliente> getConsumo(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd) throws Exception 
 	{
 		DAOCliente dao = new DAOCliente();
 		try
 		{
 			this.conn = darConexion();
 			dao.setConn( conn );
-			return dao.getConsumoRFC10(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento);
+			return dao.getConsumoRFC10(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd);
 		}
 		catch (SQLException sqlException) {
 			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
@@ -936,14 +936,14 @@ public class AlohAndesTransactionManager {
 	//TODO RFC10-proveedor
 	//-----------------------------------------------------------------------------------------------------------------------
 
-	public ArrayList<Cliente> getConsumoParaProveedor(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento, Long idProveedor) throws Exception 
+	public ArrayList<Cliente> getConsumoParaProveedor(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, Long idProveedor) throws Exception 
 	{
 		DAOCliente dao = new DAOCliente();
 		try
 		{
 			this.conn = darConexion();
 			dao.setConn( conn );
-			return dao.getConsumoRFC10Prov(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento, idProveedor);
+			return dao.getConsumoRFC10Prov(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, idProveedor);
 		}
 		catch (SQLException sqlException) {
 			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
@@ -974,14 +974,14 @@ public class AlohAndesTransactionManager {
 	//TODO RFC11-admin
 	//-----------------------------------------------------------------------------------------------------------------------
 
-	public ArrayList<Cliente> getConsumoNoRes(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento) throws Exception 
+	public ArrayList<Cliente> getConsumoNoRes(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd) throws Exception 
 	{
 		DAOCliente dao = new DAOCliente();
 		try
 		{
 			this.conn = darConexion();
 			dao.setConn( conn );
-			return dao.getConsumoRFC11(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento);
+			return dao.getConsumoRFC11(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd);
 		}
 		catch (SQLException sqlException) {
 			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
@@ -1011,14 +1011,14 @@ public class AlohAndesTransactionManager {
 	//TODO RFC11-proveedor
 	//-----------------------------------------------------------------------------------------------------------------------
 
-	public ArrayList<Cliente> getConsumoNoResProveedor(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento, Long idProveedor) throws Exception 
+	public ArrayList<Cliente> getConsumoNoResProveedor(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, Long idProveedor) throws Exception 
 	{
 		DAOCliente dao = new DAOCliente();
 		try
 		{
 			this.conn = darConexion();
 			dao.setConn( conn );
-			return dao.getConsumoRFC11Prov(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, agrupamiento, idProveedor);
+			return dao.getConsumoRFC11Prov(fechaInicio, fechaFin, idAlojamiento, ordenamiento, tipoOrd, idProveedor);
 		}
 		catch (SQLException sqlException) {
 			System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());

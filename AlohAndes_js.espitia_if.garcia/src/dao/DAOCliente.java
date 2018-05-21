@@ -234,7 +234,7 @@ public class DAOCliente extends DAOUsuario{
 
 	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	public ArrayList<Cliente> getConsumoRFC10(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento) throws SQLException{
+	public ArrayList<Cliente> getConsumoRFC10(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd) throws SQLException{
 		ArrayList<Cliente> resp = new ArrayList<>();
 
 		StringBuilder sql = new StringBuilder();
@@ -254,9 +254,6 @@ public class DAOCliente extends DAOUsuario{
 				sql.append(" " + tipoOrd);
 			}
 		}
-		if(agrupamiento != null){
-			sql.append(String.format("GROUP BY %s ", agrupamiento));
-		}
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);
@@ -268,7 +265,7 @@ public class DAOCliente extends DAOUsuario{
 		return resp;
 	}
 
-	public ArrayList<Cliente> getConsumoRFC11(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd, String agrupamiento) throws SQLException{
+	public ArrayList<Cliente> getConsumoRFC11(String fechaInicio, String fechaFin, Long idAlojamiento, String ordenamiento, String tipoOrd) throws SQLException{
 		ArrayList<Cliente> resp = new ArrayList<>();
 
 		StringBuilder sql = new StringBuilder();
@@ -290,9 +287,6 @@ public class DAOCliente extends DAOUsuario{
 				sql.append(" " + tipoOrd);
 			}
 		}
-		if(agrupamiento != null){
-			sql.append(String.format("GROUP BY %s ", agrupamiento));
-		}
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);
@@ -305,7 +299,7 @@ public class DAOCliente extends DAOUsuario{
 	}
 
 	public ArrayList<Cliente> getConsumoRFC10Prov(String fechaInicio, String fechaFin, Long idAlojamiento,
-			String ordenamiento, String tipoOrd, String agrupamiento, Long idProveedor) throws SQLException {
+			String ordenamiento, String tipoOrd, Long idProveedor) throws SQLException {
 
 		ArrayList<Cliente> resp = new ArrayList<>();
 
@@ -326,9 +320,7 @@ public class DAOCliente extends DAOUsuario{
 				sql.append(" " + tipoOrd);
 			}
 		}
-		if(agrupamiento != null){
-			sql.append(String.format("GROUP BY %s ", agrupamiento));
-		}
+		
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);
@@ -341,7 +333,7 @@ public class DAOCliente extends DAOUsuario{
 	}
 
 	public ArrayList<Cliente> getConsumoRFC11Prov(String fechaInicio, String fechaFin, Long idAlojamiento,
-			String ordenamiento, String tipoOrd, String agrupamiento, Long idProveedor) throws SQLException {
+			String ordenamiento, String tipoOrd, Long idProveedor) throws SQLException {
 		ArrayList<Cliente> resp = new ArrayList<>();
 
 		StringBuilder sql = new StringBuilder();
@@ -363,9 +355,6 @@ public class DAOCliente extends DAOUsuario{
 				sql.append(" " + tipoOrd);
 			}
 		}
-		if(agrupamiento != null){
-			sql.append(String.format("GROUP BY %s ", agrupamiento));
-		}
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);
@@ -384,7 +373,7 @@ public class DAOCliente extends DAOUsuario{
 
 		sql.append("SELECT * FROM"); 
 		//en la siguiente se puede intentar poner el distinct
-		sql.append("\r\n (SELECT IDCLIENTE,(TO_CHAR(FECHAREALIZACION-365, 'MM'))\r\n"); 
+		sql.append("\r\n (SELECT IDCLIENTE,(TO_CHAR(FECHAREALIZACION-365, 'MM') as MES)\r\n"); 
 		sql.append(String.format("FROM %s.RESERVAS \r\n", USUARIO)); 
 		sql.append("WHERE FECHAREALIZACION >= (TO_CHAR(SYSDATE-365, 'DD-MM-YYYY')) \r\n"); 
 		sql.append("group by IDCLIENTE, FECHAREALIZACION, (TO_CHAR(FECHAREALIZACION-365, 'MM'))\r\n"); 
@@ -397,17 +386,21 @@ public class DAOCliente extends DAOUsuario{
 		ResultSet rs = prepStmt.executeQuery();
 
 		Long idClienteActual = new Long(-1);
-		int mesesClAc = 0;
+		boolean[] mesesAc = new boolean[12];
 		while(rs.next()){
 			if(idClienteActual != rs.getLong("IDCLIENTE")) {
 				idClienteActual = rs.getLong("IDCLIENTE");
-				if(mesesClAc == 12) {
+				int i = 0;
+				while(i < mesesAc.length && mesesAc[i]) {
+					i++;
+				}
+				if(i == mesesAc.length) {
 					resp.add(convertResultSetToCliente(rs));
 				}
-				mesesClAc = 0;
+				mesesAc = new boolean[12];
 			}
-
-			mesesClAc ++;
+			int mesActual = rs.getInt("MES")-1;
+			mesesAc[mesActual] = true;
 		}
 		return resp;
 	}
@@ -425,7 +418,7 @@ public class DAOCliente extends DAOUsuario{
 		sql.append(String.format("FROM %s.CLIENTES INNER JOIN %s.RESERVAS ON %s.CLIENTES.ID = %s.RESERVAS.IDCLIENTE", USUARIO));
 		sql.append(String.format("WHERE %s.RESERVAS.COBRO/(FECHAFIN-FECHAINICIO) >= 150", USUARIO));
 		sql.append(String.format("GROUP BY %s.clientes.id, %s.CLIENTES.CEDULA, %s.CLIENTES.EDAD, %s.CLIENTES.NOMBRE, %s.CLIENTES.TELEFONO)",USUARIO));
-		sql.append("WHERE RESERVASTOTALES = RESERVASCARAS)"); 
+		sql.append("WHERE RESERVASTOTALES <= RESERVASCARAS)"); 
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);
@@ -441,7 +434,22 @@ public class DAOCliente extends DAOUsuario{
 		ArrayList<Cliente> resp = new ArrayList<>();
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("SELECT * FROM");
+		sql.append(" SELECT * \r\n");
+		sql.append(String.format("FROM(SELECT COUNT(*) AS RESERVASTOTALES, %s.CLIENTES.ID AS CLIENTE, %s.CLIENTES.CEDULA, %s.CLIENTES.EDAD, %s.CLIENTES.NOMBRE, %s.CLIENTES.TELEFONO\r\n", USUARIO )); 
+		sql.append(String.format("  FROM %s.CLIENTES INNER JOIN %s.RESERVAS ON %s.CLIENTES.ID = %s.RESERVAS.IDCLIENTE \r\n", USUARIO)); 
+		sql.append(String.format(" GROUP BY %s.CLIENTES.ID, %s.CLIENTES.CEDULA, %s.CLIENTES.EDAD, %s.CLIENTES.NOMBRE, %s.CLIENTES.TELEFONO) T1,\r\n", USUARIO )); 
+		sql.append(" (SELECT COUNT(IDRESERVA) AS RESERVASSUITE, IDCLIENTE, CEDULA, NOMBRE, EDAD, TELEFONO \r\n"); 
+ 		sql.append(String.format(" FROM    (SELECT * FROM %s.CLIENTES INNER JOIN (SELECT ID AS RESERVA, IDCLIENTE FROM %s.RESERVAS) ON %s.CLIENTES.ID = IDCLIENTE)\r\n", USUARIO)); 
+		sql.append(" INNER JOIN\r\n" ); 
+		sql.append(String.format(" (SELECT * FROM %s.OFERTASRESERVAS \r\n", USUARIO));  
+		sql.append(" INNER JOIN\r\n"); 
+		sql.append(String.format(" (SELECT CATEGORIA, NUMERO, UBICACION, IDHOTEL, IDALOJAMIENTO, %s.OFERTAS.ID AS IDOFERTA1\r\n", USUARIO )); 
+		sql.append(String.format(" FROM %s.HABSHOTEL INNER JOIN %s.OFERTAS ON %s.HABSHOTEL.ID = %s.OFERTAS.IDALOJAMIENTO\r\n", USUARIO)); 
+		sql.append(" WHERE CATEGORIA = 'SUITE')\r\n"); 
+		sql.append(" ON IDOFERTA = IDOFERTA1) \r\n"); 
+		sql.append(" ON IDRESERVA = RESERVA \r\n" ); 
+		sql.append(" group by IDCLIENTE, CEDULA, NOMBRE, EDAD, TELEFONO) T2\r\n"); 
+		sql.append("WHERE T1.CLIENTE = T2.IDCLIENTE AND RESERVASTOTALES = RESERVASSUITE");
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 		recursos.add(prepStmt);

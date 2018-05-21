@@ -460,15 +460,14 @@ public class DAOOperador {
 	private String menosSolicitadoSemana(int i) {
 		StringBuilder sql = new StringBuilder();
 
-
-		// ESTA MAL ÑERO
 		sql.append("SELECT * FROM"); 
-		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.IDOPERADOR", USUARIO));
-		sql.append(String.format("FROM %s.OFERTASRESERVAS, %s.OFERTAS", USUARIO));
-		sql.append(String.format("WHERE %s.OFERTASRESERVAS.IDOFERTA = %s.OFERTAS.ID", USUARIO)); 
-		sql.append(String.format("group by %s.OFERTAS.IDOPERADOR",USUARIO));
-		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) ASC), %s.OPERADORES", USUARIO)); 
-		sql.append(String.format("WHERE IDOPERADOR = %s.OPERADORES.ID", USUARIO));
+		sql.append(String.format("(SELECT COUNT(%s.OFRS.IDRESERVA) as NUMRESERVAS, %s.OFERTAS.IDOPERADOR", USUARIO));
+		sql.append("FROM    (SELECT IDOFERTA, IDRESERVA, COBRO, ESTADO, TO_CHAR(FECHAINICIO, 'WW') SEMANAINICIO, TO_CHAR(FECHAFIN, 'WW') SEMANAFIN, IDCLIENTE, COLECTIVA");
+		sql.append(String.format("FROM %s.OFERTASRESERVAS INNER JOIN %s.RESERVAS ON %s.RESERVAS.ID = IDRESERVA", USUARIO));
+		sql.append(String.format("WHERE TO_CHAR(FECHAINICIO, 'WW') <%s AND ((TO_CHAR(FECHAFIN, 'WW') >%s) OR (TO_CHAR(FECHAFIN, 'WW') < TO_CHAR(FECHAINICIO, 'WW')))) OFRS", i));
+		sql.append(String.format(", %s.OFERTAS WHERE OFRS.IDOFERTA = %s.OFERTAS.ID", USUARIO));
+		sql.append("group by IDOPERADOR"); 
+		sql.append(String.format("order by COUNT(OFRS.IDRESERVA) ASC), %s.OPERADORES WHERE IDOPERADOR = %s.OPERADORES.ID AND ROWNUM = 1", USUARIO)); 
 
 		return sql.toString();
 	}
@@ -477,12 +476,13 @@ public class DAOOperador {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("SELECT * FROM"); 
-		sql.append(String.format("(SELECT COUNT(%s.OFERTASRESERVAS.IDRESERVA), %s.OFERTAS.IDOPERADOR", USUARIO));
-		sql.append(String.format("FROM %s.OFERTASRESERVAS, %s.OFERTAS", USUARIO));
-		sql.append(String.format("WHERE %s.OFERTASRESERVAS.IDOFERTA = %s.OFERTAS.ID", USUARIO)); 
-		sql.append(String.format("group by %s.OFERTAS.IDOPERADOR",USUARIO));
-		sql.append(String.format("order by COUNT(%s.OFERTASRESERVAS.IDRESERVA) DESC), %s.OPERADORES", USUARIO)); 
-		sql.append(String.format("WHERE IDOPERADOR = %s.OPERADORES.ID", USUARIO));
+		sql.append(String.format("(SELECT COUNT(%s.OFRS.IDRESERVA) as NUMRESERVAS, %s.OFERTAS.IDOPERADOR", USUARIO));
+		sql.append("FROM    (SELECT IDOFERTA, IDRESERVA, COBRO, ESTADO, TO_CHAR(FECHAINICIO, 'WW') SEMANAINICIO, TO_CHAR(FECHAFIN, 'WW') SEMANAFIN, IDCLIENTE, COLECTIVA");
+		sql.append(String.format("FROM %s.OFERTASRESERVAS INNER JOIN %s.RESERVAS ON %s.RESERVAS.ID = IDRESERVA", USUARIO));
+		sql.append(String.format("WHERE TO_CHAR(FECHAINICIO, 'WW') <%s AND ((TO_CHAR(FECHAFIN, 'WW') >%s) OR (TO_CHAR(FECHAFIN, 'WW') < TO_CHAR(FECHAINICIO, 'WW')))) OFRS", semana));
+		sql.append(String.format(", %s.OFERTAS WHERE OFRS.IDOFERTA = %s.OFERTAS.ID", USUARIO));
+		sql.append("group by IDOPERADOR"); 
+		sql.append(String.format("order by COUNT(OFRS.IDRESERVA) DESC), %s.OPERADORES WHERE IDOPERADOR = %s.OPERADORES.ID AND ROWNUM = 1", USUARIO)); 
 
 		return sql.toString();
 	}
