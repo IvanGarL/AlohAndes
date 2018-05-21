@@ -1,0 +1,3 @@
+Para correr la aplicación, importar el proyecto en una instalación de Eclipse con Redhat instalado y configurado el servidor WildFly como es indicado en el tutorial de arquitectura y servicios REST, que se encuentra en la sección contenido del curso de Sistemas transaccionales en SicuaPlus
+
+Luego de importar el proyecto, dar click derecho, elegir la opción Run on server... y elegir el servidor configurado manualmente. Al desplegar el archivo index.html, se pueden hacer solicitudes http al servidor.

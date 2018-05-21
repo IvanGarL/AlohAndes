@@ -1,0 +1,21 @@
+create index ind_capacidad on ALOJAMIENTOS (capacidad);
+create index ind_tamanho on ALOJAMIENTOS (tamanho);
+create index ind_capacidadOperador on OPERADORES (capacidad);
+create index ind_colectiva on RESERVAS (colectiva);
+create index ind_edad on CLIENTES (edad);
+create index ind_nombre on CLIENTES (nombre);
+create index ind_tipo on ALOJAMIENTOS (tipo);
+create index ind_Operador on OFERTAS (idOperador);
+create index ind_hotel on HABSHOTEL (idHotel);
+create index ind_Cliente on RESERVAS (idCliente);
+
+drop index ind_capacidad;
+drop index ind_tamanho;
+drop index ind_capacidadOperador;
+drop index ind_colectiva;
+drop index ind_edad;
+drop index ind_nombre;
+drop index ind_tipo;
+drop index ind_Operador;
+drop index ind_hotel;
+drop index ind_Cliente;
